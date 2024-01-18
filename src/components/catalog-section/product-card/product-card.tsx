@@ -3,12 +3,12 @@ import { ProductType } from '../../../types';
 import IconComponent from '../../icon/icon';
 import RatingStarsComponent from './rating-stars/rating-stars';
 
-type ProductDetailsProps = {
+type ProductCardProps = {
   product: ProductType;
 };
 
 
-const ProductCardComponent = ({ product }: ProductDetailsProps) => {
+const ProductCardComponent = ({ product }: ProductCardProps) => {
   const { previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, price, name, rating, reviewCount } = product;
   const svgSize = {
     width: 16,

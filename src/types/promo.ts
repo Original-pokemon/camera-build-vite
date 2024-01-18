@@ -1,4 +1,6 @@
-export type ProductPreviewType = {
+import { ProductType } from './product';
+
+export type PromoType = {
   id: number;
   name: string;
   previewImg: string;
@@ -6,3 +8,5 @@ export type ProductPreviewType = {
   previewImgWebp: string;
   previewImgWebp2x: string;
 }
+
+export type ExtendPromosType = PromoType & Pick<ProductType, 'description'>
