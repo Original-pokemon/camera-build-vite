@@ -19,7 +19,7 @@ const SearchForm = () => {
   return (
     <form>
       <label>
-        <IconComponent icon={'#icon-lens'} svgSize={{ width: 16, height: 16 }} ariaHidden />
+        <IconComponent className={'form-search__icon'} icon={'#icon-lens'} svgSize={{ width: 16, height: 16 }} ariaHidden />
 
         <input className="form-search__input" type="text" autoComplete="off" placeholder="Поиск по сайту" />
       </label>
