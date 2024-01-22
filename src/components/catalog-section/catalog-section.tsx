@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 import browserHistory from '../../browser-history/browser-history';
 import { ProductType } from '../../types';
-import CatalogFilterComponent from './catalog-filter/catalog-filter';
-import CatalogSortComponent from './catalog-sort/catalog-sort';
-import PaginationComponent from './pagination/pagination';
-import ProductCardComponent from './product-card/product-card';
+import CatalogFilter from './catalog-filter/catalog-filter';
+import CatalogSort from './catalog-sort/catalog-sort';
+import Pagination from './pagination/pagination';
+import ProductCard from './product-card/product-card';
 import { useSearchParams } from 'react-router-dom';
 import { AppRoute } from '../../const';
 
@@ -12,7 +12,7 @@ type CatalogSectionProps = {
   products: ProductType[];
 }
 
-const CatalogSectionComponent = ({ products }: CatalogSectionProps) => {
+const CatalogSection = ({ products }: CatalogSectionProps) => {
   const [searchParams] = useSearchParams();
   const productsPerPage = 9;
   const initialPage = parseInt(searchParams.get('page') || '1', 10);
@@ -34,7 +34,7 @@ const CatalogSectionComponent = ({ products }: CatalogSectionProps) => {
   };
 
   const productsElements = visibleProducts.map((product) => (
-    <ProductCardComponent key={product.id} product={product} />
+    <ProductCard key={product.id} product={product} />
   ));
 
   if (initialPage > totalPages) {
@@ -48,14 +48,14 @@ const CatalogSectionComponent = ({ products }: CatalogSectionProps) => {
         <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
         <div className="page-content__columns">
           <div className="catalog__aside">
-            <CatalogFilterComponent />
+            <CatalogFilter />
           </div>
           <div className="catalog__content">
-            <CatalogSortComponent />
+            <CatalogSort />
             <div className="cards catalog__cards">
               {productsElements}
             </div>
-            {totalPages > 1 && <PaginationComponent totalPages={totalPages} currentPage={currentPage} onClick={handlePageChange} />}
+            {totalPages > 1 && <Pagination totalPages={totalPages} currentPage={currentPage} onClick={handlePageChange} />}
           </div>
         </div>
       </div>
@@ -63,4 +63,4 @@ const CatalogSectionComponent = ({ products }: CatalogSectionProps) => {
   );
 };
 
-export default CatalogSectionComponent;
+export default CatalogSection;

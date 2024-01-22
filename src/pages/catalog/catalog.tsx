@@ -1,8 +1,8 @@
-import SliderComponent from '../../components/slider/slider';
-import BreadcrumbsComponent from '../../components/breadcrumbs/breadcrumbs';
-import CatalogSectionComponent from '../../components/catalog-section/catalog-section';
-import FooterComponent from '../../components/footer/footer';
-import HeaderComponent from '../../components/header/header';
+import Slider from '../../components/catalog-section/slider/slider';
+import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
+import CatalogSection from '../../components/catalog-section/catalog-section';
+import Footer from '../../components/footer/footer';
+import Header from '../../components/header/header';
 import { useAppSelector } from '../../hooks/state';
 
 
@@ -13,21 +13,21 @@ export default function CatalogPage() {
   return (
     <div className="wrapper">
 
-      <HeaderComponent />
+      <Header />
 
       <main>
         {/* <BannerComponent /> */}
-        {promos && <SliderComponent promos={promos} />}
+        {promos && <Slider promos={promos} />}
         <div className="page-content">
-          <BreadcrumbsComponent />
+          <Breadcrumbs />
           {
-            products && <CatalogSectionComponent products={products} />
+            products && <CatalogSection products={products} />
           }
 
         </div>
       </main>
 
-      <FooterComponent />
+      <Footer />
 
     </div>
   );

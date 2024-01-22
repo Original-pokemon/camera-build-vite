@@ -1,9 +1,9 @@
-import IconComponent from '../icon/icon';
+import Icon from '../icon/icon';
 import Logo from '../logo/logo';
 import NavList from './nav-list/nav-list';
 import SearchForm from './search-form/search-form';
 
-const HeaderComponent = () => {
+const Header = () => {
   const navItems = [
     { link: 'catalog.html', text: 'Каталог' },
     { link: '#', text: 'Гарантии' },
@@ -32,13 +32,13 @@ const HeaderComponent = () => {
         <div className="form-search">
           <SearchForm />
           <button className="form-search__reset" type="reset">
-            <IconComponent icon={'#icon-close'} svgSize={{ width: 10, height: 10 }} ariaHidden />
+            <Icon icon={'#icon-close'} svgSize={{ width: 10, height: 10 }} ariaHidden />
 
             <span className="visually-hidden">Сбросить поиск</span>
           </button>
         </div>
         <a className="header__basket-link" href="#">
-          <IconComponent icon={'#icon-basket'} svgSize={{ width: 16, height: 16 }} ariaHidden />
+          <Icon icon={'#icon-basket'} svgSize={{ width: 16, height: 16 }} ariaHidden />
 
         </a>
       </div>
@@ -46,4 +46,4 @@ const HeaderComponent = () => {
   );
 };
 
-export default HeaderComponent;
+export default Header;

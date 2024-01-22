@@ -5,7 +5,7 @@ type BannerProps = {
   promo: ExtendPromosType;
 }
 
-const BannerComponent = ({ promo }: BannerProps) => {
+const Banner = ({ promo }: BannerProps) => {
   const { id, previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, name, description } = promo;
 
 
@@ -34,4 +34,4 @@ const BannerComponent = ({ promo }: BannerProps) => {
   );
 };
 
-export default BannerComponent;
+export default Banner;

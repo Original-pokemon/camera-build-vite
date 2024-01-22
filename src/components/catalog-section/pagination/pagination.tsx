@@ -8,7 +8,7 @@ type PaginationProps = {
 
 const getPageLink = (page: number) => `?page=${page}`;
 
-const PaginationComponent = ({ totalPages, currentPage, onClick }: PaginationProps) => {
+const Pagination = ({ totalPages, currentPage, onClick }: PaginationProps) => {
   const maxPagesInGroup = 3;
   const groupNumber = Math.ceil(currentPage / maxPagesInGroup);
 
@@ -82,4 +82,4 @@ const PaginationComponent = ({ totalPages, currentPage, onClick }: PaginationPro
   );
 };
 
-export default PaginationComponent;
+export default Pagination;

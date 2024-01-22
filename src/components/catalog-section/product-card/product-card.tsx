@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import { ProductType } from '../../../types';
-import IconComponent from '../../icon/icon';
-import RatingStarsComponent from './rating-stars/rating-stars';
+import Icon from '../../icon/icon';
+import RatingStars from './rating-stars/rating-stars';
 
 type ProductCardProps = {
   product: ProductType;
 };
 
 
-const ProductCardComponent = ({ product }: ProductCardProps) => {
+const ProductCard = ({ product }: ProductCardProps) => {
   const { previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, price, name, rating, reviewCount } = product;
   const svgSize = {
     width: 16,
@@ -27,7 +27,7 @@ const ProductCardComponent = ({ product }: ProductCardProps) => {
       <div className="product-card__info">
         <div className="rate product-card__rate">
 
-          <RatingStarsComponent rating={rating} />
+          <RatingStars rating={rating} />
 
           <p className="visually-hidden">Рейтинг: {rating}</p>
           <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{reviewCount}</p>
@@ -37,7 +37,7 @@ const ProductCardComponent = ({ product }: ProductCardProps) => {
       </div>
       <div className="product-card__buttons">
         <a className="btn btn--purple-border product-card__btn product-card__btn--in-cart" href="#">
-          <IconComponent icon={'#icon-basket'} svgSize={svgSize} ariaHidden />
+          <Icon icon={'#icon-basket'} svgSize={svgSize} ariaHidden />
           В корзине
         </a>
 
@@ -50,4 +50,4 @@ const ProductCardComponent = ({ product }: ProductCardProps) => {
   );
 };
 
-export default ProductCardComponent;
+export default ProductCard;

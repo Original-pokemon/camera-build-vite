@@ -1,6 +1,6 @@
-import IconComponent from '../../icon/icon';
+import Icon from '../../icon/icon';
 
-const CatalogSortComponent = () => (
+const CatalogSort = () => (
   <div className="catalog-sort">
     <form action="#">
       <div className="catalog-sort__inner">
@@ -19,13 +19,13 @@ const CatalogSortComponent = () => (
           <div className="catalog-sort__btn catalog-sort__btn--up">
             <input type="radio" id="up" name="sort-icon" defaultChecked aria-label="По возрастанию" />
             <label htmlFor="up">
-              <IconComponent icon={'#icon-sort'} svgSize={{ width: 16, height: 14 }} ariaHidden />
+              <Icon icon={'#icon-sort'} svgSize={{ width: 16, height: 14 }} ariaHidden />
             </label>
           </div>
           <div className="catalog-sort__btn catalog-sort__btn--down">
             <input type="radio" id="down" name="sort-icon" aria-label="По убыванию" />
             <label htmlFor="down">
-              <IconComponent icon={'#icon-sort'} svgSize={{ width: 16, height: 14 }} ariaHidden />
+              <Icon icon={'#icon-sort'} svgSize={{ width: 16, height: 14 }} ariaHidden />
             </label>
           </div>
         </div>
@@ -34,4 +34,4 @@ const CatalogSortComponent = () => (
   </div>
 );
 
-export default CatalogSortComponent;
+export default CatalogSort;

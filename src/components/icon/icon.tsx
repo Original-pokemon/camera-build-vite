@@ -5,10 +5,10 @@ export type IconProps = {
   className?: string;
 }
 
-const IconComponent = ({ icon, svgSize, ariaHidden, className }: IconProps) => (
+const Icon = ({ icon, svgSize, ariaHidden, className }: IconProps) => (
   <svg className={className} width={svgSize.width} height={svgSize.height} aria-hidden={ariaHidden}>
     <use xlinkHref={icon}></use>
   </svg>);
 
 
-export default IconComponent;
+export default Icon;
