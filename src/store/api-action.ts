@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
-import { AppDispatchType, ProductType, StateType } from '../types';
-import { getProducts } from './action';
+import { AppDispatchType, ProductType, PromoType, StateType } from '../types';
+import { getProduct, getProducts, getPromos } from './action';
 import { Action } from '../const/store';
 import { APIRoute } from '../const';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -21,6 +21,41 @@ export const fetchProducts = createAsyncThunk<void, undefined, asyncThunkConfig>
       dispatch(getProducts(data));
     } catch {
       dispatch(getProducts([]));
+    }
+  }
+);
+
+export const fetchProduct = createAsyncThunk<void, number, asyncThunkConfig>(
+  `${Action.Data}/fetchProducts`,
+  async (id, { dispatch, extra: api }) => {
+    try {
+      const { data } = await api.get<ProductType>(APIRoute.Product(id));
+
+      dispatch(getProduct(data));
+    } catch {
+      console.log('error');
+    }
+  }
+);
+
+
+export const fetchPromos = createAsyncThunk<void, undefined, asyncThunkConfig>(
+  `${Action.Data}/fetchPromos`,
+  async (_arg, { dispatch, extra: api }) => {
+    try {
+      const { data } = await api.get<PromoType[]>(APIRoute.Promo);
+
+      const promises = data.map(async (promo) => {
+        const { data: product } = await api.get<ProductType>(APIRoute.Product(promo.id));
+
+        return { ...promo, description: product.description };
+      });
+
+      const promo = await Promise.all(promises);
+
+      dispatch(getPromos(promo));
+    } catch {
+      dispatch(getPromos([]));
     }
   }
 );

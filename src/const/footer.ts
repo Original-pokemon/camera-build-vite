@@ -4,9 +4,9 @@ const SOCIAL_ICON_SIZE = {
 };
 
 const socialItems = [
-  { icon: { type: 'vk', size: SOCIAL_ICON_SIZE }, label: 'Переход на страницу вконтатке', href: 'https://vk.com' },
-  { icon: { type: 'pinterest', size: SOCIAL_ICON_SIZE }, label: 'Переход на страницу pinterest', href: 'https://www.pinterest.com' },
-  { icon: { type: 'reddit', size: SOCIAL_ICON_SIZE }, label: 'Переход на страницу reddit', href: 'https://www.reddit.com' },
+  { icon: { type: '#icon-vk', size: SOCIAL_ICON_SIZE }, label: 'Переход на страницу вконтатке', href: 'https://vk.com' },
+  { icon: { type: '#icon-pinterest', size: SOCIAL_ICON_SIZE }, label: 'Переход на страницу pinterest', href: 'https://www.pinterest.com' },
+  { icon: { type: '#icon-reddit', size: SOCIAL_ICON_SIZE }, label: 'Переход на страницу reddit', href: 'https://www.reddit.com' },
 ];
 
 const navigationItems = [

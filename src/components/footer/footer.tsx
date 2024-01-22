@@ -3,7 +3,7 @@ import Logo from '../logo/logo';
 import FooterNavItem from './footer-nav-item/footer-nav-item';
 import SocialList from './social-list/social-list';
 
-const FooterComponent = () => (
+const Footer = () => (
   <footer className="footer">
     <div className="container">
       <div className="footer__info">
@@ -25,4 +25,4 @@ const FooterComponent = () => (
   </footer>
 );
 
-export default FooterComponent;
+export default Footer;

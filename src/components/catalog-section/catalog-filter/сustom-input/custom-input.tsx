@@ -6,7 +6,7 @@ type CustomInputProps = {
   defaultChecked?: boolean;
 }
 
-const CustomInputComponent = ({ type, name, placeholder, disabled = false, defaultChecked = false }: CustomInputProps) => (
+const CustomInput = ({ type, name, placeholder, disabled = false, defaultChecked = false }: CustomInputProps) => (
   <div className="custom-input">
     <label>
       <input type={type} name={name} placeholder={placeholder} disabled={disabled} defaultChecked={defaultChecked} />
@@ -14,4 +14,4 @@ const CustomInputComponent = ({ type, name, placeholder, disabled = false, defau
   </div>
 );
 
-export default CustomInputComponent;
+export default CustomInput;

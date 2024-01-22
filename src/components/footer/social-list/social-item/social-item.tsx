@@ -1,4 +1,4 @@
-import IconComponent, { IconProps } from '../../../icon/icon';
+import Icon, { IconProps } from '../../../icon/icon';
 
 export type SocialItemProps = {
   icon: {
@@ -15,7 +15,7 @@ export type SocialItemProps = {
 const SocialItem = ({ icon, label, href }: SocialItemProps) => (
   <li className="social__item">
     <a className="link" href={href} aria-label={label}>
-      <IconComponent icon={icon.type} svgSize={icon.size} ariaHidden />
+      <Icon icon={icon.type} svgSize={icon.size} ariaHidden />
     </a>
   </li>
 );

@@ -1,6 +1,6 @@
-import IconComponent from '../icon/icon';
+import Icon from '../icon/icon';
 
-const BreadcrumbsComponent = () => (
+const Breadcrumbs = () => (
   <div className="breadcrumbs">
     <div className="container">
       <ul className="breadcrumbs__list">
@@ -8,7 +8,7 @@ const BreadcrumbsComponent = () => (
           <a className="breadcrumbs__link" href="index.html">
             Главная
 
-            <IconComponent icon={'#icon-arrow-mini'} svgSize={{
+            <Icon icon={'#icon-arrow-mini'} svgSize={{
               width: 5,
               height: 8
             }} ariaHidden
@@ -24,4 +24,4 @@ const BreadcrumbsComponent = () => (
   </div>
 );
 
-export default BreadcrumbsComponent;
+export default Breadcrumbs;

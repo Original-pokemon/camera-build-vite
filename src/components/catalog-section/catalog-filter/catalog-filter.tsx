@@ -1,36 +1,36 @@
-import CatalogFilterBlockComponent from './catalog-filter-block/catalog-filter-block';
-import FilterItemComponent from './filter-item/filter-item';
-import CustomInputComponent from './сustom-input/custom-input';
+import CatalogFilterBlock from './catalog-filter-block/catalog-filter-block';
+import FilterItem from './filter-item/filter-item';
+import CustomInput from './сustom-input/custom-input';
 
-const CatalogFilterComponent = () => (
+const CatalogFilter = () => (
   <div className="catalog-filter">
     <form action="#">
       <h2 className="visually-hidden">Фильтр</h2>
 
-      <CatalogFilterBlockComponent legend="Цена, ₽">
+      <CatalogFilterBlock legend="Цена, ₽">
         <div className="catalog-filter__price-range">
-          <CustomInputComponent type="number" name="price" placeholder="от" />
-          <CustomInputComponent type="number" name="priceUp" placeholder="до" />
+          <CustomInput type="number" name="price" placeholder="от" />
+          <CustomInput type="number" name="priceUp" placeholder="до" />
         </div>
-      </CatalogFilterBlockComponent>
+      </CatalogFilterBlock>
 
-      <CatalogFilterBlockComponent legend="Категория">
-        <FilterItemComponent name="photocamera" label="Фотокамера" defaultChecked />
-        <FilterItemComponent name="videocamera" label="Видеокамера" />
-      </CatalogFilterBlockComponent>
+      <CatalogFilterBlock legend="Категория">
+        <FilterItem name="photocamera" label="Фотокамера" defaultChecked />
+        <FilterItem name="videocamera" label="Видеокамера" />
+      </CatalogFilterBlock>
 
-      <CatalogFilterBlockComponent legend="Тип камеры">
-        <FilterItemComponent name="digital" label="Цифровая" defaultChecked />
-        <FilterItemComponent name="film" label="Плёночная" disabled />
-        <FilterItemComponent name="snapshot" label="Моментальная" />
-        <FilterItemComponent name="collection" label="Коллекционная" disabled defaultChecked />
-      </CatalogFilterBlockComponent>
+      <CatalogFilterBlock legend="Тип камеры">
+        <FilterItem name="digital" label="Цифровая" defaultChecked />
+        <FilterItem name="film" label="Плёночная" disabled />
+        <FilterItem name="snapshot" label="Моментальная" />
+        <FilterItem name="collection" label="Коллекционная" disabled defaultChecked />
+      </CatalogFilterBlock>
 
-      <CatalogFilterBlockComponent legend="Уровень">
-        <FilterItemComponent name="zero" label="Нулевой" defaultChecked />
-        <FilterItemComponent name="non-professional" label="Любительский" />
-        <FilterItemComponent name="professional" label="Профессиональный" />
-      </CatalogFilterBlockComponent>
+      <CatalogFilterBlock legend="Уровень">
+        <FilterItem name="zero" label="Нулевой" defaultChecked />
+        <FilterItem name="non-professional" label="Любительский" />
+        <FilterItem name="professional" label="Профессиональный" />
+      </CatalogFilterBlock>
 
       <button className="btn catalog-filter__reset-btn" type="reset">
         Сбросить фильтры
@@ -39,4 +39,4 @@ const CatalogFilterComponent = () => (
   </div>
 );
 
-export default CatalogFilterComponent;
+export default CatalogFilter;

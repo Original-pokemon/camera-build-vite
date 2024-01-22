@@ -5,7 +5,7 @@ type FilterItemProps = {
   defaultChecked?: boolean;
 }
 
-const FilterItemComponent = ({ name, label, disabled = false, defaultChecked = false }: FilterItemProps) => (
+const FilterItem = ({ name, label, disabled = false, defaultChecked = false }: FilterItemProps) => (
   <div className="custom-checkbox catalog-filter__item">
     <label>
       <input type="checkbox" name={name} disabled={disabled} defaultChecked={defaultChecked} />
@@ -15,4 +15,4 @@ const FilterItemComponent = ({ name, label, disabled = false, defaultChecked = f
   </div>
 );
 
-export default FilterItemComponent;
+export default FilterItem;
