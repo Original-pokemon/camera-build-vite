@@ -10,11 +10,12 @@ const Header = () => {
   const basket = useAppSelector((state) => state.basket);
   const basketCount = Object.keys(basket).length;
   const navItems = [
-    { link: 'catalog.html', text: 'Каталог' },
-    { link: '#', text: 'Гарантии' },
-    { link: '#', text: 'Доставка' },
-    { link: '#', text: 'О компании' },
+    { link: AppRoute.Main, text: 'Каталог' },
+    { link: '', text: 'Гарантии' },
+    { link: '', text: 'Доставка' },
+    { link: '', text: 'О компании' },
   ];
+
   const logo = {
     className: 'header__logo',
     label: 'Переход на главную',
