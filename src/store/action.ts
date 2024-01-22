@@ -7,8 +7,12 @@ const getProduct = createAction<ProductType>(`${Action.Data}/getProduct`);
 const getReviews = createAction<ReviewType[]>(`${Action.Data}/getReviews`);
 const getPromos = createAction<ExtendPromosType[]>(`${Action.Data}/getPromos`);
 const redirectToRoute = createAction<AppRouteType>(`${Action.App}/redirectToRoute`);
+const addToBasket = createAction<ProductType>(`${Action.App}/addToBasket`);
+const removeFromBasket = createAction<number>(`${Action.App}/removeFromBasket`);
 
 export {
+  addToBasket,
+  removeFromBasket,
   getPromos,
   getProducts,
   getProduct,

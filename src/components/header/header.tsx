@@ -1,9 +1,14 @@
+import { Link } from 'react-router-dom';
+import { useAppSelector } from '../../hooks/state';
 import Icon from '../icon/icon';
 import Logo from '../logo/logo';
 import NavList from './nav-list/nav-list';
 import SearchForm from './search-form/search-form';
+import { AppRoute } from '../../const';
 
 const Header = () => {
+  const basket = useAppSelector((state) => state.basket);
+  const basketCount = Object.keys(basket).length;
   const navItems = [
     { link: 'catalog.html', text: 'Каталог' },
     { link: '#', text: 'Гарантии' },
@@ -12,7 +17,6 @@ const Header = () => {
   ];
   const logo = {
     className: 'header__logo',
-    href: 'index.html',
     label: 'Переход на главную',
     svgSize: {
       width: 100,
@@ -37,10 +41,10 @@ const Header = () => {
             <span className="visually-hidden">Сбросить поиск</span>
           </button>
         </div>
-        <a className="header__basket-link" href="#">
+        <Link className="header__basket-link" to={AppRoute.Basket}>
           <Icon icon={'#icon-basket'} svgSize={{ width: 16, height: 16 }} ariaHidden />
-
-        </a>
+          {!!basketCount && <span className="header__basket-count">{basketCount}</span>}
+        </Link>
       </div>
     </header>
   );

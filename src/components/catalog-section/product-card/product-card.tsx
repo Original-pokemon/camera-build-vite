@@ -4,17 +4,22 @@ import Icon from '../../icon/icon';
 import RatingStars from './rating-stars/rating-stars';
 
 type ProductCardProps = {
+  inBasket: boolean;
   product: ProductType;
+  onBuyButtonClick: () => void;
 };
 
 
-const ProductCard = ({ product }: ProductCardProps) => {
+const ProductCard = ({ product, onBuyButtonClick, inBasket }: ProductCardProps) => {
   const { previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, price, name, rating, reviewCount } = product;
   const svgSize = {
     width: 16,
     height: 16,
   };
 
+  const handleBuyButtonClick = () => {
+    onBuyButtonClick();
+  };
 
   return (
     <div className="product-card">
@@ -36,10 +41,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <p className="product-card__price"><span className="visually-hidden">Цена:</span>{price} ₽</p>
       </div>
       <div className="product-card__buttons">
-        <a className="btn btn--purple-border product-card__btn product-card__btn--in-cart" href="#">
-          <Icon icon={'#icon-basket'} svgSize={svgSize} ariaHidden />
+        {inBasket ? (
+          <a className="btn btn--purple-border product-card__btn product-card__btn--in-cart" href="#">
+            <Icon icon={'#icon-basket'} svgSize={svgSize} ariaHidden />
           В корзине
-        </a>
+          </a>
+        ) : (
+          <button
+            className="btn btn--purple product-card__btn" type="button"
+            onClick={handleBuyButtonClick}
+          >
+            Купить
+          </button>)}
+
 
         <Link className="btn btn--transparent" to={`/product/${product.id}`}>
           Подробнее
