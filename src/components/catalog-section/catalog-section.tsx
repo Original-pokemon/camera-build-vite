@@ -7,7 +7,6 @@ import Pagination from './pagination/pagination';
 import ProductCard from './product-card/product-card';
 import { useSearchParams } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import { useAppSelector } from '../../hooks/state';
 
 type CatalogSectionProps = {
   products: ProductType[];
@@ -16,7 +15,7 @@ type CatalogSectionProps = {
 
 const CatalogSection = ({ products, onBuyButtonClick }: CatalogSectionProps) => {
   const [searchParams] = useSearchParams();
-  const basket = useAppSelector((state) => state.basket);
+
   const productsPerPage = 9;
   const initialPage = parseInt(searchParams.get('page') || '1', 10);
   const [currentPage, setCurrentPage] = useState(initialPage);
@@ -39,20 +38,15 @@ const CatalogSection = ({ products, onBuyButtonClick }: CatalogSectionProps) => 
     onBuyButtonClick(product);
   };
 
-  const productsElements = visibleProducts.map((product) => {
-    const inBasket = !!basket[product.id];
-
-    return (
-      <ProductCard
-        key={product.id}
-        product={product}
-        onBuyButtonClick={() => {
-          handleBuyButtonClick(product);
-        }}
-        inBasket={inBasket}
-      />
-    );
-  });
+  const productsElements = visibleProducts.map((product) => (
+    <ProductCard
+      key={product.id}
+      product={product}
+      onBuyButtonClick={() => {
+        handleBuyButtonClick(product);
+      }}
+    />
+  ));
 
   if (initialPage > totalPages) {
     browserHistory.push(AppRoute.PageNotFound);

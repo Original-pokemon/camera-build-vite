@@ -2,20 +2,22 @@ import { Link } from 'react-router-dom';
 import { ProductType } from '../../../types';
 import Icon from '../../icon/icon';
 import RatingStars from './rating-stars/rating-stars';
+import { useAppSelector } from '../../../hooks/state';
 
 type ProductCardProps = {
-  inBasket: boolean;
   product: ProductType;
   onBuyButtonClick: () => void;
 };
 
 
-const ProductCard = ({ product, onBuyButtonClick, inBasket }: ProductCardProps) => {
+const ProductCard = ({ product, onBuyButtonClick }: ProductCardProps) => {
   const { previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, price, name, rating, reviewCount } = product;
   const svgSize = {
     width: 16,
     height: 16,
   };
+  const basket = useAppSelector((state) => state.basket);
+  const inBasket = !!basket[product.id];
 
   const handleBuyButtonClick = () => {
     onBuyButtonClick();
