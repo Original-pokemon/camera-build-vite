@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ProductType } from '../../../types';
 import Icon from '../../icon/icon';
-import RatingStars from './rating-stars/rating-stars';
+import RatingStars from '../../rating-stars/rating-stars';
 import { useAppSelector } from '../../../hooks/state';
 
 type ProductCardProps = {
@@ -32,13 +32,12 @@ const ProductCard = ({ product, onBuyButtonClick }: ProductCardProps) => {
         </picture>
       </div>
       <div className="product-card__info">
-        <div className="rate product-card__rate">
 
-          <RatingStars rating={rating} />
-
+        <RatingStars className="rate product-card__rate" rating={rating}>
           <p className="visually-hidden">Рейтинг: {rating}</p>
           <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{reviewCount}</p>
-        </div>
+        </RatingStars>
+
         <p className="product-card__title">{name}</p>
         <p className="product-card__price"><span className="visually-hidden">Цена:</span>{price} ₽</p>
       </div>

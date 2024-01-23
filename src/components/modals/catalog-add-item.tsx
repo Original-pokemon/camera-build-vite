@@ -27,6 +27,7 @@ const CatalogAddItem = ({ product, onAddToBasket, onContinueShopping }: CatalogA
   const basket = useAppSelector((state) => state.basket);
   const dispatch = useAppDispatch();
   const [addedToCart, setAddedToCart] = useState(Boolean(basket[product.id]));
+
   const handleAddToCart = () => {
     onAddToBasket();
     dispatch(addToBasket(product));
