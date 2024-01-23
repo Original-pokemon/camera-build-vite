@@ -11,7 +11,7 @@ import ProductPage from '../../pages/product/product';
 const App = () => (
   <HistoryRouter history={browserHistory}>
     <Routes>
-      <Route path='/' element={<Layout />}>
+      <Route path={AppRoute.Main} element={<Layout />}>
         <Route
           index
           element={<CatalogPage />}

@@ -1,6 +1,7 @@
 import { ProductType } from '../../types';
 import Icon from '../icon/icon';
 import RatingStars from '../rating-stars/rating-stars';
+import ProductTabsContent from './tabs/tabs';
 
 
 type ProductProps = {
@@ -60,6 +61,7 @@ const Product = ({
               Добавить в корзину
             </button>
 
+            <ProductTabsContent {...product} />
 
           </div>
         </div>
