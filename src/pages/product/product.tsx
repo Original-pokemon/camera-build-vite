@@ -7,11 +7,13 @@ import Icon from '../../components/icon/icon';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { fetchProduct } from '../../store/api-action';
+import { AppRoute } from '../../const';
 
 const ProductPage = () => {
   const { id } = useParams();
   const product = useAppSelector((state) => state.product);
   const dispatch = useAppDispatch();
+  const breadcrumbs = [{ link: AppRoute.Main, text: 'Главная' }, { link: AppRoute.Main, text: 'Каталог' }, { link: `product/${String(id)}`, text: String(product?.name) }];
 
   useEffect(() => {
     if (id) {
@@ -21,6 +23,7 @@ const ProductPage = () => {
 
   return product && (
     <div className="page-content">
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
       <Product product={product} />
       <SimilarProducts />
       <ReviewsBlock />

@@ -6,6 +6,7 @@ import { ProductType } from '../../types';
 import CatalogAddItem from '../../components/modals/catalog-add-item';
 import { useState } from 'react';
 import { addToBasket } from '../../store/action';
+import { AppRoute } from '../../const';
 
 
 export default function CatalogPage() {
@@ -13,6 +14,7 @@ export default function CatalogPage() {
   const promos = useAppSelector((state) => state.promos);
   const [selectProduct, setSelectProduct] = useState<ProductType | null>(null);
   const dispatch = useAppDispatch();
+  const breadcrumbs = [{ link: AppRoute.Main, text: 'Главная' }, { link: AppRoute.Main, text: 'Каталог' }];
 
   const handleSelectProduct = (product: ProductType) => {
     setSelectProduct(product);
@@ -32,7 +34,7 @@ export default function CatalogPage() {
     <>
       {promos && <Slider promos={promos} />}
       <div className="page-content">
-        <Breadcrumbs />
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
         {
           products && <CatalogSection products={products} onBuyButtonClick={handleSelectProduct} />
         }

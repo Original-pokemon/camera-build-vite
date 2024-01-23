@@ -1,27 +1,50 @@
+import { Link } from 'react-router-dom';
 import Icon from '../icon/icon';
 
-const Breadcrumbs = () => (
-  <div className="breadcrumbs">
-    <div className="container">
-      <ul className="breadcrumbs__list">
-        <li className="breadcrumbs__item">
-          <a className="breadcrumbs__link" href="index.html">
-            Главная
+type BreadcrumbsProps = {
+  breadcrumbs: {
+    link: string;
+    text: string;
+  }[];
+}
 
-            <Icon icon={'#icon-arrow-mini'} svgSize={{
-              width: 5,
-              height: 8
-            }} ariaHidden
-            />
+const Breadcrumbs = ({ breadcrumbs }: BreadcrumbsProps) => {
+  const getLink = ({ text, link }: { text: string; link: string }) => (
+    <li className="breadcrumbs__item">
+      <Link className="breadcrumbs__link" to={link}>
+        {text}
+        <Icon icon={'#icon-arrow-mini'} svgSize={{
+          width: 5,
+          height: 8
+        }} ariaHidden
+        />
 
-          </a>
-        </li>
-        <li className="breadcrumbs__item">
-          <span className="breadcrumbs__link breadcrumbs__link--active">Каталог</span>
-        </li>
-      </ul>
+      </Link>
+    </li >
+  );
+  const getActiveLink = (text: string) => (
+    <li className="breadcrumbs__item">
+      <span className="breadcrumbs__link breadcrumbs__link--active">{text}</span>
+    </li>
+  );
+
+  return (
+    <div className="breadcrumbs">
+      <div className="container">
+        <ul className="breadcrumbs__list">
+
+          {
+            breadcrumbs.map((breadcrumb, index) => {
+              if (index !== breadcrumbs.length - 1) {
+                return getLink(breadcrumb);
+              }
+              return getActiveLink(breadcrumb.text);
+            })
+          }
+        </ul>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Breadcrumbs;
