@@ -3,7 +3,7 @@ import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import CatalogSection from '../../components/catalog-section/catalog-section';
 import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { ProductType } from '../../types';
-import CatalogAddItem from '../../components/modals/catalog-add-item';
+import CatalogAddItem from '../../components/catalog-section/catalog-add-item/catalog-add-item';
 import { useState } from 'react';
 import { addToBasket } from '../../store/action';
 import { AppRoute } from '../../const';

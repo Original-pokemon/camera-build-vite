@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { ProductType } from '../../types';
-import Icon from '../icon/icon';
-import { useAppDispatch, useAppSelector } from '../../hooks/state';
-import { addToBasket } from '../../store/action';
+import { ProductType } from '../../../types';
+import Icon from '../../icon/icon';
+import { useAppDispatch, useAppSelector } from '../../../hooks/state';
+import { addToBasket } from '../../../store/action';
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute } from '../../../const';
 
 type CatalogAddItemProps = {
   product: ProductType;
