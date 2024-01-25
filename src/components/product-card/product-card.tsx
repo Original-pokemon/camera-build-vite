@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import { ProductType } from '../../../types';
-import Icon from '../../icon/icon';
-import RatingStars from '../../rating-stars/rating-stars';
-import { useAppDispatch, useAppSelector } from '../../../hooks/state';
-import { AppRoute } from '../../../const';
-import { selectProduct } from '../../../store/action';
+import { ProductType } from '../../types';
+import Icon from '../icon/icon';
+import RatingStars from '../rating-stars/rating-stars';
+import { useAppDispatch, useAppSelector } from '../../hooks/state';
+import { AppRoute } from '../../const';
+import { selectProduct } from '../../store/action';
 
 type ProductCardProps = {
   product: ProductType;

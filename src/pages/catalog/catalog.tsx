@@ -2,7 +2,7 @@ import Slider from '../../components/promo-slider/promo-slider';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import CatalogSection from '../../components/catalog-section/catalog-section';
 import { useAppSelector } from '../../hooks/state';
-import CatalogAddItem from '../../components/catalog-section/catalog-add-item/catalog-add-item';
+import CatalogAddItem from '../../components/modals/catalog-add-item/catalog-add-item';
 import { AppRoute } from '../../const';
 
 

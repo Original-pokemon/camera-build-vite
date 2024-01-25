@@ -4,6 +4,7 @@ import { Action } from '../const/store';
 
 const getProducts = createAction<ProductType[]>(`${Action.Data}/getProducts`);
 const getProduct = createAction<ProductType>(`${Action.Data}/getProduct`);
+const getSimilarProducts = createAction<ProductType[]>(`${Action.Data}/similarProducts`);
 const getReviews = createAction<ReviewType[]>(`${Action.Data}/getReviews`);
 const getPromos = createAction<ExtendPromosType[]>(`${Action.Data}/getPromos`);
 const redirectToRoute = createAction<AppRouteType>(`${Action.App}/redirectToRoute`);
@@ -13,6 +14,7 @@ const selectProduct = createAction<ProductType | null>(`${Action.App}/selectProd
 
 export {
   selectProduct,
+  getSimilarProducts,
   addToBasket,
   removeFromBasket,
   getPromos,

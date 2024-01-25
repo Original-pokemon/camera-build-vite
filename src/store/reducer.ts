@@ -1,11 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { addToBasket, getProduct, getProducts, getPromos, removeFromBasket } from './action';
+import { addToBasket, getProduct, getProducts, getPromos, getSimilarProducts, removeFromBasket, selectProduct } from './action';
 import { ExtendPromosType, ProductType } from '../types';
 import { BasketType } from '../types/backet';
 
 type InitialStateType = {
   products: ProductType[] | null;
   product: ProductType | null;
+  similarProducts: ProductType[] | null;
   promos: ExtendPromosType[] | null;
   basket: BasketType;
   selectedProduct: ProductType | null;
@@ -14,8 +15,10 @@ type InitialStateType = {
 const initialState: InitialStateType = {
   products: null,
   promos: null,
+  similarProducts: null,
+  product: null,
+  basket: {},
   selectedProduct: null
-  basket: {}
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -50,6 +53,9 @@ const reducer = createReducer(initialState, (builder) => {
           delete basket[payload];
         }
       }
+    })
+    .addCase(getSimilarProducts, (state, action) => {
+      state.similarProducts = action.payload;
     })
     .addCase(selectProduct, (state, action) => {
       state.selectedProduct = action.payload;
