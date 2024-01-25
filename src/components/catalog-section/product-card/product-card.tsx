@@ -3,6 +3,7 @@ import { ProductType } from '../../../types';
 import Icon from '../../icon/icon';
 import RatingStars from '../../rating-stars/rating-stars';
 import { useAppDispatch, useAppSelector } from '../../../hooks/state';
+import { AppRoute } from '../../../const';
 import { selectProduct } from '../../../store/action';
 
 type ProductCardProps = {
@@ -15,16 +16,29 @@ const ProductCard = ({ product, isActive = false }: ProductCardProps) => {
   const dispatch = useAppDispatch();
   const basket = useAppSelector((state) => state.basket);
   const { previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, price, name, rating, reviewCount } = product;
-  const svgSize = {
-    width: 16,
-    height: 16,
-  };
-  const basket = useAppSelector((state) => state.basket);
   const inBasket = !!basket[product.id];
 
   const handleBuyButtonClick = () => {
     dispatch(selectProduct(product));
   };
+
+  const getBuyButton = () => inBasket ? (
+    <Link className="btn btn--purple-border product-card__btn product-card__btn--in-cart" to={AppRoute.Basket}>
+      <Icon icon={'#icon-basket'} svgSize={{
+        width: 16,
+        height: 16,
+      }} ariaHidden
+      />
+      В корзине
+    </Link>
+  ) : (
+    <button
+      className="btn btn--purple product-card__btn" type="button"
+      onClick={handleBuyButtonClick}
+    >
+      Купить
+    </button>
+  );
 
   return (
     <div className={`product-card ${isActive ? 'is-active' : ''}`}>
@@ -36,29 +50,26 @@ const ProductCard = ({ product, isActive = false }: ProductCardProps) => {
       </div>
 
       <div className="product-card__info">
-
         <RatingStars className="rate product-card__rate" rating={rating}>
-          <p className="visually-hidden">Рейтинг: {rating}</p>
-          <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{reviewCount}</p>
+          <p className="visually-hidden">
+            Рейтинг:
+            {rating}
+          </p>
+          <p className="rate__count">
+            <span className="visually-hidden">Всего оценок:</span>
+            {reviewCount}
+          </p>
         </RatingStars>
 
-        <p className="product-card__title">{name}</p>
-        <p className="product-card__price"><span className="visually-hidden">Цена:</span>{price} ₽</p>
+        <p className="product-card__title"> {name} </p>
+        <p className="product-card__price">
+          <span className="visually-hidden">Цена:</span>
+          {price} ₽
+        </p>
       </div>
       <div className="product-card__buttons">
-        {inBasket ? (
-          <a className="btn btn--purple-border product-card__btn product-card__btn--in-cart" href="#">
-            <Icon icon={'#icon-basket'} svgSize={svgSize} ariaHidden />
-          В корзине
-          </a>
-        ) : (
-          <button
-            className="btn btn--purple product-card__btn" type="button"
-            onClick={handleBuyButtonClick}
-          >
-            Купить
-          </button>)}
 
+        {getBuyButton()}
 
         <Link className="btn btn--transparent" to={`/product/${product.id}`}>
           Подробнее
