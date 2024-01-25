@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
-import { AppDispatchType, ProductType, PromoType, StateType } from '../types';
-import { getProduct, getProducts, getPromos, getSimilarProducts } from './action';
+import { AppDispatchType, ProductType, PromoType, ReviewType, StateType } from '../types';
+import { getProduct, getProducts, getPromos, getReviews, getSimilarProducts } from './action';
 import { Action } from '../const/store';
 import { APIRoute } from '../const';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -70,4 +70,19 @@ export const fetchSimilarProducts = createAsyncThunk<void, number, asyncThunkCon
     } catch {
       dispatch(getSimilarProducts([]));
     }
-  });
+  }
+);
+
+export const fetchReviews = createAsyncThunk<void, number, asyncThunkConfig>(
+  `${Action.Data}/fetchReviews`,
+  async (id, { dispatch, extra: api }) => {
+    try {
+      const { data } = await api.get<ReviewType[]>(APIRoute.ReviewsList(id));
+
+      dispatch(getReviews(data));
+
+    } catch {
+      dispatch(getReviews([]));
+    }
+  }
+);
