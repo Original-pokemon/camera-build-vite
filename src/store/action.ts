@@ -9,8 +9,10 @@ const getPromos = createAction<ExtendPromosType[]>(`${Action.Data}/getPromos`);
 const redirectToRoute = createAction<AppRouteType>(`${Action.App}/redirectToRoute`);
 const addToBasket = createAction<ProductType>(`${Action.App}/addToBasket`);
 const removeFromBasket = createAction<number>(`${Action.App}/removeFromBasket`);
+const selectProduct = createAction<ProductType | null>(`${Action.App}/selectProduct`);
 
 export {
+  selectProduct,
   addToBasket,
   removeFromBasket,
   getPromos,

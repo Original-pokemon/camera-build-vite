@@ -1,18 +1,20 @@
 import { useState } from 'react';
-import { ProductType } from '../../../types';
 import Icon from '../../icon/icon';
 import { useAppDispatch, useAppSelector } from '../../../hooks/state';
-import { addToBasket } from '../../../store/action';
+import { addToBasket, selectProduct } from '../../../store/action';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../../const';
+import { ProductType } from '../../../types';
 
 type CatalogAddItemProps = {
-  product: ProductType;
-  onAddToBasket: () => void;
-  onContinueShopping: () => void;
-};
+  selectedProduct: ProductType;
+}
 
-const CatalogAddItem = ({ product, onAddToBasket, onContinueShopping }: CatalogAddItemProps) => {
+const CatalogAddItem = ({ selectedProduct }: CatalogAddItemProps) => {
+  const dispatch = useAppDispatch();
+  const basket = useAppSelector((state) => state.basket);
+  const [addedToCart, setAddedToCart] = useState<boolean>((selectedProduct && !!basket[selectedProduct.id]) || false);
+
   const {
     name,
     vendorCode,
@@ -23,20 +25,18 @@ const CatalogAddItem = ({ product, onAddToBasket, onContinueShopping }: CatalogA
     previewImg2x,
     previewImgWebp,
     previewImgWebp2x,
-  } = product;
-  const basket = useAppSelector((state) => state.basket);
-  const dispatch = useAppDispatch();
-  const [addedToCart, setAddedToCart] = useState(Boolean(basket[product.id]));
+  } = selectedProduct;
 
   const handleAddToCart = () => {
-    onAddToBasket();
-    dispatch(addToBasket(product));
-    setAddedToCart(true);
+    if (selectedProduct) {
+      dispatch(addToBasket(selectedProduct));
+      setAddedToCart(true);
+    }
   };
 
   const handleContinueShopping = () => {
+    dispatch(selectProduct(null));
     setAddedToCart(false);
-    onContinueShopping();
   };
 
   const renderSuccessAddedContent = () => (

@@ -10,10 +10,9 @@ import { AppRoute } from '../../const';
 
 type CatalogSectionProps = {
   products: ProductType[];
-  onBuyButtonClick: (product: ProductType) => void;
 }
 
-const CatalogSection = ({ products, onBuyButtonClick }: CatalogSectionProps) => {
+const CatalogSection = ({ products }: CatalogSectionProps) => {
   const [searchParams] = useSearchParams();
 
   const productsPerPage = 9;
@@ -34,17 +33,10 @@ const CatalogSection = ({ products, onBuyButtonClick }: CatalogSectionProps) => 
     setCurrentPage(page);
   };
 
-  const handleBuyButtonClick = (product: ProductType) => {
-    onBuyButtonClick(product);
-  };
-
   const productsElements = visibleProducts.map((product) => (
     <ProductCard
       key={product.id}
       product={product}
-      onBuyButtonClick={() => {
-        handleBuyButtonClick(product);
-      }}
     />
   ));
 

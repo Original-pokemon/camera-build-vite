@@ -2,15 +2,18 @@ import { Link } from 'react-router-dom';
 import { ProductType } from '../../../types';
 import Icon from '../../icon/icon';
 import RatingStars from '../../rating-stars/rating-stars';
-import { useAppSelector } from '../../../hooks/state';
+import { useAppDispatch, useAppSelector } from '../../../hooks/state';
+import { selectProduct } from '../../../store/action';
 
 type ProductCardProps = {
   product: ProductType;
-  onBuyButtonClick: () => void;
+  isActive?: boolean;
 };
 
 
-const ProductCard = ({ product, onBuyButtonClick }: ProductCardProps) => {
+const ProductCard = ({ product, isActive = false }: ProductCardProps) => {
+  const dispatch = useAppDispatch();
+  const basket = useAppSelector((state) => state.basket);
   const { previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, price, name, rating, reviewCount } = product;
   const svgSize = {
     width: 16,
@@ -20,17 +23,18 @@ const ProductCard = ({ product, onBuyButtonClick }: ProductCardProps) => {
   const inBasket = !!basket[product.id];
 
   const handleBuyButtonClick = () => {
-    onBuyButtonClick();
+    dispatch(selectProduct(product));
   };
 
   return (
-    <div className="product-card">
+    <div className={`product-card ${isActive ? 'is-active' : ''}`}>
       <div className="product-card__img">
         <picture>
           <source type="image/webp" srcSet={`${previewImgWebp}, ${previewImgWebp2x} 2x`} />
           <img src={previewImg} srcSet={`${previewImg2x} 2x`} width="280" height="240" alt={name} />
         </picture>
       </div>
+
       <div className="product-card__info">
 
         <RatingStars className="rate product-card__rate" rating={rating}>

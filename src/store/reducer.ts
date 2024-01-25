@@ -8,12 +8,13 @@ type InitialStateType = {
   product: ProductType | null;
   promos: ExtendPromosType[] | null;
   basket: BasketType;
+  selectedProduct: ProductType | null;
 };
 
 const initialState: InitialStateType = {
   products: null,
   promos: null,
-  product: null,
+  selectedProduct: null
   basket: {}
 };
 
@@ -49,6 +50,9 @@ const reducer = createReducer(initialState, (builder) => {
           delete basket[payload];
         }
       }
+    })
+    .addCase(selectProduct, (state, action) => {
+      state.selectedProduct = action.payload;
     });
 });
 
