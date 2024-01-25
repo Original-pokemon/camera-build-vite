@@ -1,16 +1,22 @@
+import { Link } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { ProductType } from '../../types';
 import Icon from '../icon/icon';
 import RatingStars from '../rating-stars/rating-stars';
 import ProductTabsContent from './tabs/tabs';
+import { AppRoute } from '../../const';
+import { addToBasket } from '../../store/action';
 
 
 type ProductProps = {
   product: ProductType;
 }
 
+
 const Product = ({
   product
 }: ProductProps) => {
+  const dispatch = useAppDispatch();
   const {
     name,
     rating,
@@ -21,6 +27,32 @@ const Product = ({
     previewImgWebp,
     previewImgWebp2x
   } = product;
+
+  const basket = useAppSelector((state) => state.basket);
+  const inBasket = !!basket[product.id];
+
+  const handleBuyButtonClick = () => {
+    dispatch(addToBasket(product));
+  };
+
+  const getBuyButton = () => inBasket ? (
+    <Link className="btn btn--purple-border product-card__btn--in-cart" to={AppRoute.Basket}>
+      <Icon icon={'#icon-basket'} svgSize={{
+        width: 16,
+        height: 16,
+      }} ariaHidden
+      />
+      В корзине
+    </Link>
+  ) : (
+    <button
+      className="btn btn--purple" type="button"
+      onClick={handleBuyButtonClick}
+    >
+      <Icon icon='#icon-add-basket' svgSize={{ width: 24, height: 16 }} ariaHidden />
+      Добавить в корзину
+    </button>
+  );
 
   return (
     <div className="page-content__section">
@@ -56,10 +88,7 @@ const Product = ({
               {price} ₽
             </p>
 
-            <button className="btn btn--purple" type="button">
-              <Icon icon='#icon-add-basket' svgSize={{ width: 24, height: 16 }} ariaHidden />
-              Добавить в корзину
-            </button>
+            {getBuyButton()}
 
             <ProductTabsContent {...product} />
 
