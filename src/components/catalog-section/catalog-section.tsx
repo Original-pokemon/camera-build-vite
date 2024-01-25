@@ -2,9 +2,9 @@ import { useMemo, useState } from 'react';
 import browserHistory from '../../browser-history/browser-history';
 import { ProductType } from '../../types';
 import CatalogFilter from './catalog-filter/catalog-filter';
-import CatalogSort from './catalog-sort/catalog-sort';
-import Pagination from './pagination/pagination';
-import ProductCard from './product-card/product-card';
+import CatalogSort from '../catalog-sort/catalog-sort';
+import Pagination from '../pagination/pagination';
+import ProductCard from '../../product-card/product-card';
 import { useSearchParams } from 'react-router-dom';
 import { AppRoute } from '../../const';
 

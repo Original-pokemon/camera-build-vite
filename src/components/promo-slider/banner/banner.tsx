@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ExtendPromosType } from '../../types';
+import { ExtendPromosType } from '../../../types';
 
 type BannerProps = {
   promo: ExtendPromosType;

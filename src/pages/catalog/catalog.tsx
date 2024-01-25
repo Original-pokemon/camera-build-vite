@@ -1,4 +1,4 @@
-import Slider from '../../components/catalog-section/slider/slider';
+import Slider from '../../components/promo-slider/promo-slider';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import CatalogSection from '../../components/catalog-section/catalog-section';
 import { useAppSelector } from '../../hooks/state';
