@@ -1,60 +1,28 @@
-import Slider from '../../components/catalog-section/slider/slider';
+import PromoSlider from '../../components/promo-slider/promo-slider';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import CatalogSection from '../../components/catalog-section/catalog-section';
-import Footer from '../../components/footer/footer';
-import Header from '../../components/header/header';
-import { useAppDispatch, useAppSelector } from '../../hooks/state';
-import { ProductType } from '../../types';
-import CatalogAddItem from '../../components/modals/catalog-add-item';
-import { useState } from 'react';
-import { addToBasket } from '../../store/action';
+import { AppRoute } from '../../const';
+import { useEffect } from 'react';
+import useSmoothScrollToElement from '../../hooks/use-scroll-to-element';
 
 
 export default function CatalogPage() {
-  const products = useAppSelector((state) => state.products);
-  const promos = useAppSelector((state) => state.promos);
-  const [selectProduct, setSelectProduct] = useState<ProductType | null>(null);
-  const dispatch = useAppDispatch();
+  const breadcrumbs = [{ link: AppRoute.Main, text: 'Главная' }, { link: AppRoute.Main, text: 'Каталог' }];
+  const scrollToElement = useSmoothScrollToElement();
 
-  const handleSelectProduct = (product: ProductType) => {
-    setSelectProduct(product);
-  };
 
-  const handleAddToBasket = () => {
-    if (selectProduct) {
-      dispatch(addToBasket(selectProduct));
-    }
-  };
-
-  const handleCloseModal = () => {
-    setSelectProduct(null);
-  };
+  useEffect(() => {
+    scrollToElement();
+  }, [scrollToElement]);
 
   return (
-    <div className="wrapper">
-
-      <Header />
-
-      <main>
-        {promos && <Slider promos={promos} />}
-        <div className="page-content">
-          <Breadcrumbs />
-          {
-            products && <CatalogSection products={products} onBuyButtonClick={handleSelectProduct} />
-          }
-          {selectProduct && (
-            <CatalogAddItem
-              product={selectProduct}
-              onAddToBasket={handleAddToBasket}
-              onContinueShopping={handleCloseModal}
-            />
-          )}
-        </div>
-      </main>
-
-      <Footer />
-
-    </div>
+    <>
+      <PromoSlider />
+      <div className="page-content">
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
+        <CatalogSection />
+      </div>
+    </>
   );
 }
 

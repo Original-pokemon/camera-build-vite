@@ -1,6 +1,6 @@
 import { ProductType } from '../types';
 
-const BACKEND_URL = 'https://camera-shop.accelerator.pages.academy/';
+const BACKEND_URL = 'https://camera-shop.accelerator.htmlacademy.pro/';
 const REQUEST_TIMEOUT = 5000;
 
 const APIRoute = {

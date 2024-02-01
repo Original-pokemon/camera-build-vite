@@ -1,21 +1,16 @@
 import { createAction } from '@reduxjs/toolkit';
-import { ProductType, ReviewType, AppRouteType, ExtendPromosType } from '../types';
+import { AppRouteType } from '../types';
 import { Action } from '../const/store';
 
-const getProducts = createAction<ProductType[]>(`${Action.Data}/getProducts`);
-const getProduct = createAction<ProductType>(`${Action.Data}/getProduct`);
-const getReviews = createAction<ReviewType[]>(`${Action.Data}/getReviews`);
-const getPromos = createAction<ExtendPromosType[]>(`${Action.Data}/getPromos`);
 const redirectToRoute = createAction<AppRouteType>(`${Action.App}/redirectToRoute`);
-const addToBasket = createAction<ProductType>(`${Action.App}/addToBasket`);
-const removeFromBasket = createAction<number>(`${Action.App}/removeFromBasket`);
+
 
 export {
-  addToBasket,
-  removeFromBasket,
-  getPromos,
-  getProducts,
-  getProduct,
-  getReviews,
   redirectToRoute
 };
+export * from './slices/basket-data/basket-data-selectors';
+export * from './slices/product-data/product-data-selectors';
+export * from './slices/modal-data/modal-data-selectors';
+export * from './slices/promo-data/promo-data-selectors';
+export * from './slices/review-data/review-data-selectors';
+export * from './slices/similar-products-data/similar-product-data-selectors';

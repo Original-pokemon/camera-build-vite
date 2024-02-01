@@ -1,66 +1,66 @@
-import { useMemo, useState } from 'react';
-import browserHistory from '../../browser-history/browser-history';
-import { ProductType } from '../../types';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import CatalogFilter from './catalog-filter/catalog-filter';
 import CatalogSort from './catalog-sort/catalog-sort';
 import Pagination from './pagination/pagination';
-import ProductCard from './product-card/product-card';
+import ProductCard from '../product-card/product-card';
 import { useSearchParams } from 'react-router-dom';
-import { AppRoute } from '../../const';
-import { useAppSelector } from '../../hooks/state';
+import { AppRoute, Status } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks/state';
+import { getProducts, getProductsStatus, redirectToRoute } from '../../store/action';
+import { fetchProducts } from '../../store/slices/product-data/product-data-thunk';
+import useSmoothScrollToElement from '../../hooks/use-scroll-to-element';
 
-type CatalogSectionProps = {
-  products: ProductType[];
-  onBuyButtonClick: (product: ProductType) => void;
-}
+const PRODUCT_PER_PAGE = 9;
 
-const CatalogSection = ({ products, onBuyButtonClick }: CatalogSectionProps) => {
+const CatalogSection = () => {
+  const dispatch = useAppDispatch();
   const [searchParams] = useSearchParams();
-  const basket = useAppSelector((state) => state.basket);
-  const productsPerPage = 9;
+  const productsLoadStatus = useAppSelector(getProductsStatus);
+  const products = useAppSelector(getProducts);
+  const elementRef = useRef<HTMLDivElement>(null);
+  const scrollToElement = useSmoothScrollToElement();
+
   const initialPage = parseInt(searchParams.get('page') || '1', 10);
   const [currentPage, setCurrentPage] = useState(initialPage);
 
-  const startIndex = (currentPage - 1) * productsPerPage;
-  const endIndex = startIndex + productsPerPage;
+
+  const startIndex = (currentPage - 1) * PRODUCT_PER_PAGE;
+  const endIndex = startIndex + PRODUCT_PER_PAGE;
   const visibleProducts = useMemo(() => products.slice(startIndex, endIndex), [
     products,
     startIndex,
     endIndex,
   ]);
+  const totalPages = Math.ceil(products.length / PRODUCT_PER_PAGE);
 
-  const totalPages = Math.ceil(products.length / productsPerPage);
+  useEffect(() => {
+    if (productsLoadStatus === Status.Idle) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, productsLoadStatus]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+    scrollToElement(elementRef.current || undefined);
   };
 
-  const handleBuyButtonClick = (product: ProductType) => {
-    onBuyButtonClick(product);
-  };
-
-  const productsElements = visibleProducts.map((product) => {
-    const inBasket = !!basket[product.id];
-
-    return (
+  const getProductsElements = () => {
+    const productsElements = visibleProducts.map((product) => (
       <ProductCard
         key={product.id}
         product={product}
-        onBuyButtonClick={() => {
-          handleBuyButtonClick(product);
-        }}
-        inBasket={inBasket}
       />
-    );
-  });
+    ));
 
-  if (initialPage > totalPages) {
-    browserHistory.push(AppRoute.PageNotFound);
+    if (initialPage > totalPages) {
+      dispatch(redirectToRoute(AppRoute.PageNotFound));
+    }
 
-  }
+    return productsElements;
+  };
 
   return (
-    <section className="catalog">
+    <section className="catalog" >
       <div className="container">
         <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
         <div className="page-content__columns">
@@ -69,8 +69,9 @@ const CatalogSection = ({ products, onBuyButtonClick }: CatalogSectionProps) => 
           </div>
           <div className="catalog__content">
             <CatalogSort />
-            <div className="cards catalog__cards">
-              {productsElements}
+            <div className="cards catalog__cards" ref={elementRef}>
+              {productsLoadStatus === Status.Loading && <p>Загрузка...</p>}
+              {productsLoadStatus === Status.Success && getProductsElements()}
             </div>
             {totalPages > 1 && <Pagination totalPages={totalPages} currentPage={currentPage} onClick={handlePageChange} />}
           </div>
