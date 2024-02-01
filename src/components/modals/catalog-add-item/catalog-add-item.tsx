@@ -1,19 +1,16 @@
-import { useState } from 'react';
 import Icon from '../../icon/icon';
 import { useAppDispatch, useAppSelector } from '../../../hooks/state';
-import { addToBasket, selectProduct } from '../../../store/action';
-import { Link } from 'react-router-dom';
-import { AppRoute } from '../../../const';
-import { ProductType } from '../../../types';
+import { addToBasket, getSelectedProduct, selectProduct, showModal } from '../../../store/action';
+import { ModalName } from '../../../const/modal';
 
-type CatalogAddItemProps = {
-  selectedProduct: ProductType;
-}
 
-const CatalogAddItem = ({ selectedProduct }: CatalogAddItemProps) => {
+const CatalogAddItemModal = () => {
   const dispatch = useAppDispatch();
-  const basket = useAppSelector((state) => state.basket);
-  const [addedToCart, setAddedToCart] = useState<boolean>((selectedProduct && !!basket[selectedProduct.id]) || false);
+  const selectedProduct = useAppSelector(getSelectedProduct);
+
+  if (!selectedProduct) {
+    return null;
+  }
 
   const {
     name,
@@ -28,35 +25,12 @@ const CatalogAddItem = ({ selectedProduct }: CatalogAddItemProps) => {
   } = selectedProduct;
 
   const handleAddToCart = () => {
-    if (selectedProduct) {
-      dispatch(addToBasket(selectedProduct));
-      setAddedToCart(true);
-    }
-  };
-
-  const handleContinueShopping = () => {
+    dispatch(addToBasket(selectedProduct));
     dispatch(selectProduct(null));
-    setAddedToCart(false);
+    dispatch(showModal(ModalName.ProductAddSuccess));
   };
 
-  const renderSuccessAddedContent = () => (
-    <>
-      <p className="title title--h4">Товар успешно добавлен в корзину</p>
-      <svg className="modal__icon" width="86" height="80" aria-hidden="true">
-        <use xlinkHref="#icon-success"></use>
-      </svg>
-      <div className="modal__buttons">
-        <button className="btn btn--transparent modal__btn" onClick={handleContinueShopping}>
-          Продолжить покупки
-        </button>
-        <Link className="btn btn--purple modal__btn modal__btn--fit-width" to={AppRoute.Basket}>
-          Перейти в корзину
-        </Link>
-      </div>
-    </>
-  );
-
-  const renderPreviewContent = () => (
+  return (
     <>
       <p className="title title--h4">Добавить товар в корзину</p>
       <div className="basket-item basket-item--short">
@@ -98,20 +72,6 @@ const CatalogAddItem = ({ selectedProduct }: CatalogAddItemProps) => {
       </div>
     </>
   );
-
-  return (
-    <div className={`modal is-active ${addedToCart ? 'modal--narrow' : ''}`}>
-      <div className="modal__wrapper">
-        <div className="modal__overlay"></div>
-        <div className="modal__content">
-          {addedToCart ? renderSuccessAddedContent() : renderPreviewContent()}
-          <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={handleContinueShopping}>
-            <Icon icon={'#icon-close'} svgSize={{ width: 10, height: 10 }} ariaHidden />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
 };
 
-export default CatalogAddItem;
+export default CatalogAddItemModal;

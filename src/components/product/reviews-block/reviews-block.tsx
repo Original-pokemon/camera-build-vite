@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/state';
 import { getReviews, getReviewsStatus, showModal } from '../../../store/action';
 import { fetchReviews } from '../../../store/slices/review-data/review-data-thunk';
 import { Status } from '../../../const';
+import { ModalName } from '../../../const/modal';
 import { ReviewType } from '../../../types';
 import useSmoothScrollToElement from '../../../hooks/use-scroll-to-element';
 

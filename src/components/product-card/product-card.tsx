@@ -5,6 +5,7 @@ import RatingStars from '../rating-stars/rating-stars';
 import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { AppRoute } from '../../const';
 import { getBasketItem, selectProduct, showModal } from '../../store/action';
+import { ModalName } from '../../const/modal';
 
 type ProductCardProps = {
   product: ProductType;
@@ -18,6 +19,7 @@ const ProductCard = ({ product, isActive = false }: ProductCardProps) => {
   const inBasket = useAppSelector((state) => getBasketItem(state, id));
 
   const handleBuyButtonClick = () => {
+    dispatch(showModal(ModalName.ProductAdd));
     dispatch(selectProduct(product));
   };
 
