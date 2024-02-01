@@ -7,6 +7,7 @@ import { getReviews, getReviewsStatus, showModal } from '../../../store/action';
 import { fetchReviews } from '../../../store/slices/review-data/review-data-thunk';
 import { Status } from '../../../const';
 import { ReviewType } from '../../../types';
+import useSmoothScrollToElement from '../../../hooks/use-scroll-to-element';
 
 type ReviewsBlockProps = {
   productId: number;
@@ -14,6 +15,7 @@ type ReviewsBlockProps = {
 
 const ReviewsBlock = ({ productId }: ReviewsBlockProps) => {
   const dispatch = useAppDispatch();
+  const scrollToElement = useSmoothScrollToElement();
   const reviews = useAppSelector(getReviews);
   const reviewsLoadStatus = useAppSelector(getReviewsStatus);
   const [visibleReviews, setVisibleReviews] = useState(3);
@@ -44,13 +46,11 @@ const ReviewsBlock = ({ productId }: ReviewsBlockProps) => {
     setVisibleReviews((prevVisibleReviews) => prevVisibleReviews + 3);
   };
 
-  const handleScrollToTop = () => {
+  const handleScrollToTopButtonClick = () => {
     setVisibleReviews(3);
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    scrollToElement();
   };
+
 
   return (
     <div className="page-content__section">
@@ -75,7 +75,7 @@ const ReviewsBlock = ({ productId }: ReviewsBlockProps) => {
           )}
         </div>
       </section>
-      <button className="up-btn" onClick={handleScrollToTop}>
+      <button className="up-btn" onClick={handleScrollToTopButtonClick}>
         <Icon icon={'#icon-arrow2'} svgSize={{
           width: 12,
           height: 18

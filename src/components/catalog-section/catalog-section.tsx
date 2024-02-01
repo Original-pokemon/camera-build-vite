@@ -1,6 +1,4 @@
-import { useMemo, useState } from 'react';
-import browserHistory from '../../browser-history/browser-history';
-import { ProductType } from '../../types';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import CatalogFilter from './catalog-filter/catalog-filter';
 import CatalogSort from './catalog-sort/catalog-sort';
 import Pagination from './pagination/pagination';
@@ -10,6 +8,7 @@ import { AppRoute, Status } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { getProducts, getProductsStatus, redirectToRoute } from '../../store/action';
 import { fetchProducts } from '../../store/slices/product-data/product-data-thunk';
+import useSmoothScrollToElement from '../../hooks/use-scroll-to-element';
 
 const PRODUCT_PER_PAGE = 9;
 
@@ -18,6 +17,8 @@ const CatalogSection = () => {
   const [searchParams] = useSearchParams();
   const productsLoadStatus = useAppSelector(getProductsStatus);
   const products = useAppSelector(getProducts);
+  const elementRef = useRef<HTMLDivElement>(null);
+  const scrollToElement = useSmoothScrollToElement();
 
   const initialPage = parseInt(searchParams.get('page') || '1', 10);
   const [currentPage, setCurrentPage] = useState(initialPage);
@@ -32,9 +33,15 @@ const CatalogSection = () => {
   ]);
   const totalPages = Math.ceil(products.length / PRODUCT_PER_PAGE);
 
+  useEffect(() => {
+    if (productsLoadStatus === Status.Idle) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, productsLoadStatus]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+    scrollToElement(elementRef.current || undefined);
   };
 
   const getProductsElements = () => {
