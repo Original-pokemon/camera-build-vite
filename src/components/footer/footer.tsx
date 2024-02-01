@@ -7,7 +7,7 @@ const Footer = () => (
   <footer className="footer">
     <div className="container">
       <div className="footer__info">
-        <Logo className={'footer__logo'} href={'index.html'} label={'Переход на главную'} svgSize={{
+        <Logo className={'footer__logo'} label={'Переход на главную'} svgSize={{
           width: 100,
           height: 36
         }}
