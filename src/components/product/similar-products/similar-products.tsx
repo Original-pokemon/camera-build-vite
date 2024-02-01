@@ -3,11 +3,13 @@ import './styles.css';
 import { useAppDispatch, useAppSelector } from '../../../hooks/state';
 import { useEffect } from 'react';
 import { ProductType } from '../../../types';
-import { fetchSimilarProducts } from '../../../store/api-action';
 import ProductCard from '../../product-card/product-card';
 import Icon from '../../icon/icon';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
+import { fetchSimilarProducts } from '../../../store/slices/similar-products-data/similar-products-data-thunk';
+import { getSimilarProducts, getSimilarProductsStatus } from '../../../store/action';
+import { Status } from '../../../const';
 
 type SimilarProductsProps = {
   product: ProductType;
@@ -15,54 +17,60 @@ type SimilarProductsProps = {
 
 const SimilarProducts = ({ product }: SimilarProductsProps) => {
   const dispatch = useAppDispatch();
-  const similarProducts = useAppSelector((state) => state.similarProducts);
+  const similarProducts = useAppSelector(getSimilarProducts);
+  const similarProductsStatus = useAppSelector(getSimilarProductsStatus);
+  const isLoaded = similarProductsStatus === Status.Success;
+  const { id } = product;
 
   useEffect(() => {
-    dispatch(fetchSimilarProducts(product.id));
-  }, [dispatch, product.id]);
+    dispatch(fetchSimilarProducts(id));
+  }, [dispatch, id]);
 
-  return similarProducts && (
+  return (
     <div className="page-content__section">
       <section className="product-similar">
         <div className="container">
           <h2 className="title title--h3">Похожие товары</h2>
-          <div className="product-similar__slider" >
-            <div className="product-similar__slider-list">
+          {isLoaded && (
+            <div className="product-similar__slider" >
+              <div className="product-similar__slider-list">
 
-              <Swiper
-                navigation={
-                  {
-                    nextEl: '.slider-controls--next',
-                    prevEl: '.slider-controls--prev',
+                <Swiper
+                  navigation={
+                    {
+                      nextEl: '.slider-controls--next',
+                      prevEl: '.slider-controls--prev',
+                    }
                   }
-                }
-                slidesPerView={3}
-                modules={[Navigation]}
+                  slidesPerView={3}
+                  modules={[Navigation]}
+                >
+                  {similarProducts.map((similarProduct) => (
+                    <SwiperSlide key={similarProduct.id}>
+                      <ProductCard product={similarProduct} isActive />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+
+              <button
+                className="slider-controls slider-controls--prev"
+                type="button"
+                aria-label="Предыдущий слайд"
               >
-                {similarProducts.map((similarProduct) => (
-                  <SwiperSlide key={similarProduct.id}>
-                    <ProductCard product={similarProduct} isActive />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+                <Icon icon={'#icon-arrow'} svgSize={{ width: 7, height: 12 }} ariaHidden />
+              </button>
+
+              <button
+                className="slider-controls slider-controls--next"
+                type="button"
+                aria-label="Следующий слайд"
+              >
+                <Icon icon={'#icon-arrow'} svgSize={{ width: 7, height: 12 }} ariaHidden />
+              </button>
             </div>
+          )}
 
-            <button
-              className="slider-controls slider-controls--prev"
-              type="button"
-              aria-label="Предыдущий слайд"
-            >
-              <Icon icon={'#icon-arrow'} svgSize={{ width: 7, height: 12 }} ariaHidden />
-            </button>
-
-            <button
-              className="slider-controls slider-controls--next"
-              type="button"
-              aria-label="Следующий слайд"
-            >
-              <Icon icon={'#icon-arrow'} svgSize={{ width: 7, height: 12 }} ariaHidden />
-            </button>
-          </div>
         </div>
       </section>
     </div>

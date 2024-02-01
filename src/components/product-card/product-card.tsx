@@ -4,7 +4,7 @@ import Icon from '../icon/icon';
 import RatingStars from '../rating-stars/rating-stars';
 import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { AppRoute } from '../../const';
-import { selectProduct } from '../../store/action';
+import { getBasketItem, selectProduct, showModal } from '../../store/action';
 
 type ProductCardProps = {
   product: ProductType;
@@ -14,9 +14,8 @@ type ProductCardProps = {
 
 const ProductCard = ({ product, isActive = false }: ProductCardProps) => {
   const dispatch = useAppDispatch();
-  const basket = useAppSelector((state) => state.basket);
-  const { previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, price, name, rating, reviewCount } = product;
-  const inBasket = !!basket[product.id];
+  const { id, previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, price, name, rating, reviewCount } = product;
+  const inBasket = useAppSelector((state) => getBasketItem(state, id));
 
   const handleBuyButtonClick = () => {
     dispatch(selectProduct(product));

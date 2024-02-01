@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom';
-import { ExtendPromosType } from '../../../types';
+import { PromoType } from '../../../types';
+import { useAppSelector } from '../../../hooks/state';
+import { getProduct } from '../../../store/action';
 
 type BannerProps = {
-  promo: ExtendPromosType;
+  promo: PromoType;
 }
 
 const Banner = ({ promo }: BannerProps) => {
-  const { id, previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, name, description } = promo;
+  const { id, previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, name } = promo;
+  const product = useAppSelector((state) => getProduct(state, id));
 
 
   return (
@@ -25,7 +28,7 @@ const Banner = ({ promo }: BannerProps) => {
       <p className="banner__info">
         <span className="banner__message">Новинка!</span>
         <span className="title title--h1">{name}</span>
-        <span className="banner__text">{description}</span>
+        <span className="banner__text">{product?.description}</span>
         <Link className="btn" to={`/product/${id}`}>
           Подробнее
         </Link>

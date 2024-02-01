@@ -5,19 +5,20 @@ import Icon from '../icon/icon';
 import RatingStars from '../rating-stars/rating-stars';
 import ProductTabsContent from './tabs/tabs';
 import { AppRoute } from '../../const';
-import { addToBasket } from '../../store/action';
+import { addToBasket, getBasketItem } from '../../store/action';
 
 
 type ProductProps = {
   product: ProductType;
 }
 
-
 const Product = ({
   product
 }: ProductProps) => {
   const dispatch = useAppDispatch();
+
   const {
+    id,
     name,
     rating,
     reviewCount,
@@ -28,8 +29,7 @@ const Product = ({
     previewImgWebp2x
   } = product;
 
-  const basket = useAppSelector((state) => state.basket);
-  const inBasket = !!basket[product.id];
+  const inBasket = useAppSelector((state) => getBasketItem(state, id));
 
   const handleBuyButtonClick = () => {
     dispatch(addToBasket(product));

@@ -1,15 +1,30 @@
-import { useState } from 'react';
-import { ReviewType } from '../../../types';
+import { useEffect, useState } from 'react';
 import ReviewCard from './review-card/review-card';
 import dayjs from 'dayjs';
 import Icon from '../../icon/icon';
+import { useAppDispatch, useAppSelector } from '../../../hooks/state';
+import { getReviews, getReviewsStatus, showModal } from '../../../store/action';
+import { fetchReviews } from '../../../store/slices/review-data/review-data-thunk';
+import { Status } from '../../../const';
+import { ReviewType } from '../../../types';
 
 type ReviewsBlockProps = {
-  reviews: ReviewType[];
+  productId: number;
 }
 
-const ReviewsBlock = ({ reviews }: ReviewsBlockProps) => {
+const ReviewsBlock = ({ productId }: ReviewsBlockProps) => {
+  const dispatch = useAppDispatch();
+  const reviews = useAppSelector(getReviews);
+  const reviewsLoadStatus = useAppSelector(getReviewsStatus);
   const [visibleReviews, setVisibleReviews] = useState(3);
+
+
+  const isLoad = reviewsLoadStatus === Status.Success;
+  const isLoading = reviewsLoadStatus === Status.Loading;
+
+  useEffect(() => {
+    dispatch(fetchReviews(productId));
+  }, [dispatch, productId]);
 
   const sortedReviews = reviews.slice().sort((a, b) => {
     const dateA = dayjs(a.createAt);
@@ -17,7 +32,15 @@ const ReviewsBlock = ({ reviews }: ReviewsBlockProps) => {
     return dateB.diff(dateA);
   });
 
-  const handleShowMoreReviews = () => {
+  const getVisibleReviewsElements = (elements: ReviewType[]) => elements.slice(0, visibleReviews).map((review) => (
+    <ReviewCard key={review.id} {...review} />
+  ));
+
+  const handleAddReviewButtonClick = () => {
+    dispatch(showModal(ModalName.ProductReview));
+  };
+
+  const handleShowMoreButtonClick = () => {
     setVisibleReviews((prevVisibleReviews) => prevVisibleReviews + 3);
   };
 
@@ -35,18 +58,17 @@ const ReviewsBlock = ({ reviews }: ReviewsBlockProps) => {
         <div className="container">
           <div className="page-content__headed">
             <h2 className="title title--h3">Отзывы</h2>
-            <button className="btn" type="button">
+            <button className="btn" type="button" onClick={handleAddReviewButtonClick}>
             Оставить свой отзыв
             </button>
           </div>
           <ul className="review-block__list">
-            {sortedReviews.slice(0, visibleReviews).map((review) => (
-              <ReviewCard key={review.id} {...review} />
-            ))}
+            {isLoading && 'Loading...'}
+            {isLoad && getVisibleReviewsElements(sortedReviews)}
           </ul>
           {visibleReviews < reviews.length && (
             <div className="review-block__buttons">
-              <button className="btn btn--purple" type="button" onClick={handleShowMoreReviews}>
+              <button className="btn btn--purple" type="button" onClick={handleShowMoreButtonClick}>
                 Показать больше отзывов
               </button>
             </div>

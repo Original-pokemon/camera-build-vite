@@ -5,10 +5,10 @@ import Logo from '../logo/logo';
 import NavList from './nav-list/nav-list';
 import SearchForm from './search-form/search-form';
 import { AppRoute } from '../../const';
+import { getBasketTotal } from '../../store/action';
 
 const Header = () => {
-  const basket = useAppSelector((state) => state.basket);
-  const basketCount = Object.keys(basket).length;
+  const basketTotal = useAppSelector(getBasketTotal);
   const navItems = [
     { link: AppRoute.Main, text: 'Каталог' },
     { link: '', text: 'Гарантии' },
@@ -44,7 +44,7 @@ const Header = () => {
         </div>
         <Link className="header__basket-link" to={AppRoute.Basket}>
           <Icon icon={'#icon-basket'} svgSize={{ width: 16, height: 16 }} ariaHidden />
-          {!!basketCount && <span className="header__basket-count">{basketCount}</span>}
+          {!!basketTotal && <span className="header__basket-count">{basketTotal}</span>}
         </Link>
       </div>
     </header>

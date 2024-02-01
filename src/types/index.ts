@@ -4,3 +4,4 @@ export * from './order';
 export * from './promo';
 export * from './state';
 export * from './app-route';
+export * from './thunk-api';
