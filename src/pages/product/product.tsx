@@ -8,6 +8,7 @@ import { AppRoute, Status } from '../../const';
 import { getProduct, getProductsStatus, redirectToRoute } from '../../store/action';
 import { useEffect } from 'react';
 import useSmoothScrollToElement from '../../hooks/use-scroll-to-element';
+import Spinner from '../../components/spinner/spinner';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -28,16 +29,18 @@ const ProductPage = () => {
     dispatch(redirectToRoute(AppRoute.PageNotFound));
   }
 
-  if (isLoading) {
-    return 'Загрузка...';
-  }
-
-  return product && (
+  return (
     <div className="page-content">
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <Product product={product} />
-      <SimilarProducts product={product} />
-      <ReviewsBlock productId={Number(id)} />
+      {isLoading && <Spinner />}
+      {product && isLoaded && (
+        <>
+          <Breadcrumbs breadcrumbs={breadcrumbs} />
+          <Product product={product} />
+          <SimilarProducts product={product} />
+          <ReviewsBlock productId={Number(id)} />
+        </>
+      )}
+
     </div>
   );
 

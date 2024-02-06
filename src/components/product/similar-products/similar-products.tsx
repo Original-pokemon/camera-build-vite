@@ -10,6 +10,7 @@ import { Navigation } from 'swiper/modules';
 import { fetchSimilarProducts } from '../../../store/slices/similar-products-data/similar-products-data-thunk';
 import { getSimilarProducts, getSimilarProductsStatus } from '../../../store/action';
 import { Status } from '../../../const';
+import Spinner from '../../spinner/spinner';
 
 type SimilarProductsProps = {
   product: ProductType;
@@ -19,7 +20,7 @@ const SimilarProducts = ({ product }: SimilarProductsProps) => {
   const dispatch = useAppDispatch();
   const similarProducts = useAppSelector(getSimilarProducts);
   const similarProductsStatus = useAppSelector(getSimilarProductsStatus);
-  const isLoaded = similarProductsStatus === Status.Success;
+  const isLoading = similarProductsStatus === Status.Loading;
   const { id } = product;
 
   useEffect(() => {
@@ -31,7 +32,8 @@ const SimilarProducts = ({ product }: SimilarProductsProps) => {
       <section className="product-similar">
         <div className="container">
           <h2 className="title title--h3">Похожие товары</h2>
-          {isLoaded && (
+          {isLoading && <Spinner />}
+          {similarProducts && (
             <div className="product-similar__slider" >
               <div className="product-similar__slider-list">
 

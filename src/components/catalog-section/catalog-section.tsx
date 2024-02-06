@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { getProducts, getProductsStatus, redirectToRoute } from '../../store/action';
 import { fetchProducts } from '../../store/slices/product-data/product-data-thunk';
 import useSmoothScrollToElement from '../../hooks/use-scroll-to-element';
+import Spinner from '../spinner/spinner';
 
 const PRODUCT_PER_PAGE = 9;
 
@@ -19,6 +20,10 @@ const CatalogSection = () => {
   const products = useAppSelector(getProducts);
   const elementRef = useRef<HTMLDivElement>(null);
   const scrollToElement = useSmoothScrollToElement();
+
+  const isLoaded = productsLoadStatus === Status.Success;
+  const isLoading = productsLoadStatus === Status.Loading;
+  const isIdle = productsLoadStatus === Status.Idle;
 
   const initialPage = parseInt(searchParams.get('page') || '1', 10);
   const [currentPage, setCurrentPage] = useState(initialPage);
@@ -34,10 +39,10 @@ const CatalogSection = () => {
   const totalPages = Math.ceil(products.length / PRODUCT_PER_PAGE);
 
   useEffect(() => {
-    if (productsLoadStatus === Status.Idle) {
+    if (isIdle) {
       dispatch(fetchProducts());
     }
-  }, [dispatch, productsLoadStatus]);
+  }, [dispatch, isIdle]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -69,10 +74,13 @@ const CatalogSection = () => {
           </div>
           <div className="catalog__content">
             <CatalogSort />
-            <div className="cards catalog__cards" ref={elementRef}>
-              {productsLoadStatus === Status.Loading && <p>Загрузка...</p>}
-              {productsLoadStatus === Status.Success && getProductsElements()}
-            </div>
+            {isLoading && <Spinner />}
+
+            {isLoaded && (
+              <div className="cards catalog__cards" ref={elementRef}>
+                {getProductsElements()}
+              </div>
+            )}
             {totalPages > 1 && <Pagination totalPages={totalPages} currentPage={currentPage} onClick={handlePageChange} />}
           </div>
         </div>

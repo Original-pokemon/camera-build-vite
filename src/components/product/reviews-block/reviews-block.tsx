@@ -9,6 +9,7 @@ import { Status } from '../../../const';
 import { ModalName } from '../../../const/modal';
 import { ReviewType } from '../../../types';
 import useSmoothScrollToElement from '../../../hooks/use-scroll-to-element';
+import Spinner from '../../spinner/spinner';
 
 type ReviewsBlockProps = {
   productId: number;
@@ -21,15 +22,13 @@ const ReviewsBlock = ({ productId }: ReviewsBlockProps) => {
   const reviewsLoadStatus = useAppSelector(getReviewsStatus);
   const [visibleReviews, setVisibleReviews] = useState(3);
 
-
-  const isLoad = reviewsLoadStatus === Status.Success;
   const isLoading = reviewsLoadStatus === Status.Loading;
 
   useEffect(() => {
     dispatch(fetchReviews(productId));
   }, [dispatch, productId]);
 
-  const sortedReviews = reviews.slice().sort((a, b) => {
+  const sortedReviews = reviews?.slice().sort((a, b) => {
     const dateA = dayjs(a.createAt);
     const dateB = dayjs(b.createAt);
     return dateB.diff(dateA);
@@ -63,11 +62,13 @@ const ReviewsBlock = ({ productId }: ReviewsBlockProps) => {
             Оставить свой отзыв
             </button>
           </div>
-          <ul className="review-block__list">
-            {isLoading && 'Loading...'}
-            {isLoad && getVisibleReviewsElements(sortedReviews)}
-          </ul>
-          {visibleReviews < reviews.length && (
+          {isLoading && <Spinner />}
+          {sortedReviews && (
+            <ul className="review-block__list">
+              {getVisibleReviewsElements(sortedReviews)}
+            </ul>
+          )}
+          {visibleReviews < (reviews?.length || 0) && (
             <div className="review-block__buttons">
               <button className="btn btn--purple" type="button" onClick={handleShowMoreButtonClick}>
                 Показать больше отзывов
