@@ -1,6 +1,7 @@
-import { Action } from '../../../const';
+import { NameSpace } from '../../../const';
 import { InitialStateType } from '../../reducer';
-import { promoAdapter } from './promo-data';
 
-export const { selectById: getPromoById, selectAll: getAllPromos } = promoAdapter.getSelectors<InitialStateType>((state) => state[Action.Promo]);
-export const getPromoStatus = (state: InitialStateType) => state[Action.Promo].status;
+type PromoStateType = Pick<InitialStateType, typeof NameSpace.Promo>
+
+export const getPromoStatus = (state: PromoStateType) => state[NameSpace.Promo].status;
+export const getAllPromos = (state: PromoStateType) => state[NameSpace.Promo].promos;

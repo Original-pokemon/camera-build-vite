@@ -5,3 +5,4 @@ export * from './promo';
 export * from './state';
 export * from './app-route';
 export * from './thunk-api';
+export * from './backet';

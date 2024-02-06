@@ -1,45 +1,45 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { ProductType, StatusType } from '../../../types';
-import { Action, Status } from '../../../const';
+import { NameSpace, Status } from '../../../const';
 import { BasketItemType } from '../../../types/backet';
-type InitialProductStateType = {
+
+const basketAdapter = createEntityAdapter<BasketItemType>();
+
+const initialState = basketAdapter.getInitialState<{
   status: StatusType;
-}
-
-export const basketAdapter = createEntityAdapter<BasketItemType>();
-
-const initialState = basketAdapter.getInitialState<InitialProductStateType>({
+}>({
   status: Status.Idle,
 });
 
-export const basketSlice = createSlice({
-  name: Action.Basket,
+const basketSlice = createSlice({
+  name: NameSpace.Basket,
   initialState,
   reducers: {
     addToBasket(state, action: { payload: ProductType }) {
       const { payload } = action;
       const { id } = payload;
-      const item = state.entities[id];
+      const item = basketAdapter.getSelectors().selectById(state, id);
       if (item) {
-        item.quantity = + 1;
+        item.quantity += 1;
       } else {
         basketAdapter.addOne(state, { ...payload, quantity: 1 });
       }
     }
     ,
     removeProduct(state, action: { payload: number }) {
-      const { payload } = action;
-      const item = state.entities[payload];
+      const { payload: id } = action;
+      const item = basketAdapter.getSelectors().selectById(state, id);
       if (item) {
         if (item.quantity > 1) {
-          item.quantity = - 1;
+          item.quantity -= 1;
         } else {
-          basketAdapter.removeOne(state, payload);
+          basketAdapter.removeOne(state, id);
         }
       }
     }
   }
 });
 
+export type initialBasketStateType = typeof initialState
 
-export default basketSlice.reducer;
+export { basketSlice, basketAdapter };
