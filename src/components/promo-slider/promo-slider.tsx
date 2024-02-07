@@ -18,7 +18,6 @@ const Slider = () => {
   const promosLoadStatus = useAppSelector(getPromoStatus);
 
   const isIdle = promosLoadStatus === Status.Idle;
-  const isLoaded = promosLoadStatus === Status.Success;
 
   useEffect(() => {
     if (isIdle) {
@@ -26,7 +25,11 @@ const Slider = () => {
     }
   }, [dispatch, isIdle]);
 
-  return isLoaded && promos && (
+  if (promosLoadStatus === Status.Loading) {
+    return null;
+  }
+
+  return promos && (
     <Swiper
       spaceBetween={30}
       pagination={{

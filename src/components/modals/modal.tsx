@@ -51,6 +51,10 @@ const Modal = () => {
     };
   }, [handleButtonCloseModalClick, isActive]);
 
+  if (!isActive) {
+    return null;
+  }
+
   return isActive && (
     <ReactFocusLock>
       <div
