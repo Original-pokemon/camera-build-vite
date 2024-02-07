@@ -7,6 +7,8 @@ import store from './store';
 import { ToastContainer } from 'react-toastify';
 import { Provider } from 'react-redux';
 import { fetchProducts } from './store/slices/product-data/product-data-thunk';
+import HistoryRouter from './components/history-route/history-route';
+import browserHistory from './browser-history/browser-history';
 
 store.dispatch(fetchProducts());
 
@@ -16,9 +18,11 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <ToastContainer />
-      <App />
-    </Provider>
+    <HistoryRouter history={browserHistory}>
+      <Provider store={store}>
+        <ToastContainer />
+        <App />
+      </Provider>
+    </HistoryRouter>
   </React.StrictMode>
 );

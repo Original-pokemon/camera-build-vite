@@ -4,10 +4,9 @@ import Header from '../header/header';
 import Modal from '../modals/modal';
 
 const Layout = () => (
-  <div className="wrapper">
+  <div className="wrapper" data-testid='layout'>
     <Header />
     <main>
-
       <Outlet />
       <Modal />
     </main>

@@ -1,6 +1,6 @@
 import faker from 'faker';
-import { CameraCategory, CameraLevel, Camera } from '../const';
-import type { ProductType, PromoType, ReviewType, NewReviewType, BasketItemType } from '../types';
+import { CameraCategory, CameraLevel, Camera, NameSpace, Status } from '../const';
+import type { ProductType, PromoType, ReviewType, NewReviewType, BasketItemType, StateType } from '../types';
 import { Action } from '@reduxjs/toolkit';
 
 const generateProductMock = (): ProductType => ({
@@ -66,8 +66,40 @@ const generateNewReviewMock = (): NewReviewType => ({
 
 const extractActionsTypes = (actions: Action<string>[]) => actions.map(({ type }) => type);
 
+const generateMockState = (initialState?: Partial<StateType>): StateType => ({
+  [NameSpace.Basket]: {
+    status: Status.Idle,
+    ids: [],
+    entities: {}
+  },
+  [NameSpace.Modal]: {
+    activeModal: null,
+    selectedProduct: null,
+  },
+  [NameSpace.Product]: {
+    status: Status.Idle,
+    ids: [],
+    entities: {}
+  },
+  [NameSpace.Promo]: {
+    status: Status.Idle,
+    promos: []
+  },
+  [NameSpace.Review]: {
+    status: Status.Idle,
+    postStatus: Status.Idle,
+    reviews: []
+  },
+  [NameSpace.SimilarProducts]: {
+    status: Status.Idle,
+    similarProducts: []
+  },
+  ...(initialState ?? {})
+});
+
 
 export {
+  generateMockState,
   generateBasketItemMock,
   generateProductMock,
   generatePromoMock,
