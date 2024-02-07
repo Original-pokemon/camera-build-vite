@@ -11,7 +11,7 @@ const NavList = ({ items }: NavListProps) => {
   ));
 
   return (
-    <ul className="main-nav__list">
+    <ul className="main-nav__list" data-testid='nav-list'>
       {navItems}
     </ul>
   );
