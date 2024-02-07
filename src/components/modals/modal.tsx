@@ -55,6 +55,7 @@ const Modal = () => {
     <ReactFocusLock>
       <div
         className={classNames('modal', 'is-active', { 'modal--narrow': isNarrow })}
+        data-testid='modal'
       >
         <div className="modal__wrapper">
           <div className="modal__overlay" onClick={handleButtonCloseModalClick}></div>

@@ -6,14 +6,16 @@ import classNames from 'classnames';
 type TextInputProps = {
   inputLabel: string;
   inputPlaceholder: string;
-  register: UseFormRegisterReturn<FormValuesType>;
+  register?: UseFormRegisterReturn<FormValuesType>;
   error?: string;
 }
 
 const TextInput = ({ inputLabel, inputPlaceholder, error, register }: TextInputProps) => (
-  <div className={classNames('custom-input form-review__item', {
-    'is-invalid': error
-  })}
+  <div
+    className={classNames('custom-input form-review__item', {
+      'is-invalid': error
+    })}
+    data-testid='custom-input'
   >
     <label>
       <span className="custom-input__label" > {inputLabel}

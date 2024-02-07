@@ -4,7 +4,7 @@ import { FormValuesType } from '../product-review';
 type ReviewRatingStarProps = {
   score: number;
   title: string;
-  register: UseFormRegisterReturn<FormValuesType>;
+  register?: UseFormRegisterReturn<FormValuesType>;
 }
 
 const ReviewRatingStar = ({ score, title, register }: ReviewRatingStarProps) => {
