@@ -5,8 +5,7 @@ import { AppRoute } from '../../const';
 import { useEffect } from 'react';
 import useSmoothScrollToElement from '../../hooks/use-scroll-to-element';
 
-
-export default function CatalogPage() {
+const CatalogPage = () => {
   const breadcrumbs = [{ link: AppRoute.Main, text: 'Главная' }, { link: AppRoute.Main, text: 'Каталог' }];
   const scrollToElement = useSmoothScrollToElement();
 
@@ -24,6 +23,8 @@ export default function CatalogPage() {
       </div>
     </>
   );
-}
+};
+
+export default CatalogPage;
 
 
