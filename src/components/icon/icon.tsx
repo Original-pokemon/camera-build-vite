@@ -6,7 +6,7 @@ export type IconProps = {
 }
 
 const Icon = ({ icon, svgSize, ariaHidden, className }: IconProps) => (
-  <svg className={className} width={svgSize.width} height={svgSize.height} aria-hidden={ariaHidden}>
+  <svg className={className} width={svgSize.width} height={svgSize.height} aria-hidden={ariaHidden} data-testid="icon">
     <use xlinkHref={icon}></use>
   </svg>);
 

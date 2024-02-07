@@ -4,7 +4,7 @@ import CustomInput from './сustom-input/custom-input';
 
 const CatalogFilter = () => (
   <div className="catalog-filter">
-    <form action="#">
+    <form action="#" data-testid='form'>
       <h2 className="visually-hidden">Фильтр</h2>
 
       <CatalogFilterBlock legend="Цена, ₽">

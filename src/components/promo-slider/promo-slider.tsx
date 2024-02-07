@@ -8,7 +8,7 @@ import Banner from './banner/banner';
 import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { getAllPromos, getPromoStatus } from '../../store/action';
 import { useEffect } from 'react';
-import { fetchPromo } from '../../store/slices/promo-data/promo-data-thunk';
+import { fetchPromos } from '../../store/slices/promo-data/promo-data-thunk';
 import { Status } from '../../const';
 
 
@@ -17,13 +17,16 @@ const Slider = () => {
   const promos = useAppSelector(getAllPromos);
   const promosLoadStatus = useAppSelector(getPromoStatus);
 
-  useEffect(() => {
-    if (promosLoadStatus === Status.Idle) {
-      dispatch(fetchPromo());
-    }
-  }, [dispatch, promosLoadStatus]);
+  const isIdle = promosLoadStatus === Status.Idle;
+  const isLoaded = promosLoadStatus === Status.Success;
 
-  return promosLoadStatus === Status.Success && (
+  useEffect(() => {
+    if (isIdle) {
+      dispatch(fetchPromos());
+    }
+  }, [dispatch, isIdle]);
+
+  return isLoaded && promos && (
     <Swiper
       spaceBetween={30}
       pagination={{
@@ -35,10 +38,11 @@ const Slider = () => {
       }}
       modules={[Pagination, Autoplay]}
       className="mySwiper"
+      data-testid="promo-slider"
     >
       {
         promos.map((promo) => (
-          <SwiperSlide key={promo.id}>
+          <SwiperSlide key={promo.id} data-testid="slide">
             <Banner promo={promo} />
           </SwiperSlide>
         ))

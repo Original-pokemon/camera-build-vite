@@ -14,7 +14,6 @@ const RatingStars = ({ rating, className = '', children }: RatingStarsProps) => 
       {stars.map((star, index) => (
         // eslint-disable-next-line react/no-array-index-key
         <Icon key={index} icon={star <= rating ? '#icon-full-star' : '#icon-star'} svgSize={{ width: 17, height: 16 }} ariaHidden />
-
       ))}
       {children}
     </div>

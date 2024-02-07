@@ -2,7 +2,7 @@ import {
   createSlice,
 } from '@reduxjs/toolkit';
 import { ProductType } from '../../../types';
-import { Action } from '../../../const';
+import { NameSpace } from '../../../const';
 import { ModalNamesType } from '../../../types/modal';
 
 type InitialModalStateType = {
@@ -15,8 +15,8 @@ const initialState: InitialModalStateType = {
   activeModal: null
 };
 
-export const modalSlice = createSlice({
-  name: Action.Modal,
+const modalSlice = createSlice({
+  name: NameSpace.Modal,
   initialState,
   reducers: {
     showModal(state, action: { payload: ModalNamesType | null }) {
@@ -28,4 +28,6 @@ export const modalSlice = createSlice({
   }
 });
 
-export default modalSlice.reducer;
+export {
+  modalSlice,
+};

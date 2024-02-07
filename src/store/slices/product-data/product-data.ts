@@ -3,22 +3,20 @@ import {
   createEntityAdapter
 } from '@reduxjs/toolkit';
 import { ProductType, StatusType } from '../../../types';
-import { Action, Status } from '../../../const';
+import { NameSpace, Status } from '../../../const';
 import { fetchProducts } from './product-data-thunk';
 import { toast } from 'react-toastify';
 
-type InitialProductStateType = {
+const productAdapter = createEntityAdapter<ProductType>();
+
+const initialState = productAdapter.getInitialState<{
   status: StatusType;
-}
-
-export const productAdapter = createEntityAdapter<ProductType>();
-
-const initialState = productAdapter.getInitialState<InitialProductStateType>({
+}>({
   status: Status.Idle,
 });
 
 const productSlice = createSlice({
-  name: Action.Product,
+  name: NameSpace.Product,
   initialState,
   reducers: {
   },
@@ -38,4 +36,9 @@ const productSlice = createSlice({
   }
 });
 
-export default productSlice.reducer;
+export type InitialProductState = typeof initialState
+
+export {
+  productAdapter,
+  productSlice
+};

@@ -1,36 +1,20 @@
-const CameraType = {
-  Collectible: 'Коллекционная',
-  Instant: 'Моментальная',
-  Digital: 'Цифровая',
-  Film: 'Плёночная',
-} as const;
+import { Camera, CameraCategory, CameraLevel } from '../const';
 
-type CameraType = typeof CameraType[keyof typeof CameraType];
+type CameraType = typeof Camera[keyof typeof Camera];
 
-const CameraCategory = {
-  VideoCamera: 'Видеокамера',
-  PhotoCamera: 'Фотоаппарат',
-} as const;
+type CameraCategoryType = typeof CameraCategory[keyof typeof CameraCategory];
 
-type CameraCategory = typeof CameraCategory[keyof typeof CameraCategory];
 
-const CameraLevel = {
-  Zero: 'Нулевой',
-  Amateur: 'Любительский',
-  Professional: 'Профессиональный',
-} as const;
-
-type CameraLevel = typeof CameraLevel[keyof typeof CameraLevel];
-
+type CameraLevelType = typeof CameraLevel[keyof typeof CameraLevel];
 
 export type ProductType = {
   id: number;
   name: string;
   vendorCode: string;
   type: CameraType;
-  category: CameraCategory;
+  category: CameraCategoryType;
   description: string;
-  level: CameraLevel;
+  level: CameraLevelType;
   price: number;
   rating: number;
   reviewCount: number;
@@ -39,3 +23,5 @@ export type ProductType = {
   previewImgWebp: string;
   previewImgWebp2x: string;
 }
+
+

@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { ProductType } from '../../types';
 import Icon from '../icon/icon';
 import RatingStars from '../rating-stars/rating-stars';
-import ProductTabsContent from './tabs/tabs';
+import ProductTabsContent from './product-tabs-content/product-tabs-content';
 import { AppRoute } from '../../const';
 import { addToBasket, getBasketItem } from '../../store/action';
 
@@ -46,16 +46,18 @@ const Product = ({
     </Link>
   ) : (
     <button
-      className="btn btn--purple" type="button"
+        className="btn btn--purple"
+        type="button"
       onClick={handleBuyButtonClick}
+        data-testid="buy-button"
     >
       <Icon icon='#icon-add-basket' svgSize={{ width: 24, height: 16 }} ariaHidden />
-      Добавить в корзину
+        Добавить в корзину
     </button>
   );
 
   return (
-    <div className="page-content__section">
+    <div className="page-content__section" data-testid="product">
       <section className="product">
         <div className="container">
           <div className="product__img">

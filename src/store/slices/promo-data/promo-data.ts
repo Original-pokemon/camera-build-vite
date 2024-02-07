@@ -1,40 +1,41 @@
 import {
   createSlice,
-  createEntityAdapter
 } from '@reduxjs/toolkit';
 import { PromoType, StatusType } from '../../../types';
-import { Action, Status } from '../../../const';
-import { fetchPromo } from './promo-data-thunk';
+import { NameSpace, Status } from '../../../const';
+import { fetchPromos } from './promo-data-thunk';
 
 
 type InitialPromoStateType = {
   status: StatusType;
+  promos: PromoType[] | null;
 }
 
-export const promoAdapter = createEntityAdapter<PromoType>();
-
-const initialState = promoAdapter.getInitialState<InitialPromoStateType>({
+const initialState: InitialPromoStateType = {
   status: Status.Idle,
-});
+  promos: null
+};
 
-const productSlice = createSlice({
-  name: Action.Product,
+const promoSlice = createSlice({
+  name: NameSpace.Product,
   initialState,
   reducers: {
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchPromo.pending, (state) => {
+      .addCase(fetchPromos.pending, (state) => {
         state.status = Status.Loading;
       })
-      .addCase(fetchPromo.fulfilled, (state, action) => {
-        promoAdapter.setAll(state, action.payload);
+      .addCase(fetchPromos.fulfilled, (state, action) => {
+        state.promos = action.payload;
         state.status = Status.Success;
       })
-      .addCase(fetchPromo.rejected, (state) => {
+      .addCase(fetchPromos.rejected, (state) => {
         state.status = Status.Error;
       });
   }
 });
 
-export default productSlice.reducer;
+export {
+  promoSlice
+};

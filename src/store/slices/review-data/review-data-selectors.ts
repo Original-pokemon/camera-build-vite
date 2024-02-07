@@ -1,7 +1,8 @@
-import { Action } from '../../../const';
+import { NameSpace } from '../../../const';
 import { InitialStateType } from '../../reducer';
-import { reviewAdapter } from './review-data';
 
-export const { selectById: getReview, selectAll: getReviews } = reviewAdapter.getSelectors<InitialStateType>((state) => state[Action.Review]);
-export const getReviewsStatus = (state: InitialStateType) => state[Action.Review].status;
-export const getPostReviewStatus = (state: InitialStateType) => state[Action.Review].postStatus;
+type ReviewStateType = Pick<InitialStateType, typeof NameSpace.Review>;
+
+export const getReviews = (state: ReviewStateType) => state[NameSpace.Review].reviews;
+export const getReviewsStatus = (state: ReviewStateType) => state[NameSpace.Review].status;
+export const getPostReviewStatus = (state: ReviewStateType) => state[NameSpace.Review].postStatus;

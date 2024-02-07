@@ -1,4 +1,4 @@
-export const Action = {
+export const NameSpace = {
   App: 'app',
   Product: 'product',
   Promo: 'promo',

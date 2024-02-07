@@ -1,9 +1,8 @@
 import {
   createSlice,
-  createEntityAdapter
 } from '@reduxjs/toolkit';
 import { ReviewType, StatusType } from '../../../types';
-import { Action, Status } from '../../../const';
+import { NameSpace, Status } from '../../../const';
 import { fetchReviews, postReview } from './review-data-thunk';
 import { toast } from 'react-toastify';
 
@@ -11,17 +10,17 @@ import { toast } from 'react-toastify';
 type InitialReviewStateType = {
   status: StatusType;
   postStatus: StatusType;
+  reviews: ReviewType[] | null;
 }
 
-export const reviewAdapter = createEntityAdapter<ReviewType>();
-
-const initialState = reviewAdapter.getInitialState<InitialReviewStateType>({
+const initialState: InitialReviewStateType = {
   status: Status.Idle,
-  postStatus: Status.Idle
-});
+  postStatus: Status.Idle,
+  reviews: null
+};
 
 const reviewSlice = createSlice({
-  name: Action.Review,
+  name: NameSpace.Review,
   initialState,
   reducers: {
 
@@ -33,12 +32,13 @@ const reviewSlice = createSlice({
         state.status = Status.Loading;
       })
       .addCase(fetchReviews.fulfilled, (state, action) => {
-        reviewAdapter.setAll(state, action.payload);
+        state.reviews = action.payload;
         state.status = Status.Success;
       })
       .addCase(fetchReviews.rejected, (state) => {
         state.status = Status.Error;
-      }).addCase(postReview.pending, (state) => {
+      })
+      .addCase(postReview.pending, (state) => {
         state.postStatus = Status.Loading;
       })
       .addCase(postReview.fulfilled, (state) => {

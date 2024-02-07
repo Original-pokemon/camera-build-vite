@@ -1,24 +1,24 @@
 import {
   createSlice,
-  createEntityAdapter
 } from '@reduxjs/toolkit';
 import { ProductType, StatusType } from '../../../types';
-import { Action, Status } from '../../../const';
+import { NameSpace, Status } from '../../../const';
 import { fetchSimilarProducts } from './similar-products-data-thunk';
 
 
 type InitialSimilarProductsStateType = {
   status: StatusType;
+  similarProducts: ProductType[] | null;
 }
 
-export const similarProductsAdapter = createEntityAdapter<ProductType>();
 
-const initialState = similarProductsAdapter.getInitialState<InitialSimilarProductsStateType>({
+const initialState: InitialSimilarProductsStateType = {
   status: Status.Idle,
-});
+  similarProducts: null
+};
 
 const similarProductsSlice = createSlice({
-  name: Action.SimilarProducts,
+  name: NameSpace.SimilarProducts,
   initialState,
   reducers: {
   },
@@ -28,7 +28,7 @@ const similarProductsSlice = createSlice({
         state.status = Status.Loading;
       })
       .addCase(fetchSimilarProducts.fulfilled, (state, action) => {
-        similarProductsAdapter.setAll(state, action.payload);
+        state.similarProducts = action.payload;
         state.status = Status.Success;
       })
       .addCase(fetchSimilarProducts.rejected, (state) => {

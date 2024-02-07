@@ -26,7 +26,7 @@ const Header = () => {
   };
 
   return (
-    <header className="header" id="header">
+    <header className="header" id="header" data-testid='header'>
       <div className="container">
         <Logo {...logo} />
         <nav className="main-nav header__main-nav">
