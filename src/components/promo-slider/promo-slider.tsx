@@ -38,10 +38,11 @@ const Slider = () => {
       }}
       modules={[Pagination, Autoplay]}
       className="mySwiper"
+      data-testid="promo-slider"
     >
       {
         promos.map((promo) => (
-          <SwiperSlide key={promo.id}>
+          <SwiperSlide key={promo.id} data-testid="slide">
             <Banner promo={promo} />
           </SwiperSlide>
         ))
