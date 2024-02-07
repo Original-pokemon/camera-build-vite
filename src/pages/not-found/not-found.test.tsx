@@ -1,20 +1,29 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 import NotFoundPage from './not-found';
+import { MemoryHistory, createMemoryHistory } from 'history';
+import { withHistory } from '../../utils/mock-component';
 
-test('renders 404 page with correct content', () => {
-  render(
-    <MemoryRouter>
-      <NotFoundPage />
-    </MemoryRouter>
-  );
+describe('NotFoundPage', () => {
+  let mockHistory: MemoryHistory;
 
-  const titleElement = screen.getByText(/404/i);
-  expect(titleElement).toBeInTheDocument();
+  beforeEach(() => {
+    mockHistory = createMemoryHistory();
+  });
 
-  const descriptionElement = screen.getByText(/Страница, которую вы ищете, не найдена/i);
-  expect(descriptionElement).toBeInTheDocument();
+  it('renders 404 page with correct content', () => {
+    const withHistoryComponent = withHistory(<NotFoundPage />, mockHistory);
 
-  const linkElement = screen.getByRole('link', { name: /На главную/i });
-  expect(linkElement).toHaveAttribute('href', '/');
+    render(withHistoryComponent);
+
+    const titleElement = screen.getByText(/404/i);
+    expect(titleElement).toBeInTheDocument();
+
+    const descriptionElement = screen.getByText(/Страница, которую вы ищете, не найдена/i);
+    expect(descriptionElement).toBeInTheDocument();
+
+    const linkElement = screen.getByRole('link', { name: /На главную/i });
+    expect(linkElement).toHaveAttribute('href', '/');
+  });
 });
+
+

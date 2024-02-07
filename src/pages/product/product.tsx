@@ -30,7 +30,7 @@ const ProductPage = () => {
   }
 
   return (
-    <div className="page-content">
+    <div className="page-content" data-testid='product-page'>
       {isLoading && <Spinner />}
       {product && isLoaded && (
         <>
