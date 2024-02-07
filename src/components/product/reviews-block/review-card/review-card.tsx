@@ -15,7 +15,7 @@ const ReviewCard = ({ userName, createAt, rating, advantage, disadvantage, revie
   const formattedDate = dayjs(createAt).locale('ru').format('DD MMMM');
 
   return (
-    <li className="review-card">
+    <li className="review-card" data-testid="review-card">
       <div className="review-card__head">
         <p className="title title--h4">{userName}</p>
         <time className="review-card__data" dateTime={createAt}>

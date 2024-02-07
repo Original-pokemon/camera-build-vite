@@ -21,6 +21,7 @@ const SimilarProducts = ({ product }: SimilarProductsProps) => {
   const similarProducts = useAppSelector(getSimilarProducts);
   const similarProductsStatus = useAppSelector(getSimilarProductsStatus);
   const isLoading = similarProductsStatus === Status.Loading;
+  const isLoaded = similarProductsStatus === Status.Success;
   const { id } = product;
 
   useEffect(() => {
@@ -33,8 +34,8 @@ const SimilarProducts = ({ product }: SimilarProductsProps) => {
         <div className="container">
           <h2 className="title title--h3">Похожие товары</h2>
           {isLoading && <Spinner />}
-          {similarProducts && (
-            <div className="product-similar__slider" >
+          {similarProducts && isLoaded && (
+            <div className="product-similar__slider" data-testid="similar-products-slider">
               <div className="product-similar__slider-list">
 
                 <Swiper
@@ -48,7 +49,7 @@ const SimilarProducts = ({ product }: SimilarProductsProps) => {
                   modules={[Navigation]}
                 >
                   {similarProducts.map((similarProduct) => (
-                    <SwiperSlide key={similarProduct.id}>
+                    <SwiperSlide key={similarProduct.id} data-testid="similar-product-slide">
                       <ProductCard product={similarProduct} isActive />
                     </SwiperSlide>
                   ))}

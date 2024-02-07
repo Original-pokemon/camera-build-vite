@@ -27,11 +27,11 @@ const getTabsContent = (
 ) => {
   const TabContent = {
     [Tabs.Description]: (
-      <div className="product__tabs-text">
+      <div className="product__tabs-text" data-testid="description">
         {description}
       </div>),
     [Tabs.Features]: (
-      <ul className="product__tabs-list">
+      <ul className="product__tabs-list" data-testid="features-list">
         <li className="item-list">
           <span className="item-list__title">Артикул:</span>
           <p className="item-list__text">{vendorCode}</p>
