@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
-import { BACKEND_URL, REQUEST_TIMEOUT } from '../const/api';
+import { BACKEND_URL, REQUEST_TIMEOUT } from './const';
 import { toast } from 'react-toastify';
 import { StatusCodes } from 'http-status-codes';
 import browserHistory from '../browser-history/browser-history';

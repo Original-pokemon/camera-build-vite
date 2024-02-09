@@ -4,9 +4,10 @@ import MockAdapter from 'axios-mock-adapter';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createAPI } from '../../../services/api';
 import { AppThunkDispatch, StateType } from '../../../types';
-import { APIRoute, NameSpace, Status } from '../../../const';
+import { NameSpace, Status } from '../../../const';
 import { generateProductsMock, extractActionsTypes } from '../../../utils/mocks';
 import { fetchProducts } from './product-data-thunk';
+import APIRoute from '../../api-route';
 
 describe('Async actions for product data', () => {
   const axios = createAPI();

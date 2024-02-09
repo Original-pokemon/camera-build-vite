@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { APIRoute, NameSpace } from '../../../const';
+import { NameSpace } from '../../../const';
 import { ProductType, asyncThunkConfig } from '../../../types';
+import APIRoute from '../../api-route';
 
 export const fetchSimilarProducts = createAsyncThunk<ProductType[], number, asyncThunkConfig>(
   `${NameSpace.Product}/fetchSimilarProducts`,

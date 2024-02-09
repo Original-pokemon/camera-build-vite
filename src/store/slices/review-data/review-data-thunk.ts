@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { NewReviewType, ReviewType, asyncThunkConfig } from '../../../types';
-import { APIRoute, NameSpace } from '../../../const';
+import { NameSpace } from '../../../const';
+import APIRoute from '../../api-route';
 
 export const fetchReviews = createAsyncThunk<ReviewType[], number, asyncThunkConfig>(
   `${NameSpace.Review}/fetchReviews`,

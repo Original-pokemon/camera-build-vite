@@ -7,7 +7,7 @@ import { NewReviewType } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../../hooks/state';
 import { useParams } from 'react-router-dom';
 import TextInput from './text-input/text-input';
-import { ReviewRatingValue } from '../../../const/review-rating';
+import { ReviewRatingValue } from './const';
 import ReviewRatingStar from './rating-star/rating-star';
 import { getPostReviewStatus, showModal } from '../../../store/action';
 import { postReview } from '../../../store/slices/review-data/review-data-thunk';

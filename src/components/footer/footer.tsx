@@ -1,4 +1,4 @@
-import { navigationItems, socialItems } from '../../const/footer';
+import { navigationItems, socialItems } from './const';
 import Logo from '../logo/logo';
 import FooterNavItem from './footer-nav-item/footer-nav-item';
 import SocialList from './social-list/social-list';

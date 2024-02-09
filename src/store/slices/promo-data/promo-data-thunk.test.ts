@@ -4,9 +4,10 @@ import MockAdapter from 'axios-mock-adapter';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createAPI } from '../../../services/api';
 import { AppThunkDispatch, StateType } from '../../../types';
-import { APIRoute, NameSpace, Status } from '../../../const';
+import { NameSpace, Status } from '../../../const';
 import { extractActionsTypes, generatePromosMock } from '../../../utils/mocks';
 import { fetchPromos } from './promo-data-thunk';
+import APIRoute from '../../api-route';
 
 describe('Async actions for promo data', () => {
   const axios = createAPI();
