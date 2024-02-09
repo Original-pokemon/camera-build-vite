@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ReviewCard from './review-card/review-card';
 import dayjs from 'dayjs';
 import Icon from '../../icon/icon';
@@ -15,6 +15,11 @@ type ReviewsBlockProps = {
   productId: number;
 }
 
+
+const getVisibleReviewsElements = (elements: ReviewType[], visibleReviews: number) => elements.slice(0, visibleReviews).map((review) => (
+  <ReviewCard key={review.id} {...review} />
+));
+
 const ReviewsBlock = ({ productId }: ReviewsBlockProps) => {
   const dispatch = useAppDispatch();
   const scrollToElement = useSmoothScrollToElement();
@@ -28,15 +33,12 @@ const ReviewsBlock = ({ productId }: ReviewsBlockProps) => {
     dispatch(fetchReviews(productId));
   }, [dispatch, productId]);
 
-  const sortedReviews = reviews?.slice().sort((a, b) => {
-    const dateA = dayjs(a.createAt);
-    const dateB = dayjs(b.createAt);
-    return dateB.diff(dateA);
-  });
-
-  const getVisibleReviewsElements = (elements: ReviewType[]) => elements.slice(0, visibleReviews).map((review) => (
-    <ReviewCard key={review.id} {...review} />
-  ));
+  const sortedReviews = useMemo(() => reviews?.slice()
+    .sort((a, b) => {
+      const dateA = dayjs(a.createAt);
+      const dateB = dayjs(b.createAt);
+      return dateB.diff(dateA);
+    }), [reviews]);
 
   const handleAddReviewButtonClick = () => {
     dispatch(showModal(ModalName.ProductReview));
@@ -51,7 +53,6 @@ const ReviewsBlock = ({ productId }: ReviewsBlockProps) => {
     scrollToElement();
   };
 
-
   return (
     <div className="page-content__section">
       <section className="review-block">
@@ -65,7 +66,7 @@ const ReviewsBlock = ({ productId }: ReviewsBlockProps) => {
           {isLoading && <Spinner />}
           {sortedReviews && (
             <ul className="review-block__list">
-              {getVisibleReviewsElements(sortedReviews)}
+              {getVisibleReviewsElements(sortedReviews, visibleReviews)}
             </ul>
           )}
           {visibleReviews < (reviews?.length || 0) && (

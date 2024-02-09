@@ -12,6 +12,24 @@ type ProductCardProps = {
   isActive?: boolean;
 };
 
+const getBuyButton = (inBasket: boolean, handleBuyButtonClick: () => void) => inBasket ? (
+  <Link className="btn btn--purple-border product-card__btn product-card__btn--in-cart" to={AppRoute.Basket}>
+    <Icon icon={'#icon-basket'} svgSize={{
+      width: 16,
+      height: 16,
+    }} ariaHidden
+    />
+    В корзине
+  </Link>
+) : (
+  <button
+    className="btn btn--purple product-card__btn" type="button"
+    onClick={handleBuyButtonClick}
+  >
+    Купить
+  </button>
+);
+
 
 const ProductCard = ({ product, isActive = false }: ProductCardProps) => {
   const dispatch = useAppDispatch();
@@ -22,24 +40,6 @@ const ProductCard = ({ product, isActive = false }: ProductCardProps) => {
     dispatch(showModal(ModalName.ProductAdd));
     dispatch(selectProduct(product));
   };
-
-  const getBuyButton = () => inBasket ? (
-    <Link className="btn btn--purple-border product-card__btn product-card__btn--in-cart" to={AppRoute.Basket}>
-      <Icon icon={'#icon-basket'} svgSize={{
-        width: 16,
-        height: 16,
-      }} ariaHidden
-      />
-      В корзине
-    </Link>
-  ) : (
-    <button
-      className="btn btn--purple product-card__btn" type="button"
-      onClick={handleBuyButtonClick}
-    >
-      Купить
-    </button>
-  );
 
   return (
     <div className={`product-card ${isActive ? 'is-active' : ''}`}>
@@ -70,7 +70,7 @@ const ProductCard = ({ product, isActive = false }: ProductCardProps) => {
       </div>
       <div className="product-card__buttons">
 
-        {getBuyButton()}
+        {getBuyButton(!!inBasket, handleBuyButtonClick)}
 
         <Link className="btn btn--transparent" to={`/product/${product.id}`}>
           Подробнее

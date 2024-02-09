@@ -10,8 +10,20 @@ import { getProducts, getProductsStatus, redirectToRoute } from '../../store/act
 import { fetchProducts } from '../../store/slices/product-data/product-data-thunk';
 import useSmoothScrollToElement from '../../hooks/use-scroll-to-element';
 import Spinner from '../spinner/spinner';
+import { ProductType } from '../../types';
 
 const PRODUCT_PER_PAGE = 9;
+
+const getProductsElements = (visibleProducts: ProductType[]) => {
+  const productsElements = visibleProducts.map((product) => (
+    <ProductCard
+      key={product.id}
+      product={product}
+    />
+  ));
+
+  return productsElements;
+};
 
 const CatalogSection = () => {
   const dispatch = useAppDispatch();
@@ -44,25 +56,15 @@ const CatalogSection = () => {
     }
   }, [dispatch, isIdle]);
 
+  if ((initialPage > totalPages) && isLoaded) {
+    dispatch(redirectToRoute(AppRoute.PageNotFound));
+  }
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     scrollToElement(elementRef.current || undefined);
   };
 
-  const getProductsElements = () => {
-    const productsElements = visibleProducts.map((product) => (
-      <ProductCard
-        key={product.id}
-        product={product}
-      />
-    ));
-
-    if (initialPage > totalPages) {
-      dispatch(redirectToRoute(AppRoute.PageNotFound));
-    }
-
-    return productsElements;
-  };
 
   return (
     <section className="catalog" data-testid='catalog'>
@@ -78,7 +80,7 @@ const CatalogSection = () => {
 
             {isLoaded && (
               <div className="cards catalog__cards" ref={elementRef}>
-                {getProductsElements()}
+                {getProductsElements(visibleProducts)}
               </div>
             )}
             {totalPages > 1 && <Pagination totalPages={totalPages} currentPage={currentPage} onClick={handlePageChange} />}

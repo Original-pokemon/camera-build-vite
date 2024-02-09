@@ -12,6 +12,28 @@ type ProductProps = {
   product: ProductType;
 }
 
+const getBuyButton = (inBasket: boolean, handleBuyButtonClick: () => void) => inBasket ? (
+  <Link className="btn btn--purple-border product-card__btn--in-cart" to={AppRoute.Basket}>
+    <Icon icon={'#icon-basket'} svgSize={{
+      width: 16,
+      height: 16,
+    }} ariaHidden
+    />
+    В корзине
+  </Link>
+) : (
+  <button
+    className="btn btn--purple"
+    type="button"
+    onClick={handleBuyButtonClick}
+    data-testid="buy-button"
+  >
+    <Icon icon='#icon-add-basket' svgSize={{ width: 24, height: 16 }} ariaHidden />
+    Добавить в корзину
+  </button>
+);
+
+
 const Product = ({
   product
 }: ProductProps) => {
@@ -34,27 +56,6 @@ const Product = ({
   const handleBuyButtonClick = () => {
     dispatch(addToBasket(product));
   };
-
-  const getBuyButton = () => inBasket ? (
-    <Link className="btn btn--purple-border product-card__btn--in-cart" to={AppRoute.Basket}>
-      <Icon icon={'#icon-basket'} svgSize={{
-        width: 16,
-        height: 16,
-      }} ariaHidden
-      />
-      В корзине
-    </Link>
-  ) : (
-    <button
-        className="btn btn--purple"
-        type="button"
-      onClick={handleBuyButtonClick}
-        data-testid="buy-button"
-    >
-      <Icon icon='#icon-add-basket' svgSize={{ width: 24, height: 16 }} ariaHidden />
-        Добавить в корзину
-    </button>
-  );
 
   return (
     <div className="page-content__section" data-testid="product">
@@ -90,7 +91,7 @@ const Product = ({
               {price} ₽
             </p>
 
-            {getBuyButton()}
+            {getBuyButton(!!inBasket, handleBuyButtonClick)}
 
             <ProductTabsContent {...product} />
 
