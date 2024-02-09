@@ -18,7 +18,7 @@ const renderPageLinks = ({ groupNumber, totalPages, currentPage, onClick }: { gr
     const isCurrentPage = i === currentPage;
 
     pageLinks.push(
-      <li className="pagination__item" >
+      <li className="pagination__item" key={i}>
         <Link
           className={`pagination__link ${isCurrentPage ? 'pagination__link--active' : ''}`}
           onClick={() => {
