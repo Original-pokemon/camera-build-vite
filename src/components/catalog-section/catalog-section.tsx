@@ -11,6 +11,7 @@ import { fetchProducts } from '../../store/slices/product-data/product-data-thun
 import useSmoothScrollToElement from '../../hooks/use-scroll-to-element';
 import Spinner from '../spinner/spinner';
 import { ProductType } from '../../types';
+import { toast } from 'react-toastify';
 
 const PRODUCT_PER_PAGE = 9;
 
@@ -36,10 +37,10 @@ const CatalogSection = () => {
   const isLoaded = productsLoadStatus === Status.Success;
   const isLoading = productsLoadStatus === Status.Loading;
   const isIdle = productsLoadStatus === Status.Idle;
+  const isError = productsLoadStatus === Status.Error;
 
   const initialPage = parseInt(searchParams.get('page') || '1', 10);
   const [currentPage, setCurrentPage] = useState(initialPage);
-
 
   const startIndex = (currentPage - 1) * PRODUCT_PER_PAGE;
   const endIndex = startIndex + PRODUCT_PER_PAGE;
@@ -54,7 +55,10 @@ const CatalogSection = () => {
     if (isIdle) {
       dispatch(fetchProducts());
     }
-  }, [dispatch, isIdle]);
+    if (isError) {
+      toast.error('Произошла ошибка при загрузке каталога. Попробуйте перезагрузить страницу.');
+    }
+  }, [dispatch, isIdle, isError]);
 
   if ((initialPage > totalPages) && isLoaded) {
     dispatch(redirectToRoute(AppRoute.PageNotFound));
@@ -64,7 +68,6 @@ const CatalogSection = () => {
     setCurrentPage(page);
     scrollToElement(elementRef.current || undefined);
   };
-
 
   return (
     <section className="catalog" data-testid='catalog'>

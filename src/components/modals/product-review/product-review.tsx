@@ -13,6 +13,7 @@ import { getPostReviewStatus, showModal } from '../../../store/action';
 import { postReview } from '../../../store/slices/review-data/review-data-thunk';
 import { ModalName } from '../../../const/modal';
 import { Status } from '../../../const';
+import { toast } from 'react-toastify';
 
 type FormValue = Omit<NewReviewType, 'cameraId'>
 export type FormValuesType = keyof FormValue
@@ -22,6 +23,7 @@ const AddReviewModal = () => {
   const postReviewStatus = useAppSelector(getPostReviewStatus);
   const isSubmitSuccessful = postReviewStatus === Status.Success;
   const isSubmitting = postReviewStatus === Status.Loading;
+  const isError = postReviewStatus === Status.Error;
   const { id } = useParams();
   const [ratingValue, setRatingValue] = useState<number>(0);
 
@@ -117,12 +119,14 @@ const AddReviewModal = () => {
       dispatch(showModal(ModalName.ProductReviewSuccess));
       reset();
     }
+    if (isError) {
+      toast.error('Произошла ошибка при отправке отзыва. Попробуйте позже');
+    }
 
     return () => {
       reset();
     };
-  }, [dispatch, id, isSubmitSuccessful, reset]);
-
+  }, [dispatch, id, isError, isSubmitSuccessful, reset]);
 
   return (
     <>

@@ -5,7 +5,6 @@ import {
 import { ProductType, StatusType } from '../../../types';
 import { NameSpace, Status } from '../../../const';
 import { fetchProducts } from './product-data-thunk';
-import { toast } from 'react-toastify';
 
 const productAdapter = createEntityAdapter<ProductType>();
 
@@ -31,7 +30,6 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.rejected, (state) => {
         state.status = Status.Error;
-        toast.error('Произошла ошибка при загрузке каталога. Попробуйте перезагрузить страницу.');
       });
   }
 });

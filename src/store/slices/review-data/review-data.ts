@@ -4,7 +4,6 @@ import {
 import { ReviewType, StatusType } from '../../../types';
 import { NameSpace, Status } from '../../../const';
 import { fetchReviews, postReview } from './review-data-thunk';
-import { toast } from 'react-toastify';
 
 
 type InitialReviewStateType = {
@@ -46,7 +45,6 @@ const reviewSlice = createSlice({
       })
       .addCase(postReview.rejected, (state) => {
         state.postStatus = Status.Error;
-        toast.error('Произошла ошибка при отправке отзыва. Попробуйте позже');
       });
   }
 });
