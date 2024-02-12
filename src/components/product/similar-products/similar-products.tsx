@@ -46,6 +46,7 @@ const SimilarProducts = ({ product }: SimilarProductsProps) => {
                     }
                   }
                   slidesPerView={3}
+                  slidesPerGroup={3}
                   modules={[Navigation]}
                 >
                   {similarProducts.map((similarProduct) => (
