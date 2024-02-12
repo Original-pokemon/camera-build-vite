@@ -6,6 +6,7 @@ import RatingStars from '../rating-stars/rating-stars';
 import ProductTabsContent from './product-tabs-content/product-tabs-content';
 import { AppRoute } from '../../const';
 import { addToBasket, getBasketItem } from '../../store/action';
+import { getProductPriceFormat } from '../../utils/product';
 
 
 type ProductProps = {
@@ -50,7 +51,7 @@ const Product = ({
     previewImgWebp,
     previewImgWebp2x
   } = product;
-
+  const formattedPrice = getProductPriceFormat(price);
   const inBasket = useAppSelector((state) => getBasketItem(state, id));
 
   const handleBuyButtonClick = () => {
@@ -88,7 +89,7 @@ const Product = ({
 
             <p className="product__price">
               <span className="visually-hidden">Цена:</span>
-              {price} ₽
+              {formattedPrice} ₽
             </p>
 
             {getBuyButton(!!inBasket, handleBuyButtonClick)}

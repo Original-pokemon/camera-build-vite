@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { AppRoute } from '../../const';
 import { getBasketItem, selectProduct, showModal } from '../../store/action';
 import { ModalName } from '../../const/modal';
+import { getProductPriceFormat } from '../../utils/product';
 
 type ProductCardProps = {
   product: ProductType;
@@ -30,11 +31,11 @@ const getBuyButton = (inBasket: boolean, handleBuyButtonClick: () => void) => in
   </button>
 );
 
-
 const ProductCard = ({ product, isActive = false }: ProductCardProps) => {
   const dispatch = useAppDispatch();
   const { id, previewImgWebp, previewImgWebp2x, previewImg, previewImg2x, price, name, rating, reviewCount } = product;
   const inBasket = useAppSelector((state) => getBasketItem(state, id));
+  const formattedPrice = getProductPriceFormat(price);
 
   const handleBuyButtonClick = () => {
     dispatch(showModal(ModalName.ProductAdd));
@@ -65,7 +66,7 @@ const ProductCard = ({ product, isActive = false }: ProductCardProps) => {
         <p className="product-card__title"> {name} </p>
         <p className="product-card__price">
           <span className="visually-hidden">Цена:</span>
-          {price} ₽
+          {formattedPrice} ₽
         </p>
       </div>
       <div className="product-card__buttons">
