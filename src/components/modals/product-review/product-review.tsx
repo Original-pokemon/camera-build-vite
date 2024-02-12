@@ -69,7 +69,7 @@ const AddReviewModal = () => {
       message: 'Нужно указать достоинства'
     },
     minLength: {
-      value: 2,
+      value: 10,
       message: 'Минимальное количество символов 2'
     },
     maxLength: {
@@ -83,7 +83,7 @@ const AddReviewModal = () => {
       message: 'Нужно указать недостатки'
     },
     minLength: {
-      value: 2,
+      value: 10,
       message: 'Минимальное количество символов 2'
     },
     maxLength: {
@@ -97,7 +97,7 @@ const AddReviewModal = () => {
       message: 'Нужно добавить комментарий'
     },
     minLength: {
-      value: 2,
+      value: 10,
       message: 'Минимальное количество символов 2'
     },
     maxLength: {
