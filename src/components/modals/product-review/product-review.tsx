@@ -70,7 +70,7 @@ const AddReviewModal = () => {
     },
     minLength: {
       value: 10,
-      message: 'Минимальное количество символов 2'
+      message: 'Минимальное количество символов 10'
     },
     maxLength: {
       value: 160,
@@ -84,7 +84,7 @@ const AddReviewModal = () => {
     },
     minLength: {
       value: 10,
-      message: 'Минимальное количество символов 2'
+      message: 'Минимальное количество символов 10'
     },
     maxLength: {
       value: 160,
@@ -98,7 +98,7 @@ const AddReviewModal = () => {
     },
     minLength: {
       value: 10,
-      message: 'Минимальное количество символов 2'
+      message: 'Минимальное количество символов 10'
     },
     maxLength: {
       value: 160,
