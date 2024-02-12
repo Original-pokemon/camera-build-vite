@@ -15,19 +15,19 @@ const CatalogFilter = () => (
       </CatalogFilterBlock>
 
       <CatalogFilterBlock legend="Категория">
-        <FilterItem name="photocamera" label="Фотокамера" defaultChecked />
+        <FilterItem name="photocamera" label="Фотокамера" />
         <FilterItem name="videocamera" label="Видеокамера" />
       </CatalogFilterBlock>
 
       <CatalogFilterBlock legend="Тип камеры">
-        <FilterItem name="digital" label="Цифровая" defaultChecked />
+        <FilterItem name="digital" label="Цифровая" />
         <FilterItem name="film" label="Плёночная" disabled />
         <FilterItem name="snapshot" label="Моментальная" />
-        <FilterItem name="collection" label="Коллекционная" disabled defaultChecked />
+        <FilterItem name="collection" label="Коллекционная" disabled />
       </CatalogFilterBlock>
 
       <CatalogFilterBlock legend="Уровень">
-        <FilterItem name="zero" label="Нулевой" defaultChecked />
+        <FilterItem name="zero" label="Нулевой" />
         <FilterItem name="non-professional" label="Любительский" />
         <FilterItem name="professional" label="Профессиональный" />
       </CatalogFilterBlock>
