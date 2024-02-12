@@ -41,70 +41,30 @@ const AddReviewModal = () => {
   const { errors, isValid } = formState;
 
   const rating = register('rating', {
-    required: {
-      value: true,
-      message: 'Нужно оценить товар'
-    },
+    required: { value: true, message: 'Нужно оценить товар' },
     onChange: ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
       setRatingValue(Number(value));
     },
   });
   const userName = register('userName', {
-    required: {
-      value: true,
-      message: 'Нужно указать имя'
-    },
-    minLength: {
-      value: 2,
-      message: 'Минимальное количество символов 2'
-    },
-    maxLength: {
-      value: 30,
-      message: 'Максимальное количество символов 30'
-    },
+    required: 'Нужно указать имя',
+    minLength: { value: 2, message: 'Мин. 2 символа' },
+    maxLength: { value: 30, message: 'Макс. 30 символов' },
   });
   const advantage = register('advantage', {
-    required: {
-      value: true,
-      message: 'Нужно указать достоинства'
-    },
-    minLength: {
-      value: 10,
-      message: 'Минимальное количество символов 10'
-    },
-    maxLength: {
-      value: 160,
-      message: 'Максимальное количество символов 160'
-    },
+    required: 'Нужно указать достоинства',
+    minLength: { value: 10, message: 'Мин. 10 символов' },
+    maxLength: { value: 160, message: 'Макс. 160 символов' },
   });
   const disadvantage = register('disadvantage', {
-    required: {
-      value: true,
-      message: 'Нужно указать недостатки'
-    },
-    minLength: {
-      value: 10,
-      message: 'Минимальное количество символов 10'
-    },
-    maxLength: {
-      value: 160,
-      message: 'Максимальное количество символов 160'
-    },
+    required: 'Нужно указать недостатки',
+    minLength: { value: 10, message: 'Мин. 10 символов' },
+    maxLength: { value: 160, message: 'Макс. 160 символов' },
   });
   const review = register('review', {
-    required: {
-      value: true,
-      message: 'Нужно добавить комментарий'
-    },
-    minLength: {
-      value: 10,
-      message: 'Минимальное количество символов 10'
-    },
-    maxLength: {
-      value: 160,
-      message: 'Максимальное количество символов 160'
-    },
-
+    required: 'Нужно добавить комментарий',
+    minLength: { value: 10, message: 'Мин. 10 символов' },
+    maxLength: { value: 160, message: 'Макс. 160 символов' },
   });
 
   const onSubmit: SubmitHandler<FormValue> = (data) => {
