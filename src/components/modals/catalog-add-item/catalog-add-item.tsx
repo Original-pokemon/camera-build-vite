@@ -2,6 +2,7 @@ import Icon from '../../icon/icon';
 import { useAppDispatch, useAppSelector } from '../../../hooks/state';
 import { addToBasket, getSelectedProduct, selectProduct, showModal } from '../../../store/action';
 import { ModalName } from '../../../const/modal';
+import { getProductPriceFormat } from '../../../utils/product';
 
 
 const CatalogAddItemModal = () => {
@@ -24,6 +25,7 @@ const CatalogAddItemModal = () => {
     previewImgWebp2x,
   } = selectedProduct;
 
+  const formattedPrice = getProductPriceFormat(price);
   const handleAddToCart = () => {
     dispatch(addToBasket(selectedProduct));
     dispatch(selectProduct(null));
@@ -60,7 +62,7 @@ const CatalogAddItemModal = () => {
             <li className="basket-item__list-item">{level}</li>
           </ul>
           <p className="basket-item__price">
-            <span className="visually-hidden">Цена:</span>{price} ₽
+            <span className="visually-hidden">Цена:</span>{formattedPrice} ₽
           </p>
         </div>
       </div>
