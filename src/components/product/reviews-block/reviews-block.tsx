@@ -49,7 +49,6 @@ const ReviewsBlock = ({ productId }: ReviewsBlockProps) => {
   };
 
   const handleScrollToTopButtonClick = () => {
-    setVisibleReviews(3);
     scrollToElement();
   };
 
