@@ -4,3 +4,7 @@ export const AppRoute = {
   Basket: '/basket',
   PageNotFound: '*'
 } as const;
+
+export const getProductPath =
+  (id: number) => `/product/${id}`;
+

@@ -3,7 +3,7 @@ import { ProductType } from '../../types';
 import Icon from '../icon/icon';
 import RatingStars from '../rating-stars/rating-stars';
 import { useAppDispatch, useAppSelector } from '../../hooks/state';
-import { AppRoute } from '../../const';
+import { AppRoute, getProductPath } from '../../const';
 import { getBasketItem, selectProduct, showModal } from '../../store/action';
 import { ModalName } from '../../const/modal';
 import { getProductPriceFormat } from '../../utils/product';
@@ -73,7 +73,7 @@ const ProductCard = ({ product, isActive = false }: ProductCardProps) => {
 
         {getBuyButton(!!inBasket, handleBuyButtonClick)}
 
-        <Link className="btn btn--transparent" to={`/product/${product.id}`}>
+        <Link className="btn btn--transparent" to={getProductPath(id)}>
           Подробнее
         </Link>
 
