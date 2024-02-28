@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 type PaginationProps = {
   totalPages: number;
@@ -7,7 +7,6 @@ type PaginationProps = {
 }
 
 const MAX_PAGES_IN_GROUP = 3;
-const getPageLink = (page: number) => `?page=${page}`;
 
 const renderPageLinks = ({ groupNumber, totalPages, currentPage, onClick }: { groupNumber: number; totalPages: number; currentPage: number; onClick: (page: number) => void }) => {
   const pageLinks = [];
@@ -19,16 +18,16 @@ const renderPageLinks = ({ groupNumber, totalPages, currentPage, onClick }: { gr
 
     pageLinks.push(
       <li className="pagination__item" key={i}>
-        <Link
+        <div
           className={`pagination__link ${isCurrentPage ? 'pagination__link--active' : ''}`}
           onClick={() => {
             onClick(i);
           }}
-          to={getPageLink(i)}
+          style={{ cursor: 'pointer' }}
           data-testid={`page-link-${i}`}
         >
           {i}
-        </Link>
+        </div>
       </li >
 
     );
@@ -37,70 +36,74 @@ const renderPageLinks = ({ groupNumber, totalPages, currentPage, onClick }: { gr
   return pageLinks;
 };
 
-const renderNextLink = ({ groupNumber, totalPages, onClick }: { groupNumber: number; totalPages: number; onClick: (page: number) => void }) => {
-  if ((groupNumber * MAX_PAGES_IN_GROUP) < totalPages) {
-    return (
-      <li className="pagination__item" >
-        <Link className="pagination__link pagination__link--text"
-          onClick={() => {
-            onClick((groupNumber * MAX_PAGES_IN_GROUP) + 1);
-          }}
-          to={getPageLink((groupNumber * MAX_PAGES_IN_GROUP) + 1)}
-          data-testid="next-link"
-        >
-          Далее
-        </Link>
-      </li>
-
-    );
-  }
-  return null;
-};
-
-const renderPrevLink = ({ groupNumber, currentPage, onClick }: { groupNumber: number; currentPage: number; onClick: (page: number) => void }) => {
-  if (currentPage > MAX_PAGES_IN_GROUP) {
-    return (
-      <li className="pagination__item" >
-        <Link
-          className="pagination__link pagination__link--text"
-          onClick={() => {
-            onClick((groupNumber - 1) * MAX_PAGES_IN_GROUP);
-          }}
-          to={getPageLink((groupNumber - 1) * MAX_PAGES_IN_GROUP)}
-          data-testid="prev-link"
-        >
-          Назад
-        </Link>
-      </li>
-    );
-  }
-  return null;
-};
-
-
 const Pagination = ({ totalPages, currentPage, onClick }: PaginationProps) => {
-
+  const [, setSearchParams] = useSearchParams();
   const groupNumber = Math.ceil(currentPage / MAX_PAGES_IN_GROUP);
 
+  const handlePageNumberClick = (page: number) => {
+    setSearchParams((prevParams) => {
+      prevParams.set('page', page.toString());
+      return prevParams;
+    });
+    onClick(page);
+  };
   return (
     <div className="pagination">
       <ul className="pagination__list">
-        {renderPrevLink({
-          groupNumber,
-          currentPage,
-          onClick,
-        })}
+        {
+          (currentPage > MAX_PAGES_IN_GROUP) && (
+            <li className="pagination__item" >
+              <div
+                className="pagination__link pagination__link--text"
+                onClick={() => {
+                  const pageNum = (groupNumber - 1) * MAX_PAGES_IN_GROUP;
+                  setSearchParams((prevParams) => {
+
+                    prevParams.set('page', pageNum.toString());
+
+                    return prevParams;
+                  });
+
+                  onClick(pageNum);
+                }}
+                data-testid="prev-link"
+                style={{ cursor: 'pointer' }}
+              >
+                Назад
+              </div>
+            </li>
+          )
+        }
+
         {renderPageLinks({
           groupNumber,
           totalPages,
           currentPage,
-          onClick,
+          onClick: handlePageNumberClick,
         })}
-        {renderNextLink({
-          groupNumber,
-          totalPages,
-          onClick,
-        })}
+
+        {
+          ((groupNumber * MAX_PAGES_IN_GROUP) < totalPages) && (
+            <li className="pagination__item" >
+              <div className="pagination__link pagination__link--text"
+                onClick={() => {
+                  const pageNum = (groupNumber * MAX_PAGES_IN_GROUP) + 1;
+                  setSearchParams((prevParams) => {
+                    prevParams.set('page', pageNum.toString());
+
+                    return prevParams;
+                  });
+                  onClick(pageNum);
+                }}
+                style={{ cursor: 'pointer' }}
+                data-testid="next-link"
+              >
+                Далее
+              </div>
+            </li>
+
+          )
+        }
       </ul>
     </div>
   );
