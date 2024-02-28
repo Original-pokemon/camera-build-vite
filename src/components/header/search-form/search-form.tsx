@@ -93,6 +93,9 @@ const SearchForm = () => {
   };
 
   const handleArrowKeydown = (evt: ReactKeyboard) => {
+    if (!showList) {
+      return;
+    }
     if (evt.key === 'ArrowDown' || evt.key === 'ArrowUp') {
       evt.preventDefault();
 
@@ -119,7 +122,7 @@ const SearchForm = () => {
       ref={formRef}
     >
       <ReactFocusLock disabled={!inputValue}>
-        <form onSubmit={handleFormSubmit}>
+        <form onSubmit={handleFormSubmit} onKeyDown={handleArrowKeydown}>
           <label>
             <Icon className={'form-search__icon'} icon={'#icon-lens'} svgSize={{ width: 16, height: 16 }} ariaHidden />
 
@@ -128,13 +131,12 @@ const SearchForm = () => {
               type="text" autoComplete="off"
               placeholder="Поиск по сайту"
               onChange={handleInputValueChange}
-              onKeyDown={handleArrowKeydown}
               value={inputValue}
               ref={searchInput}
             />
           </label>
 
-          <ul className="form-search__select-list" ref={listRef} onKeyDown={handleArrowKeydown}>
+          <ul className="form-search__select-list" ref={listRef} >
             {searchedProducts.map(({ id, name }, i) => (
               <li key={id} className="form-search__select-item">
                 <Link
