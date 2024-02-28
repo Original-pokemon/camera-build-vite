@@ -34,14 +34,8 @@ const Header = () => {
           <NavList items={navItems} />
 
         </nav>
-        <div className="form-search">
-          <SearchForm />
-          <button className="form-search__reset" type="reset">
-            <Icon icon={'#icon-close'} svgSize={{ width: 10, height: 10 }} ariaHidden />
+        <SearchForm />
 
-            <span className="visually-hidden">Сбросить поиск</span>
-          </button>
-        </div>
         <Link className="header__basket-link" to={AppRoute.Basket}>
           <Icon icon={'#icon-basket'} svgSize={{ width: 16, height: 16 }} ariaHidden />
           {!!basketTotal && <span className="header__basket-count">{basketTotal}</span>}
