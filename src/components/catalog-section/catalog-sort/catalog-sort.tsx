@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 import Icon from '../../icon/icon';
 import { useSearchParams } from 'react-router-dom';
-import { Sort, SortDirection } from '../../../const';
+import { Sort, SortDirection } from './../const';
 import { isDirectionType, isSortType } from '../../../utils/sort';
 
 

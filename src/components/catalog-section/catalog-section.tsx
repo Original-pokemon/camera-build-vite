@@ -4,7 +4,7 @@ import CatalogSort from './catalog-sort/catalog-sort';
 import Pagination from './pagination/pagination';
 import ProductCard from '../product-card/product-card';
 import { useSearchParams } from 'react-router-dom';
-import { AppRoute, Sort, SortDirection, Status } from '../../const';
+import { Sort, SortDirection } from './const';
 import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { getProducts, getProductsStatus, redirectToRoute } from '../../store/action';
 import { fetchProducts } from '../../store/slices/product-data/product-data-thunk';
@@ -13,7 +13,8 @@ import Spinner from '../spinner/spinner';
 import { ProductType } from '../../types';
 import { toast } from 'react-toastify';
 import { isDirectionType, isSortType } from '../../utils/sort';
-import { SortDirectionType, SortType } from '../../types/sort';
+import { SortDirectionType, SortType } from './types';
+import { AppRoute, Status } from '../../const';
 
 const PRODUCT_PER_PAGE = 9;
 

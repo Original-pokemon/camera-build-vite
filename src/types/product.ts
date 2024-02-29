@@ -4,7 +4,6 @@ type CameraType = typeof Camera[keyof typeof Camera];
 
 type CameraCategoryType = typeof CameraCategory[keyof typeof CameraCategory];
 
-
 type CameraLevelType = typeof CameraLevel[keyof typeof CameraLevel];
 
 export type ProductType = {
