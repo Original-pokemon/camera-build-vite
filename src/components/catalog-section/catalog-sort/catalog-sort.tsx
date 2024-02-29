@@ -40,25 +40,47 @@ const CatalogSort = () => {
       <form action="#">
         <div className="catalog-sort__inner">
           <p className="title title--h5">Сортировать:</p>
-          <div className="catalog-sort__type" onChange={handleSortTypeChange}>
+          <div className="catalog-sort__type" >
             <div className="catalog-sort__btn-text">
-              <input type="radio" id={Sort.Price} name="sort" checked={sortType === Sort.Price} defaultChecked />
+              <input type="radio"
+                id={Sort.Price}
+                name="sort"
+                checked={sortType === Sort.Price}
+                onChange={handleSortTypeChange}
+              />
               <label htmlFor={Sort.Price}>по цене</label>
             </div>
             <div className="catalog-sort__btn-text">
-              <input type="radio" id={Sort.Popularity} name="sort" checked={sortType === Sort.Popularity} />
+              <input type="radio"
+                id={Sort.Popularity}
+                name="sort"
+                checked={sortType === Sort.Popularity}
+                onChange={handleSortTypeChange}
+              />
               <label htmlFor={Sort.Popularity}>по популярности</label>
             </div>
           </div>
-          <div className="catalog-sort__order" onChange={handleSortDirectionChange}>
+          <div className="catalog-sort__order" >
             <div className="catalog-sort__btn catalog-sort__btn--up">
-              <input type="radio" id={SortDirection.ASC} name="sort-icon" checked={sortDirection === SortDirection.ASC} aria-label="По возрастанию" />
+              <input type="radio"
+                id={SortDirection.ASC}
+                name="sort-icon"
+                checked={sortDirection === SortDirection.ASC}
+                aria-label="По возрастанию"
+                onChange={handleSortDirectionChange}
+              />
               <label htmlFor={SortDirection.ASC}>
                 <Icon icon={'#icon-sort'} svgSize={{ width: 16, height: 14 }} ariaHidden />
               </label>
             </div>
             <div className="catalog-sort__btn catalog-sort__btn--down">
-              <input type="radio" id={SortDirection.DESC} name="sort-icon" aria-label="По убыванию" checked={sortDirection === SortDirection.DESC} />
+              <input type="radio"
+                id={SortDirection.DESC}
+                name="sort-icon"
+                aria-label="По убыванию"
+                checked={sortDirection === SortDirection.DESC}
+                onChange={handleSortDirectionChange}
+              />
               <label htmlFor={SortDirection.DESC}>
                 <Icon icon={'#icon-sort'} svgSize={{ width: 16, height: 14 }} ariaHidden />
               </label>
