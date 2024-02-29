@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import CatalogFilter from './catalog-filter/catalog-filter';
 import CatalogSort from './catalog-sort/catalog-sort';
 import Pagination from './pagination/pagination';
@@ -6,14 +6,14 @@ import ProductCard from '../product-card/product-card';
 import { useSearchParams } from 'react-router-dom';
 import { FilterParamName } from './const';
 import { useAppDispatch, useAppSelector } from '../../hooks/state';
-import { getProducts, getProductsStatus, redirectToRoute } from '../../store/action';
+import { getProducts, getProductsStatus } from '../../store/action';
 import { fetchProducts } from '../../store/slices/product-data/product-data-thunk';
 import useSmoothScrollToElement from '../../hooks/use-scroll-to-element';
 import Spinner from '../spinner/spinner';
 import { ProductType } from '../../types';
 import { toast } from 'react-toastify';
-import { getVisibleProducts, isCameraType, isCategoryType, isDirectionType, isLevelType, isSortType } from './utils';
-import { AppRoute, Status } from '../../const';
+import { filterByValue, getVisibleProducts, isCameraType, isCategoryType, isDirectionType, isLevelType, isSortType } from './utils';
+import { Status } from '../../const';
 
 const PRODUCT_PER_PAGE = 9;
 
@@ -30,7 +30,7 @@ const getProductsElements = (visibleProducts: ProductType[]) => {
 
 const CatalogSection = () => {
   const dispatch = useAppDispatch();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const productsLoadStatus = useAppSelector(getProductsStatus);
   const products = useAppSelector(getProducts);
   const scrollToElement = useSmoothScrollToElement();
@@ -43,7 +43,6 @@ const CatalogSection = () => {
   const isError = productsLoadStatus === Status.Error;
 
   const initialPage = parseInt(searchParams.get('page') || '1', 10);
-  const [currentPage, setCurrentPage] = useState(initialPage);
 
   const sortParam = searchParams.get('sortBy');
   const sortType = isSortType(sortParam) ? sortParam : null;
@@ -68,13 +67,14 @@ const CatalogSection = () => {
     category: categoryType,
     level: levelType,
   }), [cameraType, categoryType, levelType]);
+  const filteredProducts = useMemo(() => filterByValue(products, filter), [products, filter]);
 
-  const startIndex = (currentPage - 1) * PRODUCT_PER_PAGE;
+  const startIndex = (initialPage - 1) * PRODUCT_PER_PAGE;
   const endIndex = startIndex + PRODUCT_PER_PAGE;
   const pagination = useMemo(() => ({ startIndex, endIndex }), [endIndex, startIndex]);
 
-  const visibleProducts = useMemo(() => getVisibleProducts({ products, pagination, sort, filter }), [products, pagination, sort, filter]);
-  const totalPages = Math.ceil(products.length / PRODUCT_PER_PAGE);
+  const visibleProducts = useMemo(() => getVisibleProducts({ products: filteredProducts, pagination, sort }), [filteredProducts, pagination, sort]);
+  const totalPages = Math.ceil(filteredProducts.length / PRODUCT_PER_PAGE);
 
   useEffect(() => {
     if (isIdle) {
@@ -83,14 +83,23 @@ const CatalogSection = () => {
     if (isError) {
       toast.error('Произошла ошибка при загрузке каталога. Попробуйте перезагрузить страницу.');
     }
-  }, [dispatch, isIdle, isError]);
+  }, [dispatch, isIdle, isError, isLoaded]);
+
 
   if ((initialPage > totalPages) && isLoaded) {
-    dispatch(redirectToRoute(AppRoute.PageNotFound));
+    if (totalPages > 0) {
+      setSearchParams((prevParams) => {
+        prevParams.set('page', totalPages.toString());
+        return prevParams;
+      });
+    }
   }
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    setSearchParams((prevParams) => {
+      prevParams.set('page', page.toString());
+      return prevParams;
+    });
     scrollToElement(elementRef.current || undefined);
   };
 
@@ -111,7 +120,7 @@ const CatalogSection = () => {
                 {getProductsElements(visibleProducts)}
               </div>
             )}
-            {totalPages > 1 && <Pagination totalPages={totalPages} currentPage={currentPage} onClick={handlePageChange} />}
+            {totalPages > 1 && <Pagination totalPages={totalPages} currentPage={initialPage} onClick={handlePageChange} />}
           </div>
         </div>
       </div>

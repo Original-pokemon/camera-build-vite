@@ -28,7 +28,7 @@ type FilterProps = {
   level: LevelType | null;
 }
 
-const filterByValue = (products: ProductType[], filter: FilterProps) => products.filter((product) => {
+export const filterByValue = (products: ProductType[], filter: FilterProps) => products.filter((product) => {
   if (filter.category && product.category !== CameraCategory[filter.category]) {
     return false;
   }
@@ -51,19 +51,17 @@ type GetVisibleProductsProps = {
     sortType: SortType | null;
     sortDirection: SortDirectionType | null;
   };
-  filter: FilterProps;
 }
 
-export const getVisibleProducts = ({ products, pagination, sort, filter }: GetVisibleProductsProps) => {
+export const getVisibleProducts = ({ products, pagination, sort }: GetVisibleProductsProps) => {
   const { startIndex, endIndex } = pagination;
   const { sortType, sortDirection } = sort;
-  const filteredProducts = filterByValue(products, filter);
 
   if (sortType && sortDirection) {
-    const sortedProducts = sortByType(filteredProducts, sortType, sortDirection);
+    const sortedProducts = sortByType(products, sortType, sortDirection);
 
     return sortedProducts.slice(startIndex, endIndex);
   }
 
-  return filteredProducts.slice(startIndex, endIndex);
+  return products.slice(startIndex, endIndex);
 };
