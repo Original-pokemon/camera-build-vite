@@ -12,7 +12,7 @@ import useSmoothScrollToElement from '../../hooks/use-scroll-to-element';
 import Spinner from '../spinner/spinner';
 import { ProductType } from '../../types';
 import { toast } from 'react-toastify';
-import { isDirectionType, isSortType } from '../../utils/sort';
+import { isDirectionType, isSortType } from './utils';
 import { SortDirectionType, SortType } from './types';
 import { AppRoute, Status } from '../../const';
 
