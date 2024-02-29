@@ -4,7 +4,7 @@ import CatalogSort from './catalog-sort/catalog-sort';
 import Pagination from './pagination/pagination';
 import ProductCard from '../product-card/product-card';
 import { useSearchParams } from 'react-router-dom';
-import { Sort, SortDirection } from './const';
+import { FilterParamName } from './const';
 import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { getProducts, getProductsStatus, redirectToRoute } from '../../store/action';
 import { fetchProducts } from '../../store/slices/product-data/product-data-thunk';
@@ -12,32 +12,10 @@ import useSmoothScrollToElement from '../../hooks/use-scroll-to-element';
 import Spinner from '../spinner/spinner';
 import { ProductType } from '../../types';
 import { toast } from 'react-toastify';
-import { isDirectionType, isSortType } from './utils';
-import { SortDirectionType, SortType } from './types';
+import { getVisibleProducts, isCameraType, isCategoryType, isDirectionType, isLevelType, isSortType } from './utils';
 import { AppRoute, Status } from '../../const';
 
 const PRODUCT_PER_PAGE = 9;
-
-const sortByType = (products: ProductType[], sortType: SortType, direction: SortDirectionType): ProductType[] => products.slice().sort((a, b) => {
-  const productProperty = sortType === Sort.Popularity ? 'rating' : 'price';
-
-  if (direction === SortDirection.ASC) {
-    return a[productProperty] - b[productProperty];
-  } else {
-    return b[productProperty] - a[productProperty];
-  }
-});
-
-const getVisibleProducts = (products: ProductType[], startIndex: number, endIndex: number, sortType: SortType | null, sortDirection: SortDirectionType | null) => {
-  if (sortType && sortDirection) {
-    const sortedProducts = sortByType(products, sortType, sortDirection);
-
-    const visibleProducts = sortedProducts.slice(startIndex, endIndex);
-    return visibleProducts;
-  }
-
-  return products.slice(startIndex, endIndex);
-};
 
 const getProductsElements = (visibleProducts: ProductType[]) => {
   const productsElements = visibleProducts.map((product) => (
@@ -73,9 +51,29 @@ const CatalogSection = () => {
   const directionParam = searchParams.get('direction');
   const sortDirection = isDirectionType(directionParam) ? directionParam : null;
 
+  const sort = useMemo(() => ({
+    sortType,
+    sortDirection,
+  }), [sortType, sortDirection]);
+
+  const categorySearchParam = searchParams.get(FilterParamName.Category);
+  const categoryType = isCategoryType(categorySearchParam) ? categorySearchParam : null;
+  const cameraTypeSearchParam = searchParams.get(FilterParamName.CameraType);
+  const cameraType = isCameraType(cameraTypeSearchParam) ? cameraTypeSearchParam : null;
+  const levelSearchParam = searchParams.get(FilterParamName.Level);
+  const levelType = isLevelType(levelSearchParam) ? levelSearchParam : null;
+
+  const filter = useMemo(() => ({
+    cameraType,
+    category: categoryType,
+    level: levelType,
+  }), [cameraType, categoryType, levelType]);
+
   const startIndex = (currentPage - 1) * PRODUCT_PER_PAGE;
   const endIndex = startIndex + PRODUCT_PER_PAGE;
-  const visibleProducts = useMemo(() => getVisibleProducts(products, startIndex, endIndex, sortType, sortDirection), [products, startIndex, endIndex, sortType, sortDirection]);
+  const pagination = useMemo(() => ({ startIndex, endIndex }), [endIndex, startIndex]);
+
+  const visibleProducts = useMemo(() => getVisibleProducts({ products, pagination, sort, filter }), [products, pagination, sort, filter]);
   const totalPages = Math.ceil(products.length / PRODUCT_PER_PAGE);
 
   useEffect(() => {

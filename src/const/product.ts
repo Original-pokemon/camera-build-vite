@@ -1,19 +1,37 @@
+export const Filter = {
+  Category: {
+    PhotoCamera: 'photocamera',
+    VideoCamera: 'videocamera',
+  },
+  CameraType: {
+    Digital: 'digital',
+    Film: 'film',
+    Snapshot: 'snapshot',
+    Collection: 'collection',
+  },
+  Level: {
+    Zero: 'zero',
+    Amateur: 'non-professional',
+    Professional: 'professional',
+  },
+} as const;
+
 const Camera = {
-  Collectible: 'Коллекционная',
-  Instant: 'Моментальная',
-  Digital: 'Цифровая',
-  Film: 'Плёночная',
+  [Filter.CameraType.Collection]: 'Коллекционная',
+  [Filter.CameraType.Snapshot]: 'Моментальная',
+  [Filter.CameraType.Digital]: 'Цифровая',
+  [Filter.CameraType.Film]: 'Плёночная',
 } as const;
 
 const CameraCategory = {
-  VideoCamera: 'Видеокамера',
-  PhotoCamera: 'Фотоаппарат',
+  [Filter.Category.VideoCamera]: 'Видеокамера',
+  [Filter.Category.PhotoCamera]: 'Фотоаппарат',
 } as const;
 
 const CameraLevel = {
-  Zero: 'Нулевой',
-  Amateur: 'Любительский',
-  Professional: 'Профессиональный',
+  [Filter.Level.Zero]: 'Нулевой',
+  [Filter.Level.Amateur]: 'Любительский',
+  [Filter.Level.Professional]: 'Профессиональный',
 } as const;
 
 export {

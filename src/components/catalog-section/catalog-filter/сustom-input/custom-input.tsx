@@ -3,13 +3,12 @@ type CustomInputProps = {
   name: string;
   placeholder?: string;
   disabled?: boolean;
-  defaultChecked?: boolean;
 }
 
-const CustomInput = ({ type, name, placeholder, disabled = false, defaultChecked = false }: CustomInputProps) => (
+const CustomInput = ({ type, name, placeholder, disabled = false }: CustomInputProps) => (
   <div className="custom-input">
     <label>
-      <input type={type} name={name} placeholder={placeholder} disabled={disabled} defaultChecked={defaultChecked} />
+      <input type={type} name={name} placeholder={placeholder} disabled={disabled} />
     </label>
   </div>
 );

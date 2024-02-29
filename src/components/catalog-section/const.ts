@@ -9,20 +9,8 @@ export const Sort = {
 } as const;
 
 
-export const Filter = {
-  Category: {
-    PhotoCamera: 'photocamera',
-    VideoCamera: 'videocamera',
-  },
-  CameraType: {
-    Digital: 'digital',
-    Film: 'film',
-    Snapshot: 'snapshot',
-    Collection: 'collection',
-  },
-  Level: {
-    Zero: 'zero',
-    Amateur: 'non-professional',
-    Professional: 'professional',
-  },
+export const FilterParamName = {
+  Category: 'category',
+  CameraType: 'type',
+  Level: 'level',
 } as const;
