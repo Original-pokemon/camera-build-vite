@@ -4,7 +4,7 @@ import CatalogSort from './catalog-sort/catalog-sort';
 import Pagination from './pagination/pagination';
 import ProductCard from '../product-card/product-card';
 import { useSearchParams } from 'react-router-dom';
-import { FilterParamName } from './const';
+import { FilterParamName, MAX_PRICE_NAME, MIN_PRICE_NAME } from './const';
 import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { getProducts, getProductsStatus } from '../../store/action';
 import { fetchProducts } from '../../store/slices/product-data/product-data-thunk';
@@ -57,16 +57,25 @@ const CatalogSection = () => {
 
   const categorySearchParam = searchParams.get(FilterParamName.Category);
   const categoryType = isCategoryType(categorySearchParam) ? categorySearchParam : null;
+
   const cameraTypeSearchParam = searchParams.get(FilterParamName.CameraType);
   const cameraType = isCameraType(cameraTypeSearchParam) ? cameraTypeSearchParam : null;
+
+  const minPrice = searchParams.get(MIN_PRICE_NAME) ? parseInt(searchParams.get(MIN_PRICE_NAME) as string, 10) : null;
+  const maxPrice = searchParams.get(MAX_PRICE_NAME) ? parseInt(searchParams.get(MAX_PRICE_NAME) as string, 10) : null;
+
   const levelSearchParam = searchParams.get(FilterParamName.Level);
   const levelType = isLevelType(levelSearchParam) ? levelSearchParam : null;
 
   const filter = useMemo(() => ({
+    price: {
+      min: minPrice,
+      max: maxPrice,
+    },
     cameraType,
     category: categoryType,
     level: levelType,
-  }), [cameraType, categoryType, levelType]);
+  }), [cameraType, categoryType, levelType, maxPrice, minPrice]);
   const filteredProducts = useMemo(() => filterByValue(products, filter), [products, filter]);
 
   const startIndex = (initialPage - 1) * PRODUCT_PER_PAGE;

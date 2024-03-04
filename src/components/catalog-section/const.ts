@@ -14,3 +14,6 @@ export const FilterParamName = {
   CameraType: 'type',
   Level: 'level',
 } as const;
+
+export const MIN_PRICE_NAME = 'price_min';
+export const MAX_PRICE_NAME = 'price_max';

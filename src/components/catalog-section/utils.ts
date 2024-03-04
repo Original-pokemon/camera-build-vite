@@ -23,12 +23,22 @@ const sortByType = (products: ProductType[], sortType: SortType, direction: Sort
 
 
 type FilterProps = {
+  price: {
+    min: number | null;
+    max: number | null;
+  };
   cameraType: CameraType | null;
   category: CategoryType | null;
   level: LevelType | null;
 }
 
 export const filterByValue = (products: ProductType[], filter: FilterProps) => products.filter((product) => {
+  if (filter.price.min && product.price < filter.price.min) {
+    return false;
+  }
+  if (filter.price.max && product.price > filter.price.max) {
+    return false;
+  }
   if (filter.category && product.category !== CameraCategory[filter.category]) {
     return false;
   }
