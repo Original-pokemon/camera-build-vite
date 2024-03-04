@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import ReactFocusLock from 'react-focus-lock';
 import { getProductPath } from '../../../const';
 import { Link } from 'react-router-dom';
+import useDebounce from '../../../hooks/use-debounce';
 
 const MIN_SEARCH_INPUT_LENGTH = 3;
 
@@ -27,6 +28,7 @@ const SearchForm = () => {
   const [inputValue, setInputValue] = useState('');
   const [showList, setShowList] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(-1);
+  const debouncedInputValue = useDebounce(inputValue, 500);
 
   const listRef = useRef<HTMLUListElement>(null);
 
@@ -40,7 +42,7 @@ const SearchForm = () => {
     setFocusedIndex(-1);
     setShowList(false);
   };
-  const searchedProducts = useMemo(() => showList ? getSearchedProducts(products, inputValue) : [], [products, inputValue, showList]);
+  const searchedProducts = useMemo(() => showList ? getSearchedProducts(products, debouncedInputValue) : [], [products, debouncedInputValue, showList]);
 
 
   useEffect(() => {
@@ -78,8 +80,8 @@ const SearchForm = () => {
   };
 
   const handleInputValueChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const value = evt.target.value;
     evt.preventDefault();
+    const value = evt.target.value;
     setInputValue(value);
     if (value.length >= MIN_SEARCH_INPUT_LENGTH) {
       setShowList(true);
