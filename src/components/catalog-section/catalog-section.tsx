@@ -12,7 +12,7 @@ import useSmoothScrollToElement from '../../hooks/use-scroll-to-element';
 import Spinner from '../spinner/spinner';
 import { ProductType } from '../../types';
 import { toast } from 'react-toastify';
-import { filterByValue, getVisibleProducts, isCameraType, isCategoryType, isDirectionType, isLevelType, isSortType } from './utils';
+import { filterByValue, getVisibleProducts, isCameraType, isCategoryType, isDirectionType, isLevelType, isSortType, sortByType } from './utils';
 import { Status } from '../../const';
 
 const PRODUCT_PER_PAGE = 9;
@@ -50,50 +50,46 @@ const CatalogSection = () => {
   const directionParam = searchParams.get('direction');
   const sortDirection = isDirectionType(directionParam) ? directionParam : null;
 
-  const sort = useMemo(() => ({
-    sortType,
-    sortDirection,
-  }), [sortType, sortDirection]);
-
   const categorySearchParam = searchParams.get(FilterParamName.Category);
   const categoryType = isCategoryType(categorySearchParam) ? categorySearchParam : null;
 
   const cameraTypeSearchParam = searchParams.get(FilterParamName.CameraType);
   const cameraType = isCameraType(cameraTypeSearchParam) ? cameraTypeSearchParam : null;
 
-  const minPrice = searchParams.get(MIN_PRICE_NAME) ? parseInt(searchParams.get(MIN_PRICE_NAME) as string, 10) : null;
-  const maxPrice = searchParams.get(MAX_PRICE_NAME) ? parseInt(searchParams.get(MAX_PRICE_NAME) as string, 10) : null;
+  const currentMinPrice = searchParams.get(MIN_PRICE_NAME) ? parseInt(searchParams.get(MIN_PRICE_NAME) as string, 10) : null;
+  const currentMaxPrice = searchParams.get(MAX_PRICE_NAME) ? parseInt(searchParams.get(MAX_PRICE_NAME) as string, 10) : null;
 
   const levelSearchParam = searchParams.get(FilterParamName.Level);
   const levelType = isLevelType(levelSearchParam) ? levelSearchParam : null;
 
   const filter = useMemo(() => ({
     price: {
-      min: minPrice,
-      max: maxPrice,
+      min: currentMinPrice,
+      max: currentMaxPrice,
     },
     cameraType,
     category: categoryType,
     level: levelType,
-  }), [cameraType, categoryType, levelType, maxPrice, minPrice]);
-  const filteredProducts = useMemo(() => filterByValue(products, filter), [products, filter]);
+  }), [cameraType, categoryType, levelType, currentMaxPrice, currentMinPrice]);
+  const { filteredProducts, minPrice, maxPrice } = useMemo(() => filterByValue(products, filter), [products, filter]);
 
   const startIndex = (initialPage - 1) * PRODUCT_PER_PAGE;
   const endIndex = startIndex + PRODUCT_PER_PAGE;
   const pagination = useMemo(() => ({ startIndex, endIndex }), [endIndex, startIndex]);
 
-  const visibleProducts = useMemo(() => getVisibleProducts({ products: filteredProducts, pagination, sort }), [filteredProducts, pagination, sort]);
+  const sortedProducts = useMemo(() => sortByType({ products: filteredProducts, sortType, sortDirection }), [filteredProducts, sortType, sortDirection]);
+
+  const visibleProducts = useMemo(() => getVisibleProducts({ products: sortedProducts, pagination }), [pagination, sortedProducts]);
   const totalPages = Math.ceil(filteredProducts.length / PRODUCT_PER_PAGE);
 
-  useEffect(() => {
-    if (isIdle) {
-      dispatch(fetchProducts());
-    }
-    if (isError) {
-      toast.error('Произошла ошибка при загрузке каталога. Попробуйте перезагрузить страницу.');
-    }
-  }, [dispatch, isIdle, isError, isLoaded]);
 
+  const handlePageChange = (page: number) => {
+    setSearchParams((prevParams) => {
+      prevParams.set('page', page.toString());
+      return prevParams;
+    });
+    scrollToElement(elementRef.current || undefined);
+  };
 
   if ((initialPage > totalPages) && isLoaded) {
     if (totalPages > 0) {
@@ -104,13 +100,14 @@ const CatalogSection = () => {
     }
   }
 
-  const handlePageChange = (page: number) => {
-    setSearchParams((prevParams) => {
-      prevParams.set('page', page.toString());
-      return prevParams;
-    });
-    scrollToElement(elementRef.current || undefined);
-  };
+  useEffect(() => {
+    if (isIdle) {
+      dispatch(fetchProducts());
+    }
+    if (isError) {
+      toast.error('Произошла ошибка при загрузке каталога. Попробуйте перезагрузить страницу.');
+    }
+  }, [dispatch, isIdle, isError, isLoaded]);
 
   return (
     <section className="catalog" data-testid='catalog'>
@@ -118,7 +115,7 @@ const CatalogSection = () => {
         <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
         <div className="page-content__columns">
           <div className="catalog__aside">
-            <CatalogFilter />
+            {isLoaded && <CatalogFilter minPrice={minPrice} maxPrice={maxPrice} />}
           </div>
           <div className="catalog__content">
             <CatalogSort />
@@ -126,7 +123,7 @@ const CatalogSection = () => {
 
             {isLoaded && (
               <div className="cards catalog__cards" ref={elementRef}>
-                {getProductsElements(visibleProducts)}
+                {visibleProducts.length ? getProductsElements(visibleProducts) : 'По вашему запросу ничего не найдено'}
               </div>
             )}
             {totalPages > 1 && <Pagination totalPages={totalPages} currentPage={initialPage} onClick={handlePageChange} />}

@@ -6,12 +6,16 @@ import { Camera, CameraCategory, CameraLevel, Filter } from '../../../const';
 import { FilterParamName, MAX_PRICE_NAME, MIN_PRICE_NAME } from '../const';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { isCameraType, isCategoryType, isLevelType } from '../utils';
-import useDebounce from '../../../hooks/use-debounce';
+import { debounce } from '../../../utils/debounce';
 
-const CatalogFilter = () => {
+type CatalogSortProps = {
+  minPrice: number;
+  maxPrice: number;
+}
+
+const CatalogFilter = ({ minPrice, maxPrice }: CatalogSortProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [currentPrice, setPrice] = useState<{ [key: string]: number }>({ [MIN_PRICE_NAME]: 0, [MAX_PRICE_NAME]: 0 });
-  const currentPriceDebounce = useDebounce(currentPrice, 500);
+  const [currentPrice, setPrice] = useState<{ [key: string]: number }>({ [MIN_PRICE_NAME]: minPrice, [MAX_PRICE_NAME]: maxPrice });
 
   const categorySearchParam = searchParams.get(FilterParamName.Category);
   const categoryType = isCategoryType(categorySearchParam) ? categorySearchParam : null;
@@ -34,16 +38,45 @@ const CatalogFilter = () => {
     if (event?.target) {
       const target = event.target as HTMLInputElement;
       const { name, value } = target;
-      const price = +value;
-      setPrice((prevPrice) => ({
-        ...prevPrice,
-        [name]: price,
-      }));
+      let price = +value;
 
-      target.value = price.toString();
+      if (name === MIN_PRICE_NAME) {
+        if (price > currentPrice[MAX_PRICE_NAME]) {
+          price = currentPrice[MAX_PRICE_NAME];
+        }
+
+        if (price < minPrice) {
+          price = minPrice;
+        }
+
+        setPrice((prevPrice) => ({
+          ...prevPrice,
+          [name]: price,
+        }));
+
+      }
+
+      if (name === MAX_PRICE_NAME) {
+        if (price < currentPrice[MIN_PRICE_NAME]) {
+          price = currentPrice[MIN_PRICE_NAME];
+        }
+
+        if (price > maxPrice) {
+          price = maxPrice;
+        }
+
+        setPrice((prevPrice) => ({
+          ...prevPrice,
+          [name]: price,
+        }));
+      }
+
+      target.value = price > 0 ? price.toString() : '';
     }
 
   };
+
+  const [debouncedHandlePriceChange] = debounce(handlePriceChange, 1000);
 
   const handleCameraTypeChange = (event: ChangeEvent<HTMLFieldSetElement>) => {
     const { name } = event.target;
@@ -73,11 +106,11 @@ const CatalogFilter = () => {
   };
 
   useEffect(() => {
-    if (currentPriceDebounce[MIN_PRICE_NAME] && +currentPriceDebounce[MIN_PRICE_NAME] > 0) {
+    if (currentPrice[MIN_PRICE_NAME] && +currentPrice[MIN_PRICE_NAME] > 0) {
       setSearchParams((prevParams) => {
-        const minPrice = +currentPriceDebounce[MIN_PRICE_NAME];
+        const currentMinPrice = +currentPrice[MIN_PRICE_NAME];
 
-        prevParams.set(MIN_PRICE_NAME, minPrice.toString());
+        prevParams.set(MIN_PRICE_NAME, currentMinPrice.toString());
         return prevParams;
       });
     } else {
@@ -87,11 +120,11 @@ const CatalogFilter = () => {
       });
     }
 
-    if (currentPriceDebounce[MAX_PRICE_NAME] && +currentPriceDebounce[MAX_PRICE_NAME] > 0) {
+    if (currentPrice[MAX_PRICE_NAME] && +currentPrice[MAX_PRICE_NAME] > 0) {
       setSearchParams((prevParams) => {
-        const maxPrice = +currentPriceDebounce[MAX_PRICE_NAME];
+        const currentMaxPrice = +currentPrice[MAX_PRICE_NAME];
 
-        prevParams.set(MAX_PRICE_NAME, maxPrice.toString());
+        prevParams.set(MAX_PRICE_NAME, currentMaxPrice.toString());
         return prevParams;
       });
     } else {
@@ -100,17 +133,17 @@ const CatalogFilter = () => {
         return prevParams;
       });
     }
-  }, [currentPriceDebounce, setSearchParams]);
+  }, [currentPrice, setPrice, setSearchParams]);
 
   return (
     <div className="catalog-filter">
       <form action="#" data-testid='form'>
         <h2 className="visually-hidden">Фильтр</h2>
 
-        <CatalogFilterBlock legend="Цена, ₽" onChange={handlePriceChange}>
+        <CatalogFilterBlock legend="Цена, ₽" onChange={debouncedHandlePriceChange}>
           <div className="catalog-filter__price-range">
-            <CustomInput type="number" name={MIN_PRICE_NAME} placeholder="от" />
-            <CustomInput type="number" name={MAX_PRICE_NAME} placeholder="до" />
+            <CustomInput type="number" name={MIN_PRICE_NAME} placeholder={minPrice.toString()} />
+            <CustomInput type="number" name={MAX_PRICE_NAME} placeholder={maxPrice.toString()} />
           </div>
         </CatalogFilterBlock>
 

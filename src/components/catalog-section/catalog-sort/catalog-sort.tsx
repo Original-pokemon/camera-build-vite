@@ -4,7 +4,6 @@ import { useSearchParams } from 'react-router-dom';
 import { Sort, SortDirection } from './../const';
 import { isDirectionType, isSortType } from '../utils';
 
-
 const CatalogSort = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const sortParam = searchParams.get('sortBy');
