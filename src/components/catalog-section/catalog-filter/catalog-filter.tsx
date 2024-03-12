@@ -4,7 +4,7 @@ import FilterItem from './filter-item/filter-item';
 import CustomInput from './сustom-input/custom-input';
 import { Camera, CameraCategory, CameraLevel, Filter } from '../../../const';
 import { FilterParamName, MAX_PRICE_NAME, MIN_PRICE_NAME } from '../const';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { isCameraType, isCategoryType, isLevelType } from '../utils';
 import { debounce } from '../../../utils/debounce';
 
@@ -54,6 +54,11 @@ const CatalogFilter = ({ minPrice, maxPrice }: CatalogSortProps) => {
           [name]: price,
         }));
 
+        setSearchParams((prevParams) => {
+          prevParams.set(MIN_PRICE_NAME, price.toString());
+
+          return prevParams;
+        });
       }
 
       if (name === MAX_PRICE_NAME) {
@@ -69,6 +74,12 @@ const CatalogFilter = ({ minPrice, maxPrice }: CatalogSortProps) => {
           ...prevPrice,
           [name]: price,
         }));
+
+        setSearchParams((prevParams) => {
+          prevParams.set(MAX_PRICE_NAME, price.toString());
+
+          return prevParams;
+        });
       }
 
       target.value = price > 0 ? price.toString() : '';
@@ -101,39 +112,41 @@ const CatalogFilter = ({ minPrice, maxPrice }: CatalogSortProps) => {
       prevParams.delete(FilterParamName.Category);
       prevParams.delete('type');
       prevParams.delete('level');
+      prevParams.delete('direction');
+      prevParams.delete('sortBy');
+      prevParams.delete('price_max');
+      prevParams.delete('price_min');
       return prevParams;
     });
   };
+  //   if (currentPrice[MIN_PRICE_NAME] && +currentPrice[MIN_PRICE_NAME] > 0) {
+  //     setSearchParams((prevParams) => {
+  //       const currentMinPrice = +currentPrice[MIN_PRICE_NAME];
 
-  useEffect(() => {
-    if (currentPrice[MIN_PRICE_NAME] && +currentPrice[MIN_PRICE_NAME] > 0) {
-      setSearchParams((prevParams) => {
-        const currentMinPrice = +currentPrice[MIN_PRICE_NAME];
+  //       prevParams.set(MIN_PRICE_NAME, currentMinPrice.toString());
+  //       return prevParams;
+  //     });
+  //   } else {
+  //     setSearchParams((prevParams) => {
+  //       prevParams.delete(MIN_PRICE_NAME);
+  //       return prevParams;
+  //     });
+  //   }
 
-        prevParams.set(MIN_PRICE_NAME, currentMinPrice.toString());
-        return prevParams;
-      });
-    } else {
-      setSearchParams((prevParams) => {
-        prevParams.delete(MIN_PRICE_NAME);
-        return prevParams;
-      });
-    }
+  //   if (currentPrice[MAX_PRICE_NAME] && +currentPrice[MAX_PRICE_NAME] > 0) {
+  //     setSearchParams((prevParams) => {
+  //       const currentMaxPrice = +currentPrice[MAX_PRICE_NAME];
 
-    if (currentPrice[MAX_PRICE_NAME] && +currentPrice[MAX_PRICE_NAME] > 0) {
-      setSearchParams((prevParams) => {
-        const currentMaxPrice = +currentPrice[MAX_PRICE_NAME];
-
-        prevParams.set(MAX_PRICE_NAME, currentMaxPrice.toString());
-        return prevParams;
-      });
-    } else {
-      setSearchParams((prevParams) => {
-        prevParams.delete(MAX_PRICE_NAME);
-        return prevParams;
-      });
-    }
-  }, [currentPrice, setPrice, setSearchParams]);
+  //       prevParams.set(MAX_PRICE_NAME, currentMaxPrice.toString());
+  //       return prevParams;
+  //     });
+  //   } else {
+  //     setSearchParams((prevParams) => {
+  //       prevParams.delete(MAX_PRICE_NAME);
+  //       return prevParams;
+  //     });
+  //   }
+  // }, [currentPrice, setPrice, setSearchParams]);
 
   return (
     <div className="catalog-filter">
