@@ -147,6 +147,7 @@ const SearchForm = () => {
                   onFocus={() => setFocusedIndex(i)}
                   style={{ width: '100%', display: 'block' }}
                   onClick={() => resetSearchInput()}
+                  data-testid={'product-link'}
                 >
                   {name}
                 </Link>

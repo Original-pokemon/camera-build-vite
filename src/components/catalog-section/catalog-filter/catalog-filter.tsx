@@ -155,8 +155,8 @@ const CatalogFilter = ({ minPrice, maxPrice }: CatalogSortProps) => {
 
         <CatalogFilterBlock legend="Цена, ₽" onChange={debouncedHandlePriceChange}>
           <div className="catalog-filter__price-range">
-            <CustomInput type="number" name={MIN_PRICE_NAME} placeholder={minPrice.toString()} />
-            <CustomInput type="number" name={MAX_PRICE_NAME} placeholder={maxPrice.toString()} />
+            <CustomInput type="number" name={MIN_PRICE_NAME} testId={MIN_PRICE_NAME} placeholder={minPrice.toString()} />
+            <CustomInput type="number" name={MAX_PRICE_NAME} testId={MAX_PRICE_NAME} placeholder={maxPrice.toString()} />
           </div>
         </CatalogFilterBlock>
 

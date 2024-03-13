@@ -20,7 +20,7 @@ const generateProductMock = (): ProductType => ({
   previewImgWebp2x: faker.image.imageUrl(),
 });
 
-const generateProductsMock = (): ProductType[] => Array.from({ length: 10 }, generateProductMock);
+const generateProductsMock = (length = 10): ProductType[] => Array.from({ length: length }, generateProductMock);
 
 const generateBasketItemMock = (quantity: number): BasketItemType => {
   const product = generateProductMock();
