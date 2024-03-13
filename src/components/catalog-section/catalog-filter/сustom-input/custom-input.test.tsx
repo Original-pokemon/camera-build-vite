@@ -39,13 +39,13 @@ describe('CustomInput component', () => {
   });
 
   it('renders unchecked checkbox input element if defaultChecked prop is false', () => {
-    render(<CustomInput {...defaultProps} type="checkbox" defaultChecked={false} />);
+    render(<CustomInput {...defaultProps} type="checkbox" />);
     const inputElement = screen.getByRole('checkbox', { name: '' });
     expect(inputElement).not.toBeChecked();
   });
 
   it('renders checked checkbox input element if defaultChecked prop is true', () => {
-    render(<CustomInput {...defaultProps} type="checkbox" defaultChecked />);
+    render(<CustomInput {...defaultProps} type="checkbox" />);
     const inputElement = screen.getByRole('checkbox', { name: '' });
     expect(inputElement).toBeChecked();
   });

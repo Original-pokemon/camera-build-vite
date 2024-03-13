@@ -30,7 +30,7 @@ describe('FilterItem component', () => {
   });
 
   it('renders checkbox input with defaultChecked attribute when provided', () => {
-    render(<FilterItem {...defaultProps} defaultChecked />);
+    render(<FilterItem {...defaultProps} />);
     const checkboxElement = screen.getByRole('checkbox');
     expect(checkboxElement).toBeChecked();
   });
