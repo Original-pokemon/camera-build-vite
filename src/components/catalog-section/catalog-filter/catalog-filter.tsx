@@ -4,7 +4,7 @@ import FilterItem from './filter-item/filter-item';
 import CustomInput from './сustom-input/custom-input';
 import { Camera, CameraCategory, CameraLevel, Filter } from '../../../const';
 import { FilterParamName, MAX_PRICE_NAME, MIN_PRICE_NAME } from '../const';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, MouseEvent } from 'react';
 import { isCameraType, isCategoryType, isLevelType } from '../utils';
 import { debounce } from '../../../utils/debounce';
 
@@ -24,15 +24,6 @@ const CatalogFilter = ({ priceRange, currentPrice }: CatalogSortProps) => {
 
   const levelSearchParam = searchParams.get(FilterParamName.Level);
   const levelType = isLevelType(levelSearchParam) ? levelSearchParam : null;
-
-  const handleCategoryChange = (event: ChangeEvent<HTMLFieldSetElement>) => {
-    const { name } = event.target;
-    setSearchParams((prevParams) => {
-      prevParams.set(FilterParamName.Category, name);
-      return prevParams;
-    }
-    );
-  };
 
   const handlePriceChange = (event: ChangeEvent) => {
     if (event?.target) {
@@ -79,22 +70,67 @@ const CatalogFilter = ({ priceRange, currentPrice }: CatalogSortProps) => {
 
   const [debouncedHandlePriceChange] = debounce(handlePriceChange, 1000);
 
-  const handleCameraTypeChange = (event: ChangeEvent<HTMLFieldSetElement>) => {
-    const { name } = event.target;
-    setSearchParams((prevParams) => {
-      prevParams.set(FilterParamName.CameraType, name);
-      return prevParams;
+  const handleCategoryClick = (event: MouseEvent<HTMLFieldSetElement>) => {
+    const elem = event.target as HTMLFieldSetElement;
+
+    if (elem.tagName === 'INPUT') {
+      const { name } = elem;
+
+      setSearchParams((prevParams) => {
+        prevParams.set(FilterParamName.Category, name);
+        return prevParams;
+      }
+      );
+
+      if (categoryType === name) {
+        setSearchParams((prevParams) => {
+          prevParams.delete(FilterParamName.Category);
+          return prevParams;
+        }
+        );
+      }
+
     }
-    );
   };
 
-  const handleLevelChange = (event: ChangeEvent<HTMLFieldSetElement>) => {
-    const { name } = event.target;
-    setSearchParams((prevParams) => {
-      prevParams.set(FilterParamName.Level, name);
-      return prevParams;
+  const handleCameraTypeClick = (event: MouseEvent<HTMLFieldSetElement>) => {
+    const elem = event.target as HTMLFieldSetElement;
+
+    if (elem.tagName === 'INPUT') {
+      const { name } = elem;
+      setSearchParams((prevParams) => {
+        prevParams.set(FilterParamName.CameraType, name);
+        return prevParams;
+      }
+      );
+      if (cameraType === name) {
+        setSearchParams((prevParams) => {
+          prevParams.delete(FilterParamName.CameraType);
+          return prevParams;
+        }
+        );
+      }
     }
-    );
+  };
+
+  const handleLevelClick = (event: MouseEvent<HTMLFieldSetElement>) => {
+    const elem = event.target as HTMLFieldSetElement;
+
+    if (elem.tagName === 'INPUT') {
+      const { name } = elem;
+      setSearchParams((prevParams) => {
+        prevParams.set(FilterParamName.Level, name);
+        return prevParams;
+      }
+      );
+      if (levelType === name) {
+        setSearchParams((prevParams) => {
+          prevParams.delete(FilterParamName.Level);
+          return prevParams;
+        }
+        );
+      }
+    }
   };
 
   const handleReset = () => {
@@ -122,19 +158,19 @@ const CatalogFilter = ({ priceRange, currentPrice }: CatalogSortProps) => {
           </div>
         </CatalogFilterBlock>
 
-        <CatalogFilterBlock legend="Категория" onChange={handleCategoryChange}>
+        <CatalogFilterBlock legend="Категория" onClick={handleCategoryClick}>
           <FilterItem name={Filter.Category.PhotoCamera} label={CameraCategory[Filter.Category.PhotoCamera]} checked={categoryType === Filter.Category.PhotoCamera} />
           <FilterItem name={Filter.Category.VideoCamera} label={CameraCategory[Filter.Category.VideoCamera]} checked={categoryType === Filter.Category.VideoCamera} />
         </CatalogFilterBlock>
 
-        <CatalogFilterBlock legend="Тип камеры" onChange={handleCameraTypeChange}>
+        <CatalogFilterBlock legend="Тип камеры" onClick={handleCameraTypeClick}>
           <FilterItem name={Filter.CameraType.Digital} label={Camera[Filter.CameraType.Digital]} checked={cameraType === Filter.CameraType.Digital} />
           <FilterItem name={Filter.CameraType.Film} label={Camera[Filter.CameraType.Film]} checked={cameraType === Filter.CameraType.Film} disabled={categoryType === Filter.Category.VideoCamera} />
           <FilterItem name={Filter.CameraType.Snapshot} label={Camera[Filter.CameraType.Snapshot]} checked={cameraType === Filter.CameraType.Snapshot} disabled={categoryType === Filter.Category.VideoCamera} />
           <FilterItem name={Filter.CameraType.Collection} label={Camera[Filter.CameraType.Collection]} checked={cameraType === Filter.CameraType.Collection} />
         </CatalogFilterBlock>
 
-        <CatalogFilterBlock legend="Уровень" onChange={handleLevelChange}>
+        <CatalogFilterBlock legend="Уровень" onClick={handleLevelClick}>
           <FilterItem name={Filter.Level.Zero} label={CameraLevel[Filter.Level.Zero]} checked={levelType === Filter.Level.Zero} />
           <FilterItem name={Filter.Level.Amateur} label={CameraLevel[Filter.Level.Amateur]} checked={levelType === Filter.Level.Amateur} />
           <FilterItem name={Filter.Level.Professional} label={CameraLevel[Filter.Level.Professional]} checked={levelType === Filter.Level.Professional} />
