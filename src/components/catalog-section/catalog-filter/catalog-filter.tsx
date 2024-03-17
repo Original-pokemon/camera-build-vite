@@ -4,26 +4,26 @@ import FilterItem from './filter-item/filter-item';
 import CustomInput from './сustom-input/custom-input';
 import { Camera, CameraCategory, CameraLevel, Filter } from '../../../const';
 import { FilterParamName, MAX_PRICE_NAME, MIN_PRICE_NAME } from '../const';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent } from 'react';
 import { isCameraType, isCategoryType, isLevelType } from '../utils';
 import { debounce } from '../../../utils/debounce';
 
 type CatalogSortProps = {
-  minPrice: number;
-  maxPrice: number;
+  priceRange: { [MIN_PRICE_NAME]: number;[MAX_PRICE_NAME]: number };
+  currentPrice: { [MIN_PRICE_NAME]: number | null;[MAX_PRICE_NAME]: number | null };
 }
 
-const CatalogFilter = ({ minPrice, maxPrice }: CatalogSortProps) => {
+const CatalogFilter = ({ priceRange, currentPrice }: CatalogSortProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [currentPrice, setPrice] = useState<{ [key: string]: number }>({ [MIN_PRICE_NAME]: minPrice, [MAX_PRICE_NAME]: maxPrice });
-
+  // const [currentPrice, setPrice] = useState<{ [key: string]: number }>({ [MIN_PRICE_NAME]: minPrice, [MAX_PRICE_NAME]: maxPrice });
   const categorySearchParam = searchParams.get(FilterParamName.Category);
   const categoryType = isCategoryType(categorySearchParam) ? categorySearchParam : null;
+
   const cameraTypeSearchParam = searchParams.get(FilterParamName.CameraType);
   const cameraType = isCameraType(cameraTypeSearchParam) ? cameraTypeSearchParam : null;
+
   const levelSearchParam = searchParams.get(FilterParamName.Level);
   const levelType = isLevelType(levelSearchParam) ? levelSearchParam : null;
-
 
   const handleCategoryChange = (event: ChangeEvent<HTMLFieldSetElement>) => {
     const { name } = event.target;
@@ -41,18 +41,13 @@ const CatalogFilter = ({ minPrice, maxPrice }: CatalogSortProps) => {
       let price = +value;
 
       if (name === MIN_PRICE_NAME) {
-        if (price > currentPrice[MAX_PRICE_NAME]) {
+        if (currentPrice[MAX_PRICE_NAME] && price > currentPrice[MAX_PRICE_NAME]) {
           price = currentPrice[MAX_PRICE_NAME];
         }
 
-        if (price < minPrice) {
-          price = minPrice;
+        if (price < priceRange[MIN_PRICE_NAME]) {
+          price = priceRange[MIN_PRICE_NAME];
         }
-
-        setPrice((prevPrice) => ({
-          ...prevPrice,
-          [name]: price,
-        }));
 
         setSearchParams((prevParams) => {
           prevParams.set(MIN_PRICE_NAME, price.toString());
@@ -62,18 +57,13 @@ const CatalogFilter = ({ minPrice, maxPrice }: CatalogSortProps) => {
       }
 
       if (name === MAX_PRICE_NAME) {
-        if (price < currentPrice[MIN_PRICE_NAME]) {
+        if (currentPrice[MIN_PRICE_NAME] && price < currentPrice[MIN_PRICE_NAME]) {
           price = currentPrice[MIN_PRICE_NAME];
         }
 
-        if (price > maxPrice) {
-          price = maxPrice;
+        if (price > priceRange[MAX_PRICE_NAME]) {
+          price = priceRange[MAX_PRICE_NAME];
         }
-
-        setPrice((prevPrice) => ({
-          ...prevPrice,
-          [name]: price,
-        }));
 
         setSearchParams((prevParams) => {
           prevParams.set(MAX_PRICE_NAME, price.toString());
@@ -127,8 +117,8 @@ const CatalogFilter = ({ minPrice, maxPrice }: CatalogSortProps) => {
 
         <CatalogFilterBlock legend="Цена, ₽" onChange={debouncedHandlePriceChange}>
           <div className="catalog-filter__price-range">
-            <CustomInput type="number" name={MIN_PRICE_NAME} testId={MIN_PRICE_NAME} placeholder={minPrice.toString()} />
-            <CustomInput type="number" name={MAX_PRICE_NAME} testId={MAX_PRICE_NAME} placeholder={maxPrice.toString()} />
+            <CustomInput type="number" defaultValue={currentPrice[MIN_PRICE_NAME]?.toString() || ''} name={MIN_PRICE_NAME} testId={MIN_PRICE_NAME} placeholder={priceRange[MIN_PRICE_NAME].toString()} />
+            <CustomInput type="number" defaultValue={currentPrice[MAX_PRICE_NAME]?.toString() || ''} name={MAX_PRICE_NAME} testId={MAX_PRICE_NAME} placeholder={priceRange[MAX_PRICE_NAME].toString()} />
           </div>
         </CatalogFilterBlock>
 

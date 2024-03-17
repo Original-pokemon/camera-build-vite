@@ -115,7 +115,7 @@ const CatalogSection = () => {
         <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
         <div className="page-content__columns">
           <div className="catalog__aside">
-            {isLoaded && <CatalogFilter minPrice={minPrice} maxPrice={maxPrice} />}
+            {isLoaded && <CatalogFilter priceRange={{ [MIN_PRICE_NAME]: minPrice, [MAX_PRICE_NAME]: maxPrice }} currentPrice={{ [MIN_PRICE_NAME]: currentMinPrice, [MAX_PRICE_NAME]: currentMaxPrice }} />}
           </div>
           <div className="catalog__content">
             <CatalogSort />
