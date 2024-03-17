@@ -53,8 +53,9 @@ describe('SearchForm', () => {
     const selectListElement = screen.getByRole('list');
 
     await userEvent.type(searchInputElement, searchText);
-    expect(screen.getByDisplayValue(searchText)).toBeInTheDocument();
+    await new Promise((r) => setTimeout(r, 1000));
 
+    expect(screen.getByDisplayValue(searchText)).toBeInTheDocument();
 
     const listItems = getAllByTestId(selectListElement, 'product-link');
     expect(listItems).toHaveLength(fakeProductsName.length);

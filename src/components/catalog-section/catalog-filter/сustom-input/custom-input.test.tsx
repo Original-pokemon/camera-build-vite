@@ -1,10 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import CustomInput from './custom-input';
+import userEvent from '@testing-library/user-event';
 
 describe('CustomInput component', () => {
   const defaultProps = {
     type: 'text',
     name: 'inputName',
+    defaultValue: 'testValue',
+    testId: 'input',
+
   };
 
   it('renders without crashing', () => {
@@ -13,40 +17,49 @@ describe('CustomInput component', () => {
 
   it('renders input element with correct type', () => {
     render(<CustomInput {...defaultProps} />);
-    const inputElement = screen.getByRole('textbox', { name: '' });
+
+    const inputElement = screen.getByTestId('input');
+
     expect(inputElement).toBeInTheDocument();
     expect(inputElement).toHaveAttribute('type', 'text');
   });
 
   it('renders input element with correct name', () => {
     render(<CustomInput {...defaultProps} />);
-    const inputElement = screen.getByRole('textbox', { name: '' });
+
+    const inputElement = screen.getByTestId('input');
+
     expect(inputElement).toBeInTheDocument();
     expect(inputElement).toHaveAttribute('name', 'inputName');
   });
 
   it('renders input element with placeholder if provided', () => {
     const placeholderText = 'Enter text here';
+
     render(<CustomInput {...defaultProps} placeholder={placeholderText} />);
+
     const inputElement = screen.getByPlaceholderText(placeholderText);
+
     expect(inputElement).toBeInTheDocument();
   });
 
   it('renders disabled input element if disabled prop is true', () => {
     render(<CustomInput {...defaultProps} disabled />);
-    const inputElement = screen.getByRole('textbox', { name: '' });
+
+    const inputElement = screen.getByTestId('input');
+
     expect(inputElement).toBeDisabled();
   });
 
-  it('renders unchecked checkbox input element if defaultChecked prop is false', () => {
-    render(<CustomInput {...defaultProps} type="checkbox" />);
-    const inputElement = screen.getByRole('checkbox', { name: '' });
-    expect(inputElement).not.toBeChecked();
-  });
+  it('input text is displayed correctly', async () => {
+    render(<CustomInput {...defaultProps} type='number' />);
 
-  it('renders checked checkbox input element if defaultChecked prop is true', () => {
-    render(<CustomInput {...defaultProps} type="checkbox" />);
-    const inputElement = screen.getByRole('checkbox', { name: '' });
-    expect(inputElement).toBeChecked();
+    const inputElement = screen.getByTestId('input');
+
+    await userEvent.type(inputElement, '128');
+
+    expect(inputElement).toHaveValue(128);
+    expect(screen.getByDisplayValue('128')).toBeInTheDocument();
   });
 });
+

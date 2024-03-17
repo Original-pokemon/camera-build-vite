@@ -6,7 +6,6 @@ describe('FilterItem component', () => {
     name: 'filterName',
     label: 'Filter Label',
     disabled: false,
-    defaultChecked: false,
   };
 
   it('renders without crashing', () => {
@@ -29,9 +28,10 @@ describe('FilterItem component', () => {
     expect(checkboxElement).not.toBeDisabled();
   });
 
-  it('renders checkbox input with defaultChecked attribute when provided', () => {
-    render(<FilterItem {...defaultProps} />);
+  it('renders checkbox input with checked attribute when provided', () => {
+    render(<FilterItem {...defaultProps} checked />);
     const checkboxElement = screen.getByRole('checkbox');
+
     expect(checkboxElement).toBeChecked();
   });
 

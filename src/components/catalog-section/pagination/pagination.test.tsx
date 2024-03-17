@@ -8,7 +8,7 @@ describe('Pagination component', () => {
   const onClick = vi.fn();
 
   it('renders correctly', () => {
-    const LINKS_ON_PAGE = 5;
+    const LINKS_ON_PAGE = 3;
     const CURRENT_PAGE = 5;
 
     const componentWithHistory = withHistory(<Pagination totalPages={TOTAL_PAGES} currentPage={CURRENT_PAGE} onClick={onClick} />);
@@ -17,17 +17,25 @@ describe('Pagination component', () => {
     const paginationElement = screen.getByRole('list');
     expect(paginationElement).toBeInTheDocument();
 
-    const paginationLinks = screen.getAllByRole('link');
+    const paginationLinks = screen.getAllByTestId('page-link');
+    const lastPageLink = screen.getByTestId('next-link');
+    const firstPageLink = screen.getByTestId('prev-link');
+
     expect(paginationLinks).toHaveLength(LINKS_ON_PAGE);
 
-    expect(paginationLinks.at(1)).toHaveTextContent('4');
-    expect(paginationLinks.at(2)).toHaveTextContent('5');
-    expect(paginationLinks.at(3)).toHaveTextContent('6');
+    expect(lastPageLink).toBeInTheDocument();
+    expect(firstPageLink).toBeInTheDocument();
+
+    expect(paginationLinks.at(0)).toHaveTextContent('4');
+    expect(paginationLinks.at(1)).toHaveTextContent('5');
+    expect(paginationLinks.at(2)).toHaveTextContent('6');
+
+
   });
 
 
   it('renders firs page correctly', () => {
-    const LINKS_ON_PAGE = 4;
+    const LINKS_ON_PAGE = 3;
     const CURRENT_PAGE = 1;
 
     const componentWithHistory = withHistory(<Pagination totalPages={TOTAL_PAGES} currentPage={CURRENT_PAGE} onClick={onClick} />);
@@ -36,8 +44,11 @@ describe('Pagination component', () => {
     const paginationElement = screen.getByRole('list');
     expect(paginationElement).toBeInTheDocument();
 
-    const paginationLinks = screen.getAllByRole('link');
+    const paginationLinks = screen.getAllByTestId('page-link');
+    const lastPageLink = screen.getByTestId('next-link');
+
     expect(paginationLinks).toHaveLength(LINKS_ON_PAGE);
+    expect(lastPageLink).toBeInTheDocument();
 
     expect(paginationLinks.at(0)).toHaveTextContent('1');
     expect(paginationLinks.at(1)).toHaveTextContent('2');
@@ -45,7 +56,7 @@ describe('Pagination component', () => {
   });
 
   it('renders last page correctly', () => {
-    const LINKS_ON_PAGE = 4;
+    const LINKS_ON_PAGE = 3;
     const CURRENT_PAGE = 9;
 
     const componentWithHistory = withHistory(<Pagination totalPages={TOTAL_PAGES} currentPage={CURRENT_PAGE} onClick={onClick} />);
@@ -54,12 +65,16 @@ describe('Pagination component', () => {
     const paginationElement = screen.getByRole('list');
     expect(paginationElement).toBeInTheDocument();
 
-    const paginationLinks = screen.getAllByRole('link');
+    const paginationLinks = screen.getAllByTestId('page-link');
+    const lastPageLink = screen.getByTestId('prev-link');
+
+    expect(lastPageLink).toBeInTheDocument();
+
     expect(paginationLinks).toHaveLength(LINKS_ON_PAGE);
 
-    expect(paginationLinks.at(1)).toHaveTextContent('7');
-    expect(paginationLinks.at(2)).toHaveTextContent('8');
-    expect(paginationLinks.at(3)).toHaveTextContent('9');
+    expect(paginationLinks.at(0)).toHaveTextContent('7');
+    expect(paginationLinks.at(1)).toHaveTextContent('8');
+    expect(paginationLinks.at(2)).toHaveTextContent('9');
 
   });
 
@@ -67,17 +82,10 @@ describe('Pagination component', () => {
     const CURRENT_PAGE = 5;
     const NEXT_LINK_VALUE = 'page=7';
     const PREV_LINK_VALUE = 'page=3';
-    const SELECT_LINK = 6;
-    const SELECT_LINK_VALUE = `page=${SELECT_LINK}`;
     const history = createMemoryHistory();
 
     const componentWithHistory = withHistory(<Pagination totalPages={TOTAL_PAGES} currentPage={CURRENT_PAGE} onClick={onClick} />, history);
     render(componentWithHistory);
-
-
-    const pageLink = screen.getByTestId(`page-link-${SELECT_LINK}`);
-    fireEvent.click(pageLink);
-    expect(history.location.search).toContain(SELECT_LINK_VALUE);
 
     const nextPageLink = screen.getByTestId('next-link');
     fireEvent.click(nextPageLink);

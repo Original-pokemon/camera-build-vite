@@ -24,7 +24,7 @@ const renderPageLinks = ({ groupNumber, totalPages, currentPage, onClick }: { gr
             onClick(i);
           }}
           style={{ cursor: 'pointer' }}
-          data-testid={`page-link-${i}`}
+          data-testid={'page-link'}
         >
           {i}
         </div>

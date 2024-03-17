@@ -6,6 +6,7 @@ import { generateBasketItemMock, generateMockState } from '../../utils/mocks';
 import { MemoryHistory, createMemoryHistory } from 'history';
 import { NameSpace, Status } from '../../const';
 import { withHistory, withStore } from '../../utils/mock-component';
+import { getProductPriceFormat } from '../../utils/product';
 
 describe('ProductCard component', () => {
   let mockHistory: MemoryHistory;
@@ -25,7 +26,7 @@ describe('ProductCard component', () => {
     const productTitle = screen.getByText(product.name);
     expect(productTitle).toBeInTheDocument();
 
-    const productPrice = screen.getByText(`${product.price} ₽`);
+    const productPrice = screen.getByText(`${getProductPriceFormat(product.price)} ₽`);
     expect(productPrice).toBeInTheDocument();
 
     const buyButton = screen.getByText('Купить');
