@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, generatePath } from 'react-router-dom';
 import { ProductType } from '../../types';
 import Icon from '../icon/icon';
 import RatingStars from '../rating-stars/rating-stars';
 import { useAppDispatch, useAppSelector } from '../../hooks/state';
-import { AppRoute, getProductPath } from '../../const';
+import { AppRoute } from '../../const';
 import { getBasketItem, selectProduct, showModal } from '../../store/action';
 import { ModalName } from '../../const/modal';
 import { getProductPriceFormat } from '../../utils/product';
@@ -73,7 +73,7 @@ const ProductCard = ({ product, isActive = false }: ProductCardProps) => {
 
         {getBuyButton(!!inBasket, handleBuyButtonClick)}
 
-        <Link className="btn btn--transparent" to={getProductPath(id)}>
+        <Link className="btn btn--transparent" to={generatePath(AppRoute.Product, { id: id.toString() })}>
           Подробнее
         </Link>
 

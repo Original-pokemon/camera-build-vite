@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
+import { Link, generatePath } from 'react-router-dom';
 import { PromoType } from '../../../types';
-import { getProductPath } from '../../../const';
+import { AppRoute } from '../../../const';
 
 type BannerProps = {
   promo: PromoType;
@@ -26,7 +26,7 @@ const Banner = ({ promo }: BannerProps) => {
         <span className="banner__message">Новинка!</span>
         <span className="title title--h1">{name}</span>
         <span className="banner__text">Профессиональная камера от&nbsp;известного производителя</span>
-        <Link className="btn" to={getProductPath(id)}>
+        <Link className="btn" to={generatePath(AppRoute.Product, { id: id.toString() })}>
           Подробнее
         </Link>
       </p>

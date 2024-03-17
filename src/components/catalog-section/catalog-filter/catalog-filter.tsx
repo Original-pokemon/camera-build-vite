@@ -15,7 +15,6 @@ type CatalogSortProps = {
 
 const CatalogFilter = ({ priceRange, currentPrice }: CatalogSortProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  // const [currentPrice, setPrice] = useState<{ [key: string]: number }>({ [MIN_PRICE_NAME]: minPrice, [MAX_PRICE_NAME]: maxPrice });
   const categorySearchParam = searchParams.get(FilterParamName.Category);
   const categoryType = isCategoryType(categorySearchParam) ? categorySearchParam : null;
 

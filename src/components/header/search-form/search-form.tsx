@@ -5,8 +5,8 @@ import { ProductType } from '../../../types';
 import Icon from '../../icon/icon';
 import classNames from 'classnames';
 import ReactFocusLock from 'react-focus-lock';
-import { getProductPath } from '../../../const';
-import { Link } from 'react-router-dom';
+import { AppRoute } from '../../../const';
+import { Link, generatePath } from 'react-router-dom';
 import { debounce } from '../../../utils/debounce';
 
 const MIN_SEARCH_INPUT_LENGTH = 3;
@@ -136,7 +136,7 @@ const SearchForm = () => {
             {searchedProducts.map(({ id, name }, i) => (
               <li key={id} className="form-search__select-item">
                 <Link
-                  to={getProductPath(id)}
+                  to={generatePath(AppRoute.Product, { id: id.toString() })}
                   tabIndex={0}
                   onFocus={() => setFocusedIndex(i)}
                   style={{ width: '100%', display: 'block' }}
