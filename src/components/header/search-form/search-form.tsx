@@ -26,7 +26,7 @@ const getSearchedProducts = (products: ProductType[], searchText: string) => {
 const SearchForm = () => {
   const products = useAppSelector(getProducts);
   const [inputValue, setInputValue] = useState('');
-  const [showList, setShowList] = useState(false);
+  const isShowList = inputValue.length >= MIN_SEARCH_INPUT_LENGTH;
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [setInputValueDebounced] = debounce<string>(setInputValue, 500);
 
@@ -40,10 +40,9 @@ const SearchForm = () => {
     }
     setInputValue('');
     setFocusedIndex(-1);
-    setShowList(false);
   };
-  const searchedProducts = useMemo(() => showList ? getSearchedProducts(products, inputValue) : [], [products, inputValue, showList]);
 
+  const searchedProducts = useMemo(() => isShowList ? getSearchedProducts(products, inputValue) : [], [products, inputValue, isShowList]);
 
   useEffect(() => {
     const handleEscKeydown = (evt: KeyboardEvent) => {
@@ -84,11 +83,6 @@ const SearchForm = () => {
 
     const value = evt.target.value;
     setInputValueDebounced(value);
-    if (value.length >= MIN_SEARCH_INPUT_LENGTH) {
-      setShowList(true);
-    } else {
-      setShowList(false);
-    }
   };
 
   const handleResetButtonClick = () => {
@@ -96,7 +90,7 @@ const SearchForm = () => {
   };
 
   const handleArrowKeydown = (evt: ReactKeyboard) => {
-    if (!showList) {
+    if (!isShowList) {
       return;
     }
     if (evt.key === 'ArrowDown' || evt.key === 'ArrowUp') {
@@ -121,7 +115,7 @@ const SearchForm = () => {
 
   return (
     <div
-      className={classNames({ 'list-opened': showList && searchedProducts.length }, 'form-search')}
+      className={classNames({ 'list-opened': searchedProducts.length }, 'form-search')}
       ref={formRef}
     >
       <ReactFocusLock disabled={!inputValue}>
