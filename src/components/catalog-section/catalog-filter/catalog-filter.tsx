@@ -119,34 +119,6 @@ const CatalogFilter = ({ minPrice, maxPrice }: CatalogSortProps) => {
       return prevParams;
     });
   };
-  //   if (currentPrice[MIN_PRICE_NAME] && +currentPrice[MIN_PRICE_NAME] > 0) {
-  //     setSearchParams((prevParams) => {
-  //       const currentMinPrice = +currentPrice[MIN_PRICE_NAME];
-
-  //       prevParams.set(MIN_PRICE_NAME, currentMinPrice.toString());
-  //       return prevParams;
-  //     });
-  //   } else {
-  //     setSearchParams((prevParams) => {
-  //       prevParams.delete(MIN_PRICE_NAME);
-  //       return prevParams;
-  //     });
-  //   }
-
-  //   if (currentPrice[MAX_PRICE_NAME] && +currentPrice[MAX_PRICE_NAME] > 0) {
-  //     setSearchParams((prevParams) => {
-  //       const currentMaxPrice = +currentPrice[MAX_PRICE_NAME];
-
-  //       prevParams.set(MAX_PRICE_NAME, currentMaxPrice.toString());
-  //       return prevParams;
-  //     });
-  //   } else {
-  //     setSearchParams((prevParams) => {
-  //       prevParams.delete(MAX_PRICE_NAME);
-  //       return prevParams;
-  //     });
-  //   }
-  // }, [currentPrice, setPrice, setSearchParams]);
 
   return (
     <div className="catalog-filter">
