@@ -88,7 +88,6 @@ describe('CatalogSection component', () => {
 
     const pagination = screen.queryByTestId('pagination');
     expect(pagination).not.toBeInTheDocument();
-    // mockHistory.location.search = 'max_price=100';
   });
 
   it('correctly filter by price', async () => {
