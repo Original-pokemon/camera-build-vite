@@ -158,7 +158,7 @@ const CatalogFilter = ({ priceRange, currentPrice }: CatalogSortProps) => {
         </CatalogFilterBlock>
 
         <CatalogFilterBlock legend="Категория" onClick={handleCategoryClick}>
-          <FilterItem name={Filter.Category.PhotoCamera} label={CameraCategory[Filter.Category.PhotoCamera]} checked={categoryType === Filter.Category.PhotoCamera} />
+          <FilterItem name={Filter.Category.PhotoCamera} label={'Фотокамера'} checked={categoryType === Filter.Category.PhotoCamera} />
           <FilterItem name={Filter.Category.VideoCamera} label={CameraCategory[Filter.Category.VideoCamera]} checked={categoryType === Filter.Category.VideoCamera} />
         </CatalogFilterBlock>
 
