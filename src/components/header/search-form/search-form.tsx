@@ -38,6 +38,7 @@ const SearchForm = () => {
     if (searchInput.current) {
       searchInput.current.value = '';
     }
+
     setInputValue('');
     setFocusedIndex(-1);
   };
@@ -59,6 +60,7 @@ const SearchForm = () => {
 
     window.addEventListener('keydown', handleEscKeydown);
     window.addEventListener('click', handleOutsideClick);
+
     return () => {
       window.removeEventListener('keydown', handleEscKeydown);
       window.removeEventListener('click', handleOutsideClick);
@@ -87,6 +89,10 @@ const SearchForm = () => {
 
   const handleResetButtonClick = () => {
     resetSearchInput();
+
+    if (searchInput.current) {
+      searchInput.current.focus();
+    }
   };
 
   const handleArrowKeydown = (evt: ReactKeyboard) => {
