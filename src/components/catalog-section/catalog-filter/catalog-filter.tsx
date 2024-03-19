@@ -77,6 +77,15 @@ const CatalogFilter = ({ priceRange, currentPrice }: CatalogSortProps) => {
 
       setSearchParams((prevParams) => {
         prevParams.set(FilterParamName.Category, name);
+
+        if (name === Filter.Category.VideoCamera) {
+
+          if (cameraType === Filter.CameraType.Film || cameraType === Filter.CameraType.Snapshot) {
+            prevParams.delete(FilterParamName.CameraType);
+          }
+
+        }
+
         return prevParams;
       }
       );
@@ -164,8 +173,8 @@ const CatalogFilter = ({ priceRange, currentPrice }: CatalogSortProps) => {
 
         <CatalogFilterBlock legend="Тип камеры" onClick={handleCameraTypeClick}>
           <FilterItem name={Filter.CameraType.Digital} label={Camera[Filter.CameraType.Digital]} checked={cameraType === Filter.CameraType.Digital} />
-          <FilterItem name={Filter.CameraType.Film} label={Camera[Filter.CameraType.Film]} checked={cameraType === Filter.CameraType.Film} disabled={categoryType === Filter.Category.VideoCamera} />
-          <FilterItem name={Filter.CameraType.Snapshot} label={Camera[Filter.CameraType.Snapshot]} checked={cameraType === Filter.CameraType.Snapshot} disabled={categoryType === Filter.Category.VideoCamera} />
+          <FilterItem name={Filter.CameraType.Film} label={Camera[Filter.CameraType.Film]} checked={cameraType === Filter.CameraType.Film && categoryType !== Filter.Category.VideoCamera} disabled={categoryType === Filter.Category.VideoCamera} />
+          <FilterItem name={Filter.CameraType.Snapshot} label={Camera[Filter.CameraType.Snapshot]} checked={cameraType === Filter.CameraType.Snapshot && categoryType !== Filter.Category.VideoCamera} disabled={categoryType === Filter.Category.VideoCamera} />
           <FilterItem name={Filter.CameraType.Collection} label={Camera[Filter.CameraType.Collection]} checked={cameraType === Filter.CameraType.Collection} />
         </CatalogFilterBlock>
 
