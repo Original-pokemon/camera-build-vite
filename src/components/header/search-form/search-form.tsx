@@ -27,7 +27,7 @@ const SearchForm = () => {
   const products = useAppSelector(getProducts);
   const [inputValue, setInputValue] = useState('');
   const isShowList = inputValue.length >= MIN_SEARCH_INPUT_LENGTH;
-  const [focusedIndex, setFocusedIndex] = useState(-1);
+  const [focusedIndex, setFocusedIndex] = useState<null | number>(null);
   const [setInputValueDebounced] = debounce<string>(setInputValue, 500);
 
   const listRef = useRef<HTMLUListElement>(null);
@@ -40,7 +40,7 @@ const SearchForm = () => {
     }
 
     setInputValue('');
-    setFocusedIndex(-1);
+    setFocusedIndex(null);
   };
 
   const searchedProducts = useMemo(() => isShowList ? getSearchedProducts(products, inputValue) : [], [products, inputValue, isShowList]);
@@ -69,9 +69,15 @@ const SearchForm = () => {
   }, []);
 
   useEffect(() => {
-    if (listRef.current?.children[focusedIndex]?.firstChild) {
-      const nextElement = listRef.current?.children[focusedIndex].firstChild as HTMLLIElement;
-      nextElement.focus();
+    const current = listRef.current;
+
+    if (focusedIndex !== null && current) {
+      const nextElem = current.children[focusedIndex]?.firstChild as HTMLElement;
+
+      if (nextElem) {
+        nextElem.focus();
+      }
+
     }
 
   }, [focusedIndex]);
@@ -106,13 +112,22 @@ const SearchForm = () => {
         let nextIndex = prevState;
 
         const maxIndex = searchedProducts.length - 1;
+
         if (evt.key === 'ArrowDown') {
-          nextIndex = (nextIndex + 1) < maxIndex ? nextIndex + 1 : 0;
+          if (nextIndex === null) {
+            nextIndex = 0;
+            return nextIndex;
+          }
+
+          nextIndex = (nextIndex + 1) <= maxIndex ? nextIndex + 1 : 0;
         }
         if (evt.key === 'ArrowUp') {
+          if (nextIndex === null) {
+            return nextIndex;
+          }
+
           nextIndex = (nextIndex - 1) >= 0 ? nextIndex - 1 : maxIndex;
         }
-
 
         return nextIndex;
       });
