@@ -17,24 +17,44 @@ const basketSlice = createSlice({
   reducers: {
     addToBasket(state, action: { payload: ProductType }) {
       const { payload } = action;
-      const { id } = payload;
-      const item = basketAdapter.getSelectors().selectById(state, id);
+      const item = state.entities[payload.id];
       if (item) {
         item.quantity += 1;
-      } else {
-        basketAdapter.addOne(state, { ...payload, quantity: 1 });
+        return;
       }
+      basketAdapter.addOne(state, { ...payload, quantity: 1 });
     }
     ,
     removeProduct(state, action: { payload: number }) {
       const { payload: id } = action;
-      const item = basketAdapter.getSelectors().selectById(state, id);
+      const item = state.entities[id];
+      if (item) {
+        basketAdapter.removeOne(state, id);
+      } else {
+        throw new Error('Item not found in basket');
+      }
+    },
+    increaseProductQuantity(state, action: { payload: number }) {
+      const { payload: id } = action;
+      const item = state.entities[id];
+      if (item) {
+        item.quantity += 1;
+      } else {
+        throw new Error('Item not found in basket');
+      }
+
+    },
+    decreaseProductQuantity(state, action: { payload: number }) {
+      const { payload: id } = action;
+      const item = state.entities[id];
       if (item) {
         if (item.quantity > 1) {
           item.quantity -= 1;
         } else {
           basketAdapter.removeOne(state, id);
         }
+      } else {
+        throw new Error('Item not found in basket');
       }
     }
   }
