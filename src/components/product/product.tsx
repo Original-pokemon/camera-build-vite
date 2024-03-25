@@ -4,41 +4,22 @@ import { ProductType } from '../../types';
 import Icon from '../icon/icon';
 import RatingStars from '../rating-stars/rating-stars';
 import ProductTabsContent from './product-tabs-content/product-tabs-content';
-import { AppRoute } from '../../const';
-import { addToBasket, getBasketItem } from '../../store/action';
+import { ModalName } from '../../const';
+import { getSelectedProduct, selectProduct, showModal } from '../../store/action';
 import { getProductPriceFormat } from '../../utils/product';
+import { useEffect } from 'react';
 
 
 type ProductProps = {
   product: ProductType;
 }
 
-const getBuyButton = (inBasket: boolean, handleBuyButtonClick: () => void) => inBasket ? (
-  <Link className="btn btn--purple-border product-card__btn--in-cart" to={AppRoute.Basket}>
-    <Icon icon={'#icon-basket'} svgSize={{
-      width: 16,
-      height: 16,
-    }} ariaHidden
-    />
-    В корзине
-  </Link>
-) : (
-  <button
-    className="btn btn--purple"
-    type="button"
-    onClick={handleBuyButtonClick}
-    data-testid="buy-button"
-  >
-    <Icon icon='#icon-add-basket' svgSize={{ width: 24, height: 16 }} ariaHidden />
-    Добавить в корзину
-  </button>
-);
-
 
 const Product = ({
   product
 }: ProductProps) => {
   const dispatch = useAppDispatch();
+  const selectedProduct = useAppSelector(getSelectedProduct);
 
   const {
     id,
@@ -52,11 +33,22 @@ const Product = ({
     previewImgWebp2x
   } = product;
   const formattedPrice = getProductPriceFormat(price);
-  const inBasket = useAppSelector((state) => getBasketItem(state, id));
 
   const handleBuyButtonClick = () => {
-    dispatch(addToBasket(product));
+    if (!selectedProduct) {
+      dispatch(selectProduct(product));
+    }
+
+    dispatch(showModal(ModalName.ProductAdd));
   };
+
+  useEffect(() => {
+    dispatch(selectProduct(product));
+
+    return () => {
+      dispatch(selectProduct(null));
+    };
+  });
 
   return (
     <div className="page-content__section" data-testid="product">
@@ -92,7 +84,15 @@ const Product = ({
               {formattedPrice} ₽
             </p>
 
-            {getBuyButton(!!inBasket, handleBuyButtonClick)}
+            <button
+              className="btn btn--purple"
+              type="button"
+              onClick={handleBuyButtonClick}
+              data-testid="buy-button"
+            >
+              <Icon icon='#icon-add-basket' svgSize={{ width: 24, height: 16 }} ariaHidden />
+              Добавить в корзину
+            </button>
 
             <ProductTabsContent {...product} />
 

@@ -1,6 +1,6 @@
 import Icon from '../../icon/icon';
 import { useAppDispatch, useAppSelector } from '../../../hooks/state';
-import { addToBasket, getSelectedProduct, selectProduct, showModal } from '../../../store/action';
+import { addToBasket, getSelectedProduct, showModal } from '../../../store/action';
 import { ModalName } from '../../../const/modal';
 import { getProductPriceFormat } from '../../../utils/product';
 
@@ -28,7 +28,6 @@ const CatalogAddItemModal = () => {
   const formattedPrice = getProductPriceFormat(price);
   const handleAddToCart = () => {
     dispatch(addToBasket(selectedProduct));
-    dispatch(selectProduct(null));
     dispatch(showModal(ModalName.ProductAddSuccess));
   };
 
