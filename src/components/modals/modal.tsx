@@ -9,12 +9,14 @@ import CatalogAddItem from './catalog-add-item/catalog-add-item';
 import CatalogAddItemSuccess from './catalog-add-item/catalog-add-item-success';
 import ReviewSuccessModal from './product-review/product-review-success';
 import { useCallback, useEffect } from 'react';
+import BasketRemoveItemModal from './basket-remove-item';
 
 const ActiveModalElement = {
   [ModalName.ProductReview]: <ReviewModal />,
   [ModalName.ProductAdd]: <CatalogAddItem />,
   [ModalName.ProductAddSuccess]: <CatalogAddItemSuccess />,
-  [ModalName.ProductReviewSuccess]: <ReviewSuccessModal />
+  [ModalName.ProductReviewSuccess]: <ReviewSuccessModal />,
+  [ModalName.ProductRemove]: <BasketRemoveItemModal />
 } as const;
 
 const Modal = () => {
@@ -81,7 +83,6 @@ const Modal = () => {
       </div >
     </ReactFocusLock >
   );
-
 };
 
 export default Modal;

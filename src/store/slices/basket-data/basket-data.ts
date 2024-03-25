@@ -23,8 +23,7 @@ const basketSlice = createSlice({
         return;
       }
       basketAdapter.addOne(state, { ...payload, quantity: 1 });
-    }
-    ,
+    },
     removeProduct(state, action: { payload: number }) {
       const { payload: id } = action;
       const item = state.entities[id];
@@ -53,6 +52,15 @@ const basketSlice = createSlice({
         } else {
           basketAdapter.removeOne(state, id);
         }
+      } else {
+        throw new Error('Item not found in basket');
+      }
+    },
+    changeProductQuantity(state, action: { payload: { id: number; quantity: number } }) {
+      const { id, quantity } = action.payload;
+      const item = state.entities[id];
+      if (item) {
+        item.quantity = quantity;
       } else {
         throw new Error('Item not found in basket');
       }
