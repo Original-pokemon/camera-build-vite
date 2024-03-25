@@ -144,12 +144,13 @@ const CatalogFilter = ({ priceRange, currentPrice }: CatalogSortProps) => {
   const handleReset = () => {
     setSearchParams((prevParams) => {
       prevParams.delete(FilterParamName.Category);
-      prevParams.delete('type');
-      prevParams.delete('level');
+      prevParams.delete(FilterParamName.CameraType);
+      prevParams.delete(FilterParamName.Level);
       prevParams.delete('direction');
       prevParams.delete('sortBy');
-      prevParams.delete('price_max');
-      prevParams.delete('price_min');
+      prevParams.delete(MIN_PRICE_NAME);
+      prevParams.delete(MAX_PRICE_NAME);
+
       return prevParams;
     });
   };
