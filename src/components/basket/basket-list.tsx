@@ -7,6 +7,8 @@ const BasketList = () => {
 
   return (
     <ul className="basket__list">
+      {!products.length && <li className="basket-item">Корзина пуста</li>}
+
       {products.map((basketItem) => (
         <BasketItem key={basketItem.id} basketItem={basketItem} />
       ))}
