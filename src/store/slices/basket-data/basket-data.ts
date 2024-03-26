@@ -2,9 +2,9 @@ import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { ProductType, StatusType } from '../../../types';
 import { NameSpace, Status } from '../../../const';
 import { BasketItemType } from '../../../types/backet';
-import { postCoupon } from './basket-data-thunk';
+import { postCoupon, postOrder } from './basket-data-thunk';
 
-const basketAdapter = createEntityAdapter<BasketItemType>();
+const basketAdapter = createEntityAdapter<BasketItemType>({ selectId: (item) => item.id });
 
 const initialState = basketAdapter.getInitialState<{
   status: StatusType;
@@ -74,6 +74,12 @@ const basketSlice = createSlice({
         throw new Error('Item not found in basket');
       }
     },
+    resetBasket(state) {
+      state.coupon = null;
+      state.couponPostStatus = Status.Idle;
+      state.status = Status.Idle;
+      basketAdapter.removeAll(state);
+    }
   },
   extraReducers(builder) {
     builder
@@ -88,6 +94,15 @@ const basketSlice = createSlice({
         state.coupon = null;
         state.couponPostStatus = Status.Error;
       })
+      .addCase(postOrder.pending, (state) => {
+        state.status = Status.Loading;
+      })
+      .addCase(postOrder.fulfilled, (state) => {
+        state.status = Status.Success;
+      })
+      .addCase(postOrder.rejected, (state) => {
+        state.status = Status.Error;
+      });
   }
 });
 

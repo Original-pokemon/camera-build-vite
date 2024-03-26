@@ -12,3 +12,14 @@ export const postCoupon = createAsyncThunk<number, string, asyncThunkConfig>(
   }
 );
 
+type cameraIdType = number | string;
+
+export const postOrder = createAsyncThunk<void, {
+  camerasIds: cameraIdType[];
+  coupon: string | null;
+}, asyncThunkConfig>(
+  `${NameSpace.Basket}/sendOrder`,
+  async ({ camerasIds, coupon }, { extra: api }) => {
+    await api.post(APIRoute.Orders, { camerasIds, coupon });
+  }
+);
