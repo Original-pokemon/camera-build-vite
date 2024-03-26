@@ -1,5 +1,5 @@
-import { useAppDispatch, useAppSelector } from '../../hooks/state';
-import { getSelectedProduct, removeProduct, showModal } from '../../store/action';
+import { useAppDispatch, useAppSelector } from '../../../hooks/state';
+import { getSelectedProduct, removeProduct, showModal } from '../../../store/action';
 
 const BasketRemoveItemModal = () => {
   const dispatch = useAppDispatch();

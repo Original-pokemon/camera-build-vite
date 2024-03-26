@@ -9,14 +9,16 @@ import CatalogAddItem from './catalog-add-item/catalog-add-item';
 import CatalogAddItemSuccess from './catalog-add-item/catalog-add-item-success';
 import ReviewSuccessModal from './product-review/product-review-success';
 import { useCallback, useEffect } from 'react';
-import BasketRemoveItemModal from './basket-remove-item';
+import BasketRemoveItemModal from './basket/basket-remove-item';
+import ProductBasketSuccess from './basket/product-basket-success';
 
 const ActiveModalElement = {
   [ModalName.ProductReview]: <ReviewModal />,
   [ModalName.ProductAdd]: <CatalogAddItem />,
   [ModalName.ProductAddSuccess]: <CatalogAddItemSuccess />,
   [ModalName.ProductReviewSuccess]: <ReviewSuccessModal />,
-  [ModalName.ProductRemove]: <BasketRemoveItemModal />
+  [ModalName.ProductRemove]: <BasketRemoveItemModal />,
+  [ModalName.OrderPostSuccess]: <ProductBasketSuccess />,
 } as const;
 
 const Modal = () => {
