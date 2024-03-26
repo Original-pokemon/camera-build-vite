@@ -15,6 +15,10 @@ const basketSlice = createSlice({
   name: NameSpace.Basket,
   initialState,
   reducers: {
+    setBasket(state, action: { payload: BasketItemType[] }) {
+      const { payload } = action;
+      basketAdapter.setAll(state, payload);
+    },
     addToBasket(state, action: { payload: ProductType }) {
       const { payload } = action;
       const item = state.entities[payload.id];

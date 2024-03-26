@@ -6,7 +6,6 @@ import { AppRoute } from '../../const';
 const BasketPage = () => {
   const breadcrumbs = [{ link: AppRoute.Main, text: 'Главная' }, { link: AppRoute.Main, text: 'Каталог' }];
 
-
   return (
     <main>
       <div className="page-content">
