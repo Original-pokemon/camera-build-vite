@@ -39,6 +39,8 @@ describe('ProductCard component', () => {
   it('renders correctly when in basket', () => {
     const initialState = {
       [NameSpace.Basket]: {
+        couponPostStatus: Status.Idle,
+        coupon: null,
         status: Status.Success,
         ids: [product.id],
         entities: {
