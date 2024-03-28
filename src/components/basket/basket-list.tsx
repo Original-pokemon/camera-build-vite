@@ -6,7 +6,7 @@ const BasketList = () => {
   const products = useAppSelector(getBasketItems);
 
   return (
-    <ul className="basket__list">
+    <ul className="basket__list" data-testid="basket-list">
       {!products.length && <li className="basket-item">Корзина пуста</li>}
 
       {products.map((basketItem) => (

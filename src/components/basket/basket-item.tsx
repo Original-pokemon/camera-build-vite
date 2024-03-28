@@ -12,7 +12,6 @@ type BasketItemProps = {
   basketItem: BasketItemType;
 }
 
-
 const BasketItem = ({ basketItem, }: BasketItemProps) => {
   const increaseButtonName = 'increase';
   const decreaseButtonId = 'decrease';
@@ -108,7 +107,10 @@ const BasketItem = ({ basketItem, }: BasketItemProps) => {
           <Icon icon={'#icon-arrow'} svgSize={{ width: 7, height: 12 }} ariaHidden />
         </button>
       </div>
-      <div className="basket-item__total-price"><span className="visually-hidden">Общая цена:</span>{getProductPriceFormat(price * quantity)} ₽</div>
+      <div className="basket-item__total-price">
+        <span className="visually-hidden">Общая цена:</span>
+        {getProductPriceFormat(price * quantity)} ₽
+      </div>
       <button className="cross-btn" type="button" aria-label="Удалить товар" onClick={handleRemove}>
         <Icon icon={'#icon-close'} svgSize={{ width: 10, height: 10 }} ariaHidden />
       </button>

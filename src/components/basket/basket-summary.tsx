@@ -93,8 +93,8 @@ const BasketSummary = () => {
                 <input type="text" defaultValue={couponValue ?? ''} name="promo" placeholder="Введите промокод" ref={couponInputRef} disabled={isCouponLoading || !basketProducts.length} onChange={onCouponInputChangeDebounced} />
               </label>
 
-              <p className="custom-input__error">Промокод неверный</p>
-              <p className="custom-input__success">Промокод принят!</p>
+              {isCouponInvalid && <p className="custom-input__error">Промокод неверный</p>}
+              {isCouponValid && <p className="custom-input__success">Промокод принят!</p>}
             </div>
 
             <button className="btn" type="submit" disabled={isCouponLoading || !basketProducts.length}>Применить
