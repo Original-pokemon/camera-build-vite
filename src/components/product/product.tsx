@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { ProductType } from '../../types';
 import Icon from '../icon/icon';
@@ -22,7 +21,6 @@ const Product = ({
   const selectedProduct = useAppSelector(getSelectedProduct);
 
   const {
-    id,
     name,
     rating,
     reviewCount,
