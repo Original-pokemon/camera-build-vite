@@ -78,7 +78,11 @@ const BasketSummary = () => {
 
       dispatch(showModal(ModalName.OrderPostSuccess));
     }
-  });
+
+    if (isCouponInvalid) {
+      setCouponValue(null);
+    }
+  }, [isOrderInvalid, isOrderValid, isCouponInvalid, dispatch]);
 
   return (
     <div className="basket__summary">
