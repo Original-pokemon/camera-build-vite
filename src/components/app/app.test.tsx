@@ -1,9 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryHistory, createMemoryHistory } from 'history';
-import { AppRoute } from '../../const';
+import { AppRoute, NameSpace, Status } from '../../const';
 import { withHistory, withStore } from '../../utils/mock-component';
-import { generateMockState } from '../../utils/mocks';
+import { generateBasketItemMock, generateMockState } from '../../utils/mocks';
 import App from './app';
+import { setBasket } from '../../store/action';
+import { BasketItemType } from '../../types';
+import { BASKET_KEY } from './const';
 
 vi.mock('../../pages/catalog/catalog', () => ({
   default: () => <div>Catalog Page</div>
@@ -69,5 +72,45 @@ describe('App component', () => {
 
     const notFoundPage = screen.getByText('Not Found Page');
     expect(notFoundPage).toBeInTheDocument();
+  });
+
+  it('if localStorage has basket, it should be set it in store', () => {
+    const withHistoryComponent = withHistory(<App />, mockHistory);
+    const { withStoreComponent, mockStore } = withStore(withHistoryComponent, generateMockState());
+    const basketLocalStorage = Array.from({ length: 5 }, () => generateBasketItemMock(2));
+
+
+    localStorage.setItem(BASKET_KEY, JSON.stringify(basketLocalStorage));
+
+    render(withStoreComponent);
+
+    expect(mockStore.getActions()).toContainEqual(setBasket(basketLocalStorage));
+  });
+
+  it('if store has basket, it should be set in localStorage', () => {
+    const withHistoryComponent = withHistory(<App />, mockHistory);
+    const basketStorage = Array.from({ length: 5 }, () => generateBasketItemMock(2));
+    const { withStoreComponent } = withStore(withHistoryComponent, generateMockState({
+      [NameSpace.Basket]: {
+        couponPostStatus: Status.Idle,
+        coupon: null,
+        status: Status.Idle,
+        ids: [basketStorage[0].id, basketStorage[1].id, basketStorage[2].id, basketStorage[3].id, basketStorage[4].id],
+        entities: {
+          [basketStorage[0].id]: basketStorage[0],
+          [basketStorage[1].id]: basketStorage[1],
+          [basketStorage[2].id]: basketStorage[2],
+          [basketStorage[3].id]: basketStorage[3],
+          [basketStorage[4].id]: basketStorage[4],
+        }
+      }
+    }));
+
+    render(withStoreComponent);
+
+    const result = localStorage.getItem(BASKET_KEY);
+    const basketLocalStorage = JSON.parse(result as string) as BasketItemType[];
+
+    expect(basketLocalStorage).toEqual(basketStorage);
   });
 });

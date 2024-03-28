@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { BasketItemType } from '../../types';
 import { getBasketItems, setBasket } from '../../store/action';
 import { useEffect, useState } from 'react';
+import { BASKET_KEY } from './const';
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -17,14 +18,13 @@ const App = () => {
 
   useEffect(() => {
     if (isMounted) {
-
-      localStorage.setItem('basket', JSON.stringify(basketProducts));
+      localStorage.setItem(BASKET_KEY, JSON.stringify(basketProducts));
     }
   }, [basketProducts, isMounted]);
 
   useEffect(() => {
     if (!isMounted) {
-      const localStorageBasket = localStorage.getItem('basket');
+      const localStorageBasket = localStorage.getItem(BASKET_KEY);
       const products = localStorageBasket ? JSON.parse(localStorageBasket) as BasketItemType[] : null;
 
       if (products) {
