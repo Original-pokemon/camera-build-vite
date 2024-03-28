@@ -51,7 +51,7 @@ const BasketRemoveItemModal = () => {
       </div>
       <div className="modal__buttons">
         <button className="btn btn--purple modal__btn modal__btn--half-width" type="button" onClick={handleDeleteButtonClick}>Удалить</button>
-        <a className="btn btn--transparent modal__btn modal__btn--half-width" href="#" onClick={handleContinueShopping}>Продолжить покупки</a>
+        <button className="btn btn--transparent modal__btn modal__btn--half-width" onClick={handleContinueShopping}>Продолжить покупки</button>
       </div>
     </>
   );
