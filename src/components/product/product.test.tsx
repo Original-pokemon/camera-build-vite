@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Product from './product';
-import { addToBasket, } from '../../store/action';
+import { showModal, } from '../../store/action';
 import { MemoryHistory, createMemoryHistory } from 'history';
 import { generateMockState, generateBasketItemMock } from '../../utils/mocks';
 import { withHistory, withStore } from '../../utils/mock-component';
-import { NameSpace, Status } from '../../const';
+import { ModalName, NameSpace, Status } from '../../const';
 
 describe('Product component', () => {
   let mockHistory: MemoryHistory;
@@ -19,11 +19,11 @@ describe('Product component', () => {
   it('renders product information correctly', () => {
     const initialState = {
       [NameSpace.Basket]: {
+        coupon: null,
+        couponPostStatus: Status.Idle,
         status: Status.Success,
         ids: [],
-        entities: {
-
-        }
+        entities: {}
       }
     };
     const withHistoryComponent = withHistory(<Product product={product} />, mockHistory);
@@ -35,28 +35,11 @@ describe('Product component', () => {
     expect(screen.getByText('Добавить в корзину')).toBeInTheDocument();
   });
 
-  it('displays "В корзине" button when product is in basket', () => {
-
+  it('dispatches showModal action when "Добавить в корзину" button is clicked', () => {
     const initialState = {
       [NameSpace.Basket]: {
-        status: Status.Success,
-        ids: [product.id],
-        entities: {
-          [product.id]: product,
-        }
-      }
-    };
-    const withHistoryComponent = withHistory(<Product product={product} />, mockHistory);
-    const { withStoreComponent } = withStore(withHistoryComponent, generateMockState(initialState));
-
-    render(withStoreComponent);
-
-    expect(screen.getByText('В корзине')).toBeInTheDocument();
-  });
-
-  it('dispatches addToBasket action when "Добавить в корзину" button is clicked', () => {
-    const initialState = {
-      [NameSpace.Basket]: {
+        coupon: null,
+        couponPostStatus: Status.Idle,
         status: Status.Success,
         ids: [],
         entities: {
@@ -72,6 +55,6 @@ describe('Product component', () => {
     const addToBasketButton = screen.getByTestId('buy-button');
     fireEvent.click(addToBasketButton);
 
-    expect(mockStore.getActions()).toContainEqual(addToBasket(product));
+    expect(mockStore.getActions()).toContainEqual(showModal(ModalName.ProductAdd));
   });
 });

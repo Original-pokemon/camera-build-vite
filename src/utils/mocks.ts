@@ -68,6 +68,8 @@ const extractActionsTypes = (actions: Action<string>[]) => actions.map(({ type }
 
 const generateMockState = (initialState?: Partial<StateType>): StateType => ({
   [NameSpace.Basket]: {
+    coupon: null,
+    couponPostStatus: Status.Idle,
     status: Status.Idle,
     ids: [],
     entities: {}

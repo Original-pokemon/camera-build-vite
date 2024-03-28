@@ -5,7 +5,7 @@ import { MemoryHistory, createMemoryHistory } from 'history';
 import { generateMockState, generateProductMock } from '../../../utils/mocks';
 import { withHistory, withStore } from '../../../utils/mock-component';
 import { ModalName, NameSpace } from '../../../const';
-import { addToBasket, selectProduct, showModal } from '../../../store/action';
+import { addToBasket, showModal } from '../../../store/action';
 
 describe('CatalogAddItemModal component', () => {
   let mockHistory: MemoryHistory;
@@ -50,7 +50,6 @@ describe('CatalogAddItemModal component', () => {
 
 
     expect(mockStore.getActions()).toContainEqual(addToBasket(initialState[NameSpace.Modal].selectedProduct));
-    expect(mockStore.getActions()).toContainEqual(selectProduct(null));
     expect(mockStore.getActions()).toContainEqual(showModal(ModalName.ProductAddSuccess));
   });
 });

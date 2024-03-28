@@ -32,7 +32,6 @@ describe('CatalogSection component', () => {
     mockHistory = createMemoryHistory();
   });
 
-
   it('renders correctly', () => {
     const withHistoryComponent = withHistory(<CatalogSection />, mockHistory);
     const PRODUCTS_LENGTH = 10;
@@ -133,7 +132,7 @@ describe('CatalogSection component', () => {
 
     render(withStoreComponent);
 
-    await userEvent.click(screen.getByLabelText('Фотоаппарат'));
+    await userEvent.click(screen.getByLabelText('Фотокамера'));
 
     const productCategoryList = screen.queryAllByTestId('product-category');
 

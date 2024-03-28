@@ -74,7 +74,7 @@ describe('CatalogFilter component', () => {
   it('filter by category correctly work', async () => {
     const componentWithHistory = withHistory(<CatalogFilter {...price} />, mockHistory);
     const FILTER_VALUE_PHOTOCAMERA = 'category=photocamera';
-    const PHOTOCAMERA_LABEL = 'Фотоаппарат';
+    const PHOTOCAMERA_LABEL = 'Фотокамера';
     const FILTER_VALUE_VIDEOCAMERA = 'category=videocamera';
     const VIDEOCAMERA_LABEL = 'Видеокамера';
 
@@ -191,7 +191,7 @@ describe('CatalogFilter component', () => {
     const FILTER_VALUE_DIGITAL = 'type=digital';
     const DIGITAL_LABEL = 'Цифровая';
     const FILTER_VALUE_PHOTOCAMERA = 'category=photocamera';
-    const PHOTOCAMERA_LABEL = 'Фотоаппарат';
+    const PHOTOCAMERA_LABEL = 'Фотокамера';
     const FILTER_VALUE_MIN_PRICE = 'price_min=2';
     const debounceTime = 1200;
 
