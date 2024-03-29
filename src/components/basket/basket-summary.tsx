@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from '../../hooks/state';
 import { getBasketIds, getBasketItems, getCoupon, getCouponStatus, getOrderStatus, showModal } from '../../store/action';
 import { getProductPriceFormat } from '../../utils/product';
 import { postCoupon, postOrder } from '../../store/slices/basket-data/basket-data-thunk';
-import { debounce } from '../../utils/debounce';
 import { ModalName, Status } from '../../const';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
@@ -43,8 +42,6 @@ const BasketSummary = () => {
     target.value = eventInput;
     setCouponValue(eventInput);
   };
-
-  const [onCouponInputChangeDebounced] = debounce(onCouponInputChange, 500);
 
   const handleCouponSubmitButton = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -94,7 +91,7 @@ const BasketSummary = () => {
 
               <label>
                 <span className="custom-input__label">Промокод</span>
-                <input type="text" defaultValue={couponValue ?? ''} name="promo" placeholder="Введите промокод" ref={couponInputRef} disabled={isCouponLoading || !basketProducts.length} onChange={onCouponInputChangeDebounced} />
+                <input type="text" defaultValue={couponValue ?? ''} name="promo" placeholder="Введите промокод" ref={couponInputRef} disabled={isCouponLoading || !basketProducts.length} onChange={onCouponInputChange} />
               </label>
 
               {isCouponInvalid && <p className="custom-input__error">Промокод неверный</p>}
