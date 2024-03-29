@@ -12,12 +12,17 @@ type BasketItemProps = {
   basketItem: BasketItemType;
 }
 
-const BasketItem = ({ basketItem, }: BasketItemProps) => {
-  const increaseButtonName = 'increase';
-  const decreaseButtonId = 'decrease';
-  const MIN_CURRENT_QUANTITY = 1;
-  const MAX_CURRENT_QUANTITY = 99;
+const ButtonName = {
+  INCREASE: 'increase',
+  DECREASE: 'decrease',
+} as const;
 
+const QuantityLimit = {
+  MIN: 1,
+  MAX: 99,
+} as const;
+
+const BasketItem = ({ basketItem, }: BasketItemProps) => {
   const dispatch = useAppDispatch();
 
   const {
@@ -40,10 +45,10 @@ const BasketItem = ({ basketItem, }: BasketItemProps) => {
   const onClickChangeQuantityButton = (evt: MouseEvent<HTMLElement>) => {
     if (evt.currentTarget.tagName === 'BUTTON') {
       const elem = evt.currentTarget as HTMLButtonElement;
-      if (elem.name === increaseButtonName) {
+      if (elem.name === ButtonName.INCREASE) {
         dispatch(increaseProductQuantity(id));
       }
-      if (elem.name === decreaseButtonId) {
+      if (elem.name === ButtonName.DECREASE) {
         dispatch(decreaseProductQuantity(id));
       }
     }
@@ -52,11 +57,11 @@ const BasketItem = ({ basketItem, }: BasketItemProps) => {
   const onChangeQuantity = (evt: ChangeEvent<HTMLInputElement>) => {
     let value = parseInt(evt.target.value, 10);
     if (isNaN(value)) {
-      value = MIN_CURRENT_QUANTITY;
-    } else if (value < MIN_CURRENT_QUANTITY) {
-      value = MIN_CURRENT_QUANTITY;
-    } else if (value > MAX_CURRENT_QUANTITY) {
-      value = MAX_CURRENT_QUANTITY;
+      value = QuantityLimit.MIN;
+    } else if (value < QuantityLimit.MIN) {
+      value = QuantityLimit.MIN;
+    } else if (value > QuantityLimit.MAX) {
+      value = QuantityLimit.MAX;
     }
 
     dispatch(changeProductQuantity({ id, quantity: value }));
@@ -96,14 +101,14 @@ const BasketItem = ({ basketItem, }: BasketItemProps) => {
         <span className="visually-hidden">Цена:</span>{getProductPriceFormat(price)} ₽
       </p>
       <div className="quantity">
-        <button name={decreaseButtonId} className="btn-icon btn-icon--prev" aria-label="уменьшить количество товара" onClick={onClickChangeQuantityButton} disabled={quantity <= MIN_CURRENT_QUANTITY}>
+        <button name={ButtonName.DECREASE} className="btn-icon btn-icon--prev" aria-label="уменьшить количество товара" onClick={onClickChangeQuantityButton} disabled={quantity <= QuantityLimit.MIN}>
           <Icon icon={'#icon-arrow'} svgSize={{ width: 7, height: 12 }} ariaHidden />
         </button>
 
         <label className="visually-hidden" htmlFor="counter1"></label>
-        <input type="number" id="counter1" min={MIN_CURRENT_QUANTITY} max={MAX_CURRENT_QUANTITY} aria-label="количество товара" onChange={debouncedOnChangeQuantity} ref={quantityInputRef} />
+        <input type="number" id="counter1" min={QuantityLimit.MIN} max={QuantityLimit.MAX} aria-label="количество товара" onChange={debouncedOnChangeQuantity} ref={quantityInputRef} />
 
-        <button name={increaseButtonName} className="btn-icon btn-icon--next" aria-label="увеличить количество товара" onClick={onClickChangeQuantityButton} disabled={quantity >= MAX_CURRENT_QUANTITY}>
+        <button name={ButtonName.INCREASE} className="btn-icon btn-icon--next" aria-label="увеличить количество товара" onClick={onClickChangeQuantityButton} disabled={quantity >= QuantityLimit.MAX}>
           <Icon icon={'#icon-arrow'} svgSize={{ width: 7, height: 12 }} ariaHidden />
         </button>
       </div>
