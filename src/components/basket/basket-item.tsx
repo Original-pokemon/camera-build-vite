@@ -54,10 +54,16 @@ const BasketItem = ({ basketItem, }: BasketItemProps) => {
     }
   };
 
-  const onChangeQuantity = (evt: ChangeEvent<HTMLInputElement>) => {
-    let value = parseInt(evt.target.value, 10);
+  const onChangeQuantity = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    let value = Math.round(parseInt(target.value, 10));
+
     if (isNaN(value)) {
-      value = QuantityLimit.MIN;
+      target.value = '';
+      return;
+    }
+
+    if (!value) {
+      value = quantity;
     } else if (value < QuantityLimit.MIN) {
       value = QuantityLimit.MIN;
     } else if (value > QuantityLimit.MAX) {
@@ -65,9 +71,11 @@ const BasketItem = ({ basketItem, }: BasketItemProps) => {
     }
 
     dispatch(changeProductQuantity({ id, quantity: value }));
-  };
 
-  const [debouncedOnChangeQuantity] = debounce(onChangeQuantity, 500);
+    if (quantityInputRef.current) {
+      (quantityInputRef.current as HTMLInputElement).value = value.toString();
+    }
+  };
 
   const handleRemove = (evt: MouseEvent<HTMLButtonElement>) => {
     evt.preventDefault();
@@ -106,7 +114,13 @@ const BasketItem = ({ basketItem, }: BasketItemProps) => {
         </button>
 
         <label className="visually-hidden" htmlFor="counter1"></label>
-        <input type="number" id="counter1" min={QuantityLimit.MIN} max={QuantityLimit.MAX} aria-label="количество товара" onChange={debouncedOnChangeQuantity} ref={quantityInputRef} />
+        <input type="text" inputMode="numeric" id="counter1" min={QuantityLimit.MIN} max={QuantityLimit.MAX} aria-label="количество товара" onChange={onChangeQuantity} onBlur={({ target }) => {
+
+          if (!target.value) {
+            target.value = quantity.toString();
+          }
+        }} ref={quantityInputRef}
+        />
 
         <button name={ButtonName.INCREASE} className="btn-icon btn-icon--next" aria-label="увеличить количество товара" onClick={onClickChangeQuantityButton} disabled={quantity >= QuantityLimit.MAX}>
           <Icon icon={'#icon-arrow'} svgSize={{ width: 7, height: 12 }} ariaHidden />
