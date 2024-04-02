@@ -3,8 +3,8 @@ import { ProductType } from '../../types';
 import Icon from '../icon/icon';
 import RatingStars from '../rating-stars/rating-stars';
 import ProductTabsContent from './product-tabs-content/product-tabs-content';
-import { ModalName } from '../../const';
-import { getSelectedProduct, selectProduct, showModal } from '../../store/action';
+import { ModalName, QuantityLimit } from '../../const';
+import { getBasketItem, getSelectedProduct, selectProduct, showModal } from '../../store/action';
 import { getProductPriceFormat } from '../../utils/product';
 import { useEffect } from 'react';
 
@@ -19,6 +19,7 @@ const Product = ({
 }: ProductProps) => {
   const dispatch = useAppDispatch();
   const selectedProduct = useAppSelector(getSelectedProduct);
+  const productInBasket = useAppSelector((state) => getBasketItem(state, product.id));
 
   const {
     name,
@@ -87,6 +88,7 @@ const Product = ({
               type="button"
               onClick={handleBuyButtonClick}
               data-testid="buy-button"
+              disabled={productInBasket?.quantity === QuantityLimit.MAX}
             >
               <Icon icon='#icon-add-basket' svgSize={{ width: 24, height: 16 }} ariaHidden />
               Добавить в корзину
