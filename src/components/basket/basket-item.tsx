@@ -4,7 +4,6 @@ import { getProductPriceFormat } from '../../utils/product';
 import Icon from '../icon/icon';
 import { useAppDispatch } from '../../hooks/state';
 import { changeProductQuantity, decreaseProductQuantity, increaseProductQuantity, selectProduct, showModal } from '../../store/action';
-import { debounce } from '../../utils/debounce';
 import { Link, generatePath } from 'react-router-dom';
 import { AppRoute, ModalName } from '../../const';
 

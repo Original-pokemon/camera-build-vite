@@ -45,7 +45,6 @@ describe('BasketItem component', () => {
   it('correctly changes quantity', async () => {
     const withHistoryComponent = withHistory(<BasketItem basketItem={product} />, mockHistory);
     const { withStoreComponent, mockStore } = withStore(withHistoryComponent, generateMockState());
-    const debounceTime = 700;
 
     render(withStoreComponent);
 
@@ -61,7 +60,6 @@ describe('BasketItem component', () => {
 
     await userEvent.clear(inputElement);
     await userEvent.type(inputElement, '10');
-    await new Promise((r) => setTimeout(r, debounceTime));
 
     expect(mockStore.getActions()).toContainEqual(changeProductQuantity({ id: product.id, quantity: 10 }));
   });
