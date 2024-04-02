@@ -34,8 +34,16 @@ const CameraLevel = {
   [Filter.Level.Professional]: 'Профессиональный',
 } as const;
 
+
+const QuantityLimit = {
+  MIN: 1,
+  MAX: 99,
+} as const;
+
+
 export {
   Camera,
   CameraCategory,
   CameraLevel,
+  QuantityLimit
 };

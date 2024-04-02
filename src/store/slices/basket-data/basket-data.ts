@@ -1,6 +1,6 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { ProductType, StatusType } from '../../../types';
-import { NameSpace, Status } from '../../../const';
+import { NameSpace, QuantityLimit, Status } from '../../../const';
 import { BasketItemType } from '../../../types/backet';
 import { postCoupon, postOrder } from './basket-data-thunk';
 
@@ -28,8 +28,10 @@ const basketSlice = createSlice({
       const { payload } = action;
       const item = state.entities[payload.id];
       if (item) {
-        item.quantity += 1;
-        return;
+        if (item.quantity < QuantityLimit.MAX) {
+          item.quantity += 1;
+          return;
+        }
       }
       basketAdapter.addOne(state, { ...payload, quantity: 1 });
     },
@@ -46,7 +48,9 @@ const basketSlice = createSlice({
       const { payload: id } = action;
       const item = state.entities[id];
       if (item) {
-        item.quantity += 1;
+        if (item.quantity < QuantityLimit.MAX) {
+          item.quantity += 1;
+        }
       } else {
         throw new Error('Item not found in basket');
       }

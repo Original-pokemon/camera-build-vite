@@ -5,7 +5,7 @@ import Icon from '../icon/icon';
 import { useAppDispatch } from '../../hooks/state';
 import { changeProductQuantity, decreaseProductQuantity, increaseProductQuantity, selectProduct, showModal } from '../../store/action';
 import { Link, generatePath } from 'react-router-dom';
-import { AppRoute, ModalName } from '../../const';
+import { AppRoute, ModalName, QuantityLimit } from '../../const';
 
 type BasketItemProps = {
   basketItem: BasketItemType;
@@ -14,11 +14,6 @@ type BasketItemProps = {
 const ButtonName = {
   INCREASE: 'increase',
   DECREASE: 'decrease',
-} as const;
-
-const QuantityLimit = {
-  MIN: 1,
-  MAX: 99,
 } as const;
 
 const BasketItem = ({ basketItem, }: BasketItemProps) => {
